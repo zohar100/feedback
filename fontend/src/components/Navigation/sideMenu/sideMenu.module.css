@@ -1,0 +1,25 @@
+.SideMenu {
+    width: 70%;
+    height: 100%;
+    position: fixed;
+    z-index: 80;
+    background-color:#F8F8F8;
+    border-right: 5px solid coral;
+    display: none;
+}
+
+
+@media (min-width: 600px) {
+    .SideMenu {
+        width: 30%;
+        display: block;
+    }
+}
+
+.Open {
+    transform: translateY(0);
+}
+
+.Close {
+    transform: translateY(-100%);
+}

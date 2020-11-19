@@ -1,0 +1,74 @@
+.Background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  padding: 120px 0;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  background-color: white;
+}
+
+.Auth {
+  width: 100%;
+  height: fit-content;
+  min-height: 350px;
+  padding: 15px;
+  margin: auto;
+  /* margin-top: 35%; */
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 25px #ccc;
+  border-radius: 10px;
+}
+
+.FormDiv {
+  width: 300px;
+  margin: auto;
+  height: fit-content;
+  border-top: 2px solid #eee;
+  display: flex;
+  flex-flow: column;
+}
+
+.Auth div h2 {
+  width: fit-content;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.Auth div Button {
+  background-color: coral;
+  margin-right: 10px;
+  border-radius: 5px;
+  width: 300px;
+  border: none;
+  padding: 10px 25px;
+  color: #fff;
+  text-shadow: 1px 1px 1px #949494;
+  margin-top: 10px;
+}
+
+.Auth div p {
+  font-size: 0.8rem;
+  color: cornflowerblue;
+}
+
+.SpinnerDiv {
+  width: auto;
+  height: auto;
+}
+
+@media (min-width: 600px) {
+  /* .Auth {
+    vertical-align: middle;
+  } */
+
+  .FormDiv {
+    width: 450px;
+  }
+  .Auth div button {
+    width: 440px;
+  }
+}
