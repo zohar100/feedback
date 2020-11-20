@@ -3,7 +3,7 @@ import { updateObject } from '../utility';
 
 const initialState = {
     posts: [],
-    loading: true,
+    loading: false,
     error: null
 }
 

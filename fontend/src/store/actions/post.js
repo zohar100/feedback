@@ -24,10 +24,10 @@ export const fetchPostsFail = (error) => {
 export const fetchPosts = () => {
     return dispatch => {
         dispatch(fetchPostsStart())
-        axios.get('/posts')
-        .then(res => {
-            dispatch(fetchPostsSuccess(res.data))
-        })
-        .catch(err => dispatch(fetchPostsFail(err)));
+            axios.get('/posts')
+            .then(res => {
+                    dispatch(fetchPostsSuccess(res.data));
+            })
+            .catch(error => dispatch(fetchPostsFail(error)));
     }
 }

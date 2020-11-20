@@ -36,7 +36,7 @@ export const authLogout = () => {
     }
 }
 
-export const auth = (username, password, isSignup) => {
+export const auth = (username, password, isSignup ) => {
     return dispatch => {
         dispatch(authStart());
         const userData = {
@@ -50,8 +50,8 @@ export const auth = (username, password, isSignup) => {
             .then(response => {
                 dispatch(authSuccess(response.data.localId));
             })
-            .catch(err => {
-                dispatch(authFail(err));
+            .catch(error => {
+                dispatch(authFail(error));
             });
     };
 }

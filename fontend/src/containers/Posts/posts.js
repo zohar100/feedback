@@ -10,7 +10,9 @@ import * as actions from '../../store/actions/index';
 class Posts extends Component {
 
     componentDidMount () {
-        this.props.onFetchPosts();
+        if(this.props.isAuthenticated){
+            this.props.onFetchPosts();
+        }
     }
 
     render(){

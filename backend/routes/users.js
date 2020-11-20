@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
 });
 
 //login user
-router.post("/login", passport.authenticate('local'), (req, res) => {
+router.post("/login", passport.authenticate('local'),async (req, res) => {
     res.json({message: 'Welcome Back', localId: req.user._id})
 });
 
