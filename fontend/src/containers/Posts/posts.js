@@ -8,6 +8,11 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 
 class Posts extends Component {
+    state = {
+        showModal: {
+            id: null,
+        },
+    } 
 
     componentDidMount () {
         if(this.props.isAuthenticated){
@@ -15,10 +20,37 @@ class Posts extends Component {
         }
     }
 
+    showModalHandler = ( postId) => {
+        this.setState(prevState => {
+            if(prevState.showModal.id === postId) {
+                return{
+                    showModal : {id:null}
+                }
+            }
+            return {
+                showModal: {id: postId}
+            }
+        })
+        console.log(postId);
+    }
+
+    deletePostHandler = (postId) => {
+        this.props.onDeletePost(postId);
+    }
+
     render(){
         let posts = <Spinner spinnerType="Primary-Spinner"/>;
         if(!this.props.loading) {
-            posts = this.props.posts.map(post => (<Post key={post._id} username={post.username} title={post.title} body={post.body}/>))
+            posts = this.props.posts.map(post => (
+            <Post 
+            key={post._id} 
+            username={post.author.username} 
+            title={post.title} 
+            body={post.body}
+            showModal={this.state.showModal.id === post._id ? true : false}
+            clicked={() => this.showModalHandler(post._id)}
+            deletePost={() => this.deletePostHandler(post._id)}
+            />));
         } 
 
         let authRedirect = null;
@@ -45,7 +77,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchPosts: () => dispatch(actions.fetchPosts())
+        onFetchPosts: () => dispatch(actions.fetchPosts()),
+        onDeletePost: (postId) => dispatch(actions.deletePost(postId))
     }
 }
 

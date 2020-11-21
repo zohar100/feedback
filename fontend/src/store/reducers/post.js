@@ -26,11 +26,26 @@ const fetchPostsFail = (state, action) => {
     });
 }
 
+const deletePostSuccess = (state, action) => {
+    const newPosts = state.posts.filter(post => post._id !== action.postId)
+    return updateObject(state, {
+        posts: newPosts
+    })
+}
+
+const deletePostFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.FETCH_POSTS_START: return fetchPostsStart(state, action);
         case actionTypes.FETCH_POSTS_SUCCESS: return fetchPostsSuccess(state, action);
         case actionTypes.FETCH_POSTS_FAIL: return fetchPostsFail(state, action);
+        case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
+        case actionTypes.DELETE_POST_FAIL: return deletePostFail(state, action);
     default:
         return state;
     } 

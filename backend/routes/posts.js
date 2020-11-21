@@ -4,7 +4,7 @@ const { isLoggedIn } = require("../middleware");
 
 //get all posts
 router.get("/", (req, res) => {
-    Post.find()
+    Post.find().populate('author')
     .then(posts => {
       res.json(posts);
     })
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 //add post
 router.post("/new", isLoggedIn, (req, res) => {
   const post = {
-    username: req.body.username,
+    author: req.user._id,
     body: req.body.body,
     title: req.body.title,
   };
@@ -27,7 +27,7 @@ router.post("/new", isLoggedIn, (req, res) => {
 
 //show spacific post
 router.get("/:id", (req, res) => {
-  Post.findById(req.params.id)
+  Post.findById(req.params.id).populate('author')
     .then(post => res.json(post))
     .catch(err => res.status(400).json("Error: " + err));
 })
@@ -48,9 +48,19 @@ router.get("/edit/:id", (req, res) => {
 });
 
 //delete post
-router.delete("/:id", (req, res) => {
-  Post.findByIdAndDelete(req.params.id)
-    .then(() => res.json("Post deleted!"))
+router.delete("/:id", isLoggedIn, (req, res) => {
+  Post.findById(req.params.id)
+    .then(post => {
+      if(post.author.equals(req.user._id)){
+        Post.findByIdAndDelete(req.params.id)
+        .then(post => {
+              res.json("Post deleted!");
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+      }else{
+        res.json("Connot delete this post")
+      }
+    })
     .catch(err => res.status(400).json("Error: " + err));
     
 });

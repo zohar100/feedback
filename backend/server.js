@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const seeds = require('./seeds');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const MongoStore = require('connect-mongo')(session);
 const User = require('./models/user.model');
 
 require("dotenv").config();
@@ -30,11 +31,19 @@ connection.once("open", () => {
 seeds();
 
 //SESSION CONFIGURATION
+const sessionStore = new MongoStore({
+  mongooseConnection: connection,
+  collection: 'sessions'
+})
+
 const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge : 3600000 } 
+  store: sessionStore,
+  cookie: { 
+    maxAge : 3600000 
+  } 
 };
 app.use(session(sessionConfig));
 
