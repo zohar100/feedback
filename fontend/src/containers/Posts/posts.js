@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import classes from './posts.module.css';
 import Post from '../../components/Post/post';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import AddPost from '../../components/Post/AddPost/AddPost';
 import * as actions from '../../store/actions/index';
 
 class Posts extends Component {
@@ -61,6 +62,7 @@ class Posts extends Component {
         return(
             <div className={classes.Posts}>
                 {authRedirect}
+                <AddPost/>
                 {posts}
             </div>
         )

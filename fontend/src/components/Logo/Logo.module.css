@@ -1,13 +1,14 @@
 .Logo {
-    height: 100%;
-    max-height: 50px;
-    box-sizing: border-box;
+  height: 100%;
+  max-height: 50px;
+  box-sizing: border-box;
 }
 
 .Logo h2 {
-    margin-top: 10px;
+  margin-top: 10px;
+  color: white;
 }
 
 .Logo h2 span {
-    color: coral;
+  color: coral;
 }

@@ -1,96 +1,129 @@
 .Post {
-    width: 90%;
-    height: fit-content;
-    background-color:#eee;
-    margin: 10px auto;
-    color: black;
-    font-family: 'Roboto Condensed', sans-serif;
-    
+  width: 90%;
+  height: fit-content;
+  background-color: #201e1e;
+  margin: 10px auto;
+  color: white;
+  font-family: "Roboto Condensed", sans-serif;
+  border-radius: 10px;
 }
 
 .UserPost {
-    width: 100%;
-    height: 100px;
-    overflow-wrap: break-word ;
-    margin-top: 10px;
+  width: 100%;
+  height: 100px;
+  overflow-wrap: break-word;
+  margin-top: 10px;
 }
 
 .UserPost p {
-    white-space: nowrap; 
-    width: 80%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: auto;
-  }
-
-  .UserPost h3 {
-    white-space: nowrap; 
-    width: 90%; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: auto;
-  }
-
-  .UserInfo {
-    width: 100%;
-    height: 50px;
-    background-color: #ccc;
-    display: flex;
+  white-space: nowrap;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: auto;
 }
 
-.UserInfo img {
-    width: 40px;
-    height: 80%;
-    margin: 6px;
-    background-color: white;
-    border-radius: 30px;
+.UserPost h3 {
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: auto;
+}
+
+.UserInfo {
+  width: 100%;
+  height: 50px;
+  background-color: #ccc;
+  display: flex;
+  color: black;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.UserInfo svg {
+  font-size: 40px;
+  margin: 6px;
 }
 
 .UserInfo .BasicInfo {
-    display: flex;
-    flex-flow: column;
-    margin-top: 6px;
+  display: flex;
+  flex-flow: column;
+  margin-top: 6px;
 }
 
-.UserInfo p{
-    margin: 0;
-    z-index: 30;
+.UserInfo p {
+  margin: 0;
+  z-index: 30;
 }
 
 .UserInfo small {
-    color: grey;
+  color: grey;
 }
 
-
 .PostInfo {
-    width: 100%;
-    height: 40px;
-    border-top: 1px solid #ccc;
-    margin: 0;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.PostInfo span {
+  font-size: small;
+  margin: 4px;
+}
+
+.PostAction {
+  width: 100%;
+  height: 55px;
+  border-top: 1px solid #ccc;
+  margin-left: 4px;
+  margin-right: 4px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.PostAction button {
+  height: 40px;
+  width: 32.9%;
+  margin-top: 6px;
+  background-color: #201e1e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font: 1em sans-serif;
+  transition: 0.3s;
+}
+
+.PostAction button:hover {
+  background-color: #63605e49;
+}
+
+.PostAction button svg {
+  margin-bottom: -7px;
 }
 
 .IconPost {
-    margin-left: auto;
-    margin-top: 8px;
+  margin-left: auto;
+  margin-top: 8px;
 }
 
-.IconPost ul{
-    list-style: none;
-    margin: 0px;
-    width: 100%;
-    margin-left: -40px;
+.IconPost ul {
+  list-style: none;
+  margin: 0px;
+  width: 100%;
+  margin-left: -40px;
 }
 
 .IconPost button {
-    width: 100%;
-    border: none;
-    text-align: start;
-    height: 40px;
+  width: 100%;
+  border: none;
+  text-align: start;
+  height: 40px;
 }
 
 @media (min-width: 600px) {
-    .Post{
-        width: 100%;
-        margin-left: -20px;
-    }
+  .Post {
+    width: 600px;
+    margin-left: -20px;
+  }
 }

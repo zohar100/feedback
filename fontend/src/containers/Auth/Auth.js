@@ -141,10 +141,13 @@ class Auth extends Component {
             });
         }
 
-        let form = FormElementArray.map(formElement => (
-            <Input
+        let form = FormElementArray.map(formElement => {
+            return (
+            <Hoc>
+                <Input
                 key= {formElement.id}
                 label={formElement.config.elementConfig.placeholder}
+                icon={formElement.config.elementConfig.placeholder}
                 elementType={formElement.config.elementType} 
                 elementConfig={formElement.config.elementConfig}
                 value={formElement.config.value}
@@ -152,7 +155,9 @@ class Auth extends Component {
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
                 changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-        ))
+            </Hoc>
+        ) 
+    })
 
         let authRedirect = null;
         if(this.props.isAuthenticated) {
@@ -168,8 +173,11 @@ class Auth extends Component {
                             {this.state.isSingup ? 'Signup' : 'Login'}
                             </button>
                         </form>
-                        <p onClick={this.switchAuthModeHandler}>
-                            {this.state.isSingup ? 'have an account?' : 'dont have an account?'}
+                        <p >
+                            {this.state.isSingup ? 'have an account?' : 'dont have an account?'} 
+                            <span onClick={this.switchAuthModeHandler} className={classes.SwitchButton}>
+                                 click here
+                            </span>
                         </p>
                     </div>
             </Hoc>

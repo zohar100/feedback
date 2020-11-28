@@ -1,9 +1,15 @@
 .NavigationItems {
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.NavigationItems svg {
+  margin-bottom: -7px;
+  font-size: 2rem;
+  margin-right: 10px;
 }
 
 /* @media (min-width: 500px) {

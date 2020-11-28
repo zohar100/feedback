@@ -24,9 +24,10 @@ export const fetchPostsFail = (error) => {
 export const fetchPosts = () => {
     return dispatch => {
         dispatch(fetchPostsStart())
-            axios.get('/posts')
-            .then(res => {
-                    dispatch(fetchPostsSuccess(res.data));
+            axios.get('posts')
+            .then(response => {
+                    dispatch(fetchPostsSuccess(response.data));
+                    console.log(response.headers);
             })
             .catch(error => dispatch(fetchPostsFail(error)));
     }
@@ -51,7 +52,6 @@ export const deletePost = (postId) => {
         axios.delete('posts/' + postId)
             .then(res => {
                 dispatch(deletePostSuccess(postId))
-                console.log(res);
             })
             .catch(err => dispatch(deletePostFail(err)));
     }

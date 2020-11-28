@@ -1,6 +1,8 @@
 import React from 'react';
 
 import classes from './Input.module.css';
+import PersonIcon from '@material-ui/icons/Person';
+import LockIcon from '@material-ui/icons/Lock';
 
 const input = (props) => {
     let inputElement = null;
@@ -15,14 +17,14 @@ const input = (props) => {
     switch(props.elementType) {
         case('input'):
             inputElement = <input 
-                            className={inputClasses.join(' ')} 
+                            className={classes.InputElement} 
                             { ...props.elementConfig } 
                             value={props.value}
                             onChange={props.changed} />
             break;
         case('textarea'):
             inputElement = <textarea 
-                            className={inputClasses.join(' ')} 
+                            className={classes.InputElement} 
                             { ...props.elementConfig } 
                             value={props.value}
                             onChange={props.changed} />
@@ -30,7 +32,7 @@ const input = (props) => {
         case('select'):
         inputElement = (
             <select
-                className={inputClasses.join(' ')} 
+                className={classes.InputElement} 
                 value={props.value}
                 onChange={props.changed}>
                 {props.elementConfig.options.map(option => (
@@ -45,15 +47,26 @@ const input = (props) => {
             break;
         default:
             inputElement = <input 
-                            className={inputClasses.join(' ')}
+                            className={classes.InputElement}
                             { ...props.elementConfig } 
                             value={props.value}
                             onChange={props.changed} />
     }
+
+    let icon = null;
+    switch(props.icon){
+        case 'Username': icon = <PersonIcon />
+        break;
+        case 'Password': icon = <LockIcon />
+        break;
+        default: icon = null;
+    }
     return(
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
-            {inputElement}
+            <div className={[classes.DivInput, inputClasses.join(' ')].join(' ')}>
+            {icon} {inputElement}
+            </div>
             {validationError}
         </div>
     )

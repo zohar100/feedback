@@ -15,14 +15,15 @@
   min-height: 350px;
   padding: 15px;
   margin: auto;
-  /* margin-top: 35%; */
+  background-color: #201e1e;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  box-shadow: 5px 5px 25px #ccc;
-  border-radius: 10px;
+  box-shadow: 5px 5px 25px rgba(204, 204, 204, 0.596);
+  border-radius: 5px;
 }
 
 .FormDiv {
+  color: white;
   width: 300px;
   margin: auto;
   height: fit-content;
@@ -50,8 +51,8 @@
   margin-top: 10px;
 }
 
-.Auth div p {
-  font-size: 0.8rem;
+.SwitchButton {
+  margin-left: 3px;
   color: cornflowerblue;
 }
 

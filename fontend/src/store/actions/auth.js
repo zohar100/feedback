@@ -49,6 +49,7 @@ export const auth = (username, password, isSignup ) => {
         axios.post(url, userData)
             .then(response => {
                 dispatch(authSuccess(response.data.localId));
+                console.log(response.headers);
             })
             .catch(error => {
                 dispatch(authFail(error));

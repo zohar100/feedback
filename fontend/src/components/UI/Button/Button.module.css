@@ -1,0 +1,15 @@
+.Button {
+  height: 40px;
+  width: 32.9%;
+  margin-top: 6px;
+  background-color: #201e1e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font: 1em sans-serif;
+  transition: 0.3s;
+}
+
+.Button:hover {
+  background-color: #63605e49;
+}
