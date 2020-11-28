@@ -61,8 +61,7 @@ router.delete("/:id", isLoggedIn, (req, res) => {
         res.json("Connot delete this post")
       }
     })
-    .catch(err => res.status(400).json("Error: " + err));
-    
+    .catch(err => res.status(400).json("Error: " + err));  
 });
 
 module.exports = router;

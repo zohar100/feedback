@@ -13,7 +13,10 @@ const User = require('./models/user.model');
 require("dotenv").config();
 
 //BASIC CONFIGURATIONS
-app.use(cors());
+app.use(cors({ 
+  credentials: true, 
+  origin: 'http://localhost:3000',
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -37,13 +40,11 @@ const sessionStore = new MongoStore({
 })
 
 const sessionConfig = {
+  store: sessionStore,
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  store: sessionStore,
-  cookie: { 
-    maxAge : 3600000 
-  } 
+  cookie: { maxAge: 3600000, httpOnly: true, secure: false} 
 };
 app.use(session(sessionConfig));
 
