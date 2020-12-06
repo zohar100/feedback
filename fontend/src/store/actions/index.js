@@ -1,9 +1,11 @@
 export {
     fetchPosts,
-    deletePost
+    deletePost,
+    addPost
 } from './post';
 
 export {
-    auth,
+    authRegister,
+    authLogin,
     authLogout
 } from './auth';

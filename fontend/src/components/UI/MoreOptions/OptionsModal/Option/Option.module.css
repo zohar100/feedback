@@ -1,0 +1,14 @@
+.Option button {
+  width: 100%;
+  border: none;
+  text-align: start;
+  height: 40px;
+  background-color: #201e1e;
+  color: white;
+  font: 0.9rem sans-serif;
+  transition: 0.3s;
+}
+
+.Option button:hover {
+  background-color: #63605e;
+}

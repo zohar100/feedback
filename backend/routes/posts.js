@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const Post = require("../models/post.model");
-const { isLoggedIn } = require("../middleware");
+const isLoggedIn  = require("../middlewares/middleware");
 
 //get all posts
-router.get("/", (req, res) => {
+router.get("/", isLoggedIn, (req, res) => {
     Post.find().populate('author')
     .then(posts => {
       res.json(posts);
@@ -14,14 +14,17 @@ router.get("/", (req, res) => {
 //add post
 router.post("/new", isLoggedIn, (req, res) => {
   const post = {
-    author: req.user._id,
+    author: req.body.author,
     body: req.body.body,
     title: req.body.title,
   };
 
   const newPost = new Post(post);
   newPost.save()
-    .then(() => res.json("Post created"))
+    .then(() => {
+      Post.findById(newPost._id).populate('author')
+        .then(post => res.json(post));
+    })
     .catch(err => res.status(400).json("Error: " + err));
 });
 
@@ -51,14 +54,14 @@ router.get("/edit/:id", (req, res) => {
 router.delete("/:id", isLoggedIn, (req, res) => {
   Post.findById(req.params.id)
     .then(post => {
-      if(post.author.equals(req.user._id)){
+      if(post.author.equals(req.user)){
         Post.findByIdAndDelete(req.params.id)
         .then(post => {
               res.json("Post deleted!");
         })
         .catch(err => res.status(400).json("Error: " + err));
       }else{
-        res.json("Connot delete this post")
+        res.status(400).json("Error: " + err)
       }
     })
     .catch(err => res.status(400).json("Error: " + err));  

@@ -6,11 +6,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import StarIcon from '@material-ui/icons/Star';
 
-const navigationitems = () => {
+const navigationitems = (props) => {
     return(
         <ul className={classes.NavigationItems}>
             <NavigationItem link='/profile'>
-                <AccountCircleIcon /> User Name
+                <AccountCircleIcon /> {props.username}
             </NavigationItem>
             <NavigationItem link='/' exact>
                 <HomeIcon /> Home

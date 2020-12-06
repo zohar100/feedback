@@ -3,6 +3,7 @@ import React from 'react';
 import classes from './Input.module.css';
 import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
+import EmailIcon from '@material-ui/icons/Email';
 
 const input = (props) => {
     let inputElement = null;
@@ -58,6 +59,8 @@ const input = (props) => {
         case 'Username': icon = <PersonIcon />
         break;
         case 'Password': icon = <LockIcon />
+        break;
+        case 'Email': icon = <EmailIcon />
         break;
         default: icon = null;
     }

@@ -1,0 +1,50 @@
+.UserCard {
+  width: 250px;
+  background-color: #201e1e;
+  color: white;
+  border: 1px solid coral;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.UserImage {
+  width: 100%;
+}
+
+.UserImage svg {
+  width: 100%;
+  margin: auto;
+  font-size: 80px;
+}
+
+.UserImage h3 {
+  width: fit-content;
+  margin: auto;
+}
+
+.UserInfo {
+  margin-top: 20px;
+}
+
+.UserInfo p {
+  padding: 5px;
+  background-color: rgba(61, 61, 61, 0.596);
+  margin: 0;
+}
+
+.UserInfo p:nth-child(2) {
+  background-color: rgba(80, 80, 80, 0.541);
+}
+
+.UserInfo p span {
+  font-weight: bold;
+}
+
+.UserControls {
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.UserControls button {
+  width: 120px;
+}

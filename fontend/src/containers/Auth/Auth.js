@@ -25,6 +25,20 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Email'
+                },
+                value: '',
+                validation: {
+                    required: true,
+                    isEmail: true,
+                },
+                valid: false,
+                touched: false
+            },
         password: {
                 elementType: 'input',
                 elementConfig: {
@@ -41,15 +55,16 @@ class Auth extends Component {
             },
         },
         loginControls: {
-            username: {
+            email: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Username'
+                    placeholder: 'Email'
                 },
                 value: '',
                 validation: {
                     required: true,
+                    isEmail: true
                 },
                 valid: false,
                 touched: false
@@ -69,7 +84,7 @@ class Auth extends Component {
                 touched: false
             },
         },
-        isSingup: true
+        isSingup: false
     }
     checkValidity(value, rules) {
         let isValid = true;
@@ -127,12 +142,22 @@ class Auth extends Component {
 
     onSubmitHandler = (event) => {
         event.preventDefault();
-        let currentControls = this.state.isSingup ? this.state.registerControls : this.state.loginControls;
-        this.props.onAuth(currentControls.username.value, currentControls.password.value, this.state.isSingup);
+        if(this.state.isSingup) {
+            this.props.onAuthRegister(
+                this.state.registerControls.username.value,
+                this.state.registerControls.email.value,
+                this.state.registerControls.password.value
+                )
+        }else{
+            this.props.onAuthLogin(
+                this.state.loginControls.email.value,
+                this.state.loginControls.password.value
+            )
+        }
     }
 
     render() {
-        const FormElementArray = [];
+        let FormElementArray = [];
         let currentControls = this.state.isSingup ? this.state.registerControls : this.state.loginControls;
         for(let key in currentControls) {
             FormElementArray.push({
@@ -205,14 +230,15 @@ class Auth extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.localId !== null,
+        isAuthenticated: state.auth.token !== null,
         loading: state.auth.loading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (username, password, isSignup) => dispatch(actions.auth(username, password, isSignup))
+        onAuthRegister: (username, email, password) => dispatch(actions.authRegister(username, email, password)),
+        onAuthLogin: (email, password) => dispatch(actions.authLogin(email, password))
     }
 }
 

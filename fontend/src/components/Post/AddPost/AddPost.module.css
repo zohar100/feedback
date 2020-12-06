@@ -32,10 +32,3 @@
 .BodyInput {
   width: 80%;
 }
-
-@media (min-width: 600px) {
-  .AddPost {
-    width: 600px;
-    margin-left: -20px;
-  }
-}

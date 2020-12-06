@@ -1,13 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const session = require('express-session');
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const seeds = require('./seeds');
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const MongoStore = require('connect-mongo')(session);
 const User = require('./models/user.model');
 
 require("dotenv").config();
@@ -32,29 +28,6 @@ connection.once("open", () => {
   console.log("MongoDB database connect");
 });
 seeds();
-
-//SESSION CONFIGURATION
-const sessionStore = new MongoStore({
-  mongooseConnection: connection,
-  collection: 'sessions'
-})
-
-const sessionConfig = {
-  store: sessionStore,
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 3600000, httpOnly: true, secure: false} 
-};
-app.use(session(sessionConfig));
-
-//AUTH/PASSPORT CONFIGURATION
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 //ROUTES
 const postRoutes = require('./routes/posts');
