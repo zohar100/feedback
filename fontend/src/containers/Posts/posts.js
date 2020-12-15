@@ -6,31 +6,16 @@ import Post from '../../components/Post/Post';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import AddPost from '../../components/Post/AddPost/AddPost';
 import * as actions from '../../store/actions/index';
-import Input from '../../components/UI/Input/Input';
+import Hoc from '../../hoc/Hoc/Hoc';
 
 class Posts extends Component {
     state = {
         showModal: {
             id: null,
         },
-        postInputs: {
-            body: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Whats you think?'
-                },
-                value: ''
-            },
-            image: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Add image'
-                },
-                value: ''
-            }
-        }
+        showComments: {
+            id: null,
+        },
     } 
 
     componentDidMount () {
@@ -39,19 +24,7 @@ class Posts extends Component {
         }
     }
 
-    inputChangedHandler = (event, controlName) => {
-        event.preventDefault();
-        const updatedControls = {
-            ...this.state.postInputs,
-            [controlName]: {
-                ...this.state.postInputs[controlName],
-                value: event.target.value,
-            }
-        }
-        this.setState({postInputs: updatedControls})
-    }   
-
-    showModalHandler = ( postId) => {
+    showModalHandler = (postId) => {
         this.setState(prevState => {
             if(prevState.showModal.id === postId) {
                 return{
@@ -61,6 +34,19 @@ class Posts extends Component {
             return {
                 showModal: {id: postId}
             }
+        });
+    }
+
+    showCommentsHandler = (postId) => {
+        this.setState(prevState => {
+            if(prevState.showComments.id === postId) {
+                return{
+                    showComments : {id:null}
+                }
+            }
+            return {
+                showComments: {id: postId}
+            }
         })
     }
 
@@ -68,34 +54,7 @@ class Posts extends Component {
         this.props.onDeletePost(postId, this.props.token);
     }
 
-    addPostHandler = (event) => {
-        event.preventDefault();
-       const post = {
-            author: this.props.user.id,
-            body: this.state.postInputs.body.value
-        }
-        this.props.onAddPost(post, this.props.token)
-    }
-
     render(){
-        let FormElementArray = [];
-        for(let key in this.state.postInputs) {
-            FormElementArray.push({
-                id: key,
-                config: this.state.postInputs[key]
-            });
-        }
-
-        let form = FormElementArray.map(formElement => {
-            return (
-                <Input
-                key={formElement.id}
-                elementType={formElement.config.elementType} 
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-            )
-        })
 
         let posts = <Spinner spinnerType="Primary-Spinner"/>;
         if(!this.props.loading) {
@@ -103,28 +62,33 @@ class Posts extends Component {
             this.props.posts
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map(post => (
+                <Hoc>
                 <Post 
-                key={post._id} 
+                key={post._id}
+                userId={post.author._id}
                 username={post.author.username} 
                 body={post.body}
+                image={post.image}
                 createdAt = {post.createdAt}
                 showModal={this.state.showModal.id === post._id ? true : false}
-                clicked={() => this.showModalHandler(post._id)}
+                modalClicked={() => this.showModalHandler(post._id)}
                 deletePost={() => this.deletePostHandler(post._id)}
                 showDeleteButton={post.author._id === this.props.user.id}
-                />))
+                commentClick={() => this.showCommentsHandler(post._id)}
+                showComments={this.state.showComments.id === post._id ? true : false}
+                commentModalClick={() => this.setState({showComments: { id: null }})}
+                commentsCount={post.comments.length}
+                postId={post._id}
+                post={post}
+                />
+                </Hoc>
+))
             );
         } 
 
         return(
             <div className={classes.Posts}>
-                <AddPost 
-                username={this.props.user.username}
-                addPost={(event) => this.addPostHandler(event)}> 
-                    <div className={classes.Inputs}>
-                        {form}
-                    </div>
-                </AddPost>
+                <AddPost /> 
                     {posts}
             </div>
         )

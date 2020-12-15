@@ -57,6 +57,40 @@ const addPostFail = (state, action) => {
     })
 }
 
+//--------------Add Comment-----------------
+
+const addCommentStart = (state, action) => {
+    return updateObject(state, {
+        error: null
+    })
+}
+
+const addCommentSuccess = (state, action) => {
+    const newPosts = [];
+    state.posts.map( post => {
+            if(post._id === action.postId) {
+                post.comments.push(action.comment)
+                return newPosts.push(post);                       
+            }
+            else {
+                return newPosts.push(post);
+            }
+        })
+    console.log(newPosts);
+    return updateObject (state, {
+        loading: false,
+        error: null,
+        posts: newPosts
+    })
+}
+
+const addCommentFail = (state, action) => {
+    return updateObject (state, {
+        loading: false,
+        error: action.error
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.FETCH_POSTS_START: return fetchPostsStart(state, action);
@@ -66,6 +100,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.DELETE_POST_FAIL: return deletePostFail(state, action);
         case actionTypes.ADD_POST_SUCCESS: return addPostSuccess(state, action);
         case actionTypes.ADD_POST_FAIL: return addPostFail(state, action);
+        case actionTypes.ADD_COMMENT_START: return addCommentStart(state, action);
+        case actionTypes.ADD_COMMENT_SUCCESS: return addCommentSuccess(state, action);
+        case actionTypes.ADD_COMMENT_FAIL: return addCommentFail(state, action);
     default:
         return state;
     } 

@@ -25,7 +25,7 @@ class App extends Component {
       <Hoc>
         <Layout show={this.props.isAuthenticated}>
             <Switch>
-              <PrivateRoute authed={this.props.isAuthenticated} path='/profile' component={Profile}/>
+              <PrivateRoute authed={this.props.isAuthenticated} path='/profile/:id' component={Profile}/>
               <Route path='/auth' component={Auth}/>
               <PrivateRoute authed={this.props.isAuthenticated} path='/' exact component={Posts}/> 
             </Switch>

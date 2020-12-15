@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 
         const passwordIsMatch = await bcrypt.compare(password, user.password);
         if(!passwordIsMatch)
-            return res.status(400).json({ msg: 'Invalid credentials.' });
+            return res.status(400).json({ msg: 'Invalid email or password.' });
 
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
         res.json({
@@ -78,6 +78,27 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+
+router.get('/user/:id', isLoggedIn, (req, res) => {
+    User.findById(req.params.id).populate({
+        path: 'posts',
+        model: 'Post',
+        populate: [{
+            path: 'comments',
+            model: 'Comment', 
+            populate:{
+                path: 'author',
+                model: 'User'
+            }
+        },
+        {
+            path: 'author',
+            model: 'User'
+        },],
+    })
+        .then(user => res.json(user))
+        .catch(err => res.status(400).json({ msg: 'User not exist.' }))
+})
 
 router.delete('/delete', isLoggedIn, async (req, res) => {
     try{

@@ -14,3 +14,8 @@ export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+
+//--------------Auth-----------------
+export const ADD_COMMENT_START = 'ADD_COMMENT_START';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAIL = 'ADD_COMMENT_FAIL';

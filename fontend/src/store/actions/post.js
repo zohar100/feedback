@@ -16,17 +16,17 @@ export const fetchPostsSuccess = (posts) => {
     }
 }
 
-export const fetchPostsFail = (error) => {
+export const fetchPostsFail = (err) => {
     return {
         type: actionTypes.FETCH_POSTS_FAIL,
-        error: error
+        error: err
     }
 }
 
 export const fetchPosts = (token) => {
     return dispatch => {
         dispatch(fetchPostsStart())
-            axios.get('posts', {headers: { "x-auth-token": token }})
+            axios.get('/posts', {headers: { "x-auth-token": token }})
             .then(response => {
                     dispatch(fetchPostsSuccess(response.data));
                     console.log(response.headers);
@@ -82,10 +82,44 @@ export const addPost = (post, token) => {
         axios.post('posts/new/', post,  {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(addPostSuccess(response.data))
-                console.log(response)
             })
             .catch(err => {
-                dispatch(addPostFail(err))
+                dispatch(addPostFail(err.response.data.msg))
             });
+    }
+}
+
+//--------------Add comment-----------------
+
+export const addCommentStart = () => {
+    return {
+        type: actionTypes.ADD_COMMENT_START
+    }
+}
+
+export const addCommentSuccess = (comment, postId) => {
+    return {
+        type: actionTypes.ADD_COMMENT_SUCCESS,
+        comment: comment,
+        postId: postId
+    }
+}
+
+export const addCommentFail = (err) => {
+    return {
+        type: actionTypes.ADD_COMMENT_FAIL,
+        error: err
+    }
+}
+
+export const addComment = (comment, postId, token) => {
+    return dispatch => {
+        axios.post('comments/' + postId, comment, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(addCommentSuccess(response.data, postId))
+            })
+            .catch(err => {
+                dispatch(addCommentFail(err.message))
+            })
     }
 }

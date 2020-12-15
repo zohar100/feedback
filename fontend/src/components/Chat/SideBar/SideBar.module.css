@@ -1,0 +1,16 @@
+.SideBar {
+  display: inline;
+  width: 30%;
+  height: 100%;
+  position: fixed;
+  margin-left: 70%;
+  z-index: 80;
+  background-color: #201e1e;
+  border-left: 5px solid coral;
+}
+
+@media (max-width: 1300px) {
+  .SideBar {
+    display: none;
+  }
+}

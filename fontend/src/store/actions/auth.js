@@ -71,7 +71,7 @@ export const authLogin = (email,  password) => {
                 dispatch(authSuccess(response.data.user, response.data.token));
             })
             .catch(error => {
-                dispatch(authFail(error));
+                dispatch(authFail(error.response.data.msg));
             });
     };
 }

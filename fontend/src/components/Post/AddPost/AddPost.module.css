@@ -19,13 +19,19 @@
 
 .AddPost button {
   margin-left: 4px;
+  display: inline-block;
 }
 
 .AddPost button svg {
   margin-bottom: -5px;
 }
 
-.Inputs {
+.AddPost .Inputs {
+  display: flex;
+  flex-flow: row;
+}
+
+.AddPost .Inputs div {
   width: 100%;
 }
 

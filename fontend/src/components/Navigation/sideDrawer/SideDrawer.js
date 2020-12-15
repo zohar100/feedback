@@ -15,7 +15,9 @@ const sideDrawer = (props) => {
         <Hoc>
         <Backdrop show={props.open} clicked={props.closed}/>
         <div className={attachedClasses.join(' ')}>
-            <NavigationItems username={props.username}/>
+            <NavigationItems 
+            username={props.username}
+            userId={props.userId}/>
         </div>
         </Hoc>
     );

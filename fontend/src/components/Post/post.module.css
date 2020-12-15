@@ -24,6 +24,11 @@
   margin: auto;
 }
 
+.UserPost img {
+  max-width: 100%;
+  margin-top: 25px;
+}
+
 .UserInfo {
   width: 100%;
   height: 50px;

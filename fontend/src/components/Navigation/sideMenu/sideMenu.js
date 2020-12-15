@@ -8,7 +8,9 @@ const sidemenu = (props) => {
     return(
         <Hoc>
             <div className={classes.SideMenu}>
-                <NavigationItems username={props.username} />
+                <NavigationItems 
+                username={props.username} 
+                userId={props.userId}/>
             </div>
         </Hoc>
     )

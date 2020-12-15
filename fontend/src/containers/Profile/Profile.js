@@ -5,62 +5,38 @@ import classes from './Profile.module.css';
 import profilBackground from '../../assets/images/profileBackground.jpg'
 import Button from '../../components/UI/Button/Button';
 import Post from '../../components/Post/Post';
-import Input from '../../components/UI/Input/Input'
 import AddPost from '../../components/Post/AddPost/AddPost';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
+import axios from '../../axios';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 class Profile extends Component {
     state = {
+        user: {
+
+        },
         showModal: {
             id: null,
         },
-        postInputs: {
-            body: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Whats you think?'
-                },
-                value: ''
-            },
-            image: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Add image'
-                },
-                value: ''
-            }
-        }
+        showComments: {
+            id: null
+        },
+        loading: true
     } 
 
-    inputChangedHandler = (event, controlName) => {
-        event.preventDefault();
-        const updatedControls = {
-            ...this.state.postInputs,
-            [controlName]: {
-                ...this.state.postInputs[controlName],
-                value: event.target.value,
-            }
-        }
-        this.setState({postInputs: updatedControls})
-    }   
+    componentDidMount () {
+        axios.get('/user/' + this.props.match.params.id, {headers: { "x-auth-token": this.props.token }})
+        .then(response => {
+            this.setState({user: response.data, loading: false})
+            console.log(response.data);
+        }).catch(err => console.log(err));
+    }
 
     deletePostHandler = (postId) => {
         this.props.onDeletePost(postId, this.props.token);
-    }
-
-    addPostHandler = (event) => {
-        event.preventDefault();
-       const post = {
-            author: this.props.user.id,
-            body: this.state.postInputs.body.value
-        }
-        this.props.onAddPost(post, this.props.token)
     }
 
     showModalHandler = ( postId) => {
@@ -76,41 +52,43 @@ class Profile extends Component {
         })
     }
 
-    render () {
-        let FormElementArray = [];
-        for(let key in this.state.postInputs) {
-            FormElementArray.push({
-                id: key,
-                config: this.state.postInputs[key]
-            });
-        }
-        let form = FormElementArray.map(formElement => {
-            return (
-                <Input
-                key={formElement.id}
-                elementType={formElement.config.elementType} 
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-            )
+    showCommentsHandler = (postId) => {
+        this.setState(prevState => {
+            if(prevState.showComments.id === postId) {
+                return{
+                    showComments : {id:null}
+                }
+            }
+            return {
+                showComments: {id: postId}
+            }
         })
+    }
 
-        let posts = <Spinner spinnerType="Primary-Spinner"/>;
-        if(!this.props.loading) {
+    render () {
+        let posts = <Spinner/>;
+        if(!this.state.loading) {
             posts = (
-            this.props.posts
+            this.state.user.posts
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .filter(post => post.author._id === this.props.user.id)
             .map(post => (
                 <Post 
                 key={post._id} 
+                userId={post.author._id}
                 username={post.author.username} 
                 body={post.body}
+                image={post.image}
                 createdAt = {post.createdAt}
                 showModal={this.state.showModal.id === post._id ? true : false}
-                clicked={() => this.showModalHandler(post._id)}
+                modalClicked={() => this.showModalHandler(post._id)}
                 deletePost={() => this.deletePostHandler(post._id)}
                 showDeleteButton={post.author._id === this.props.user.id}
+                commentClick={() => this.showCommentsHandler(post._id)}
+                showComments={this.state.showComments.id === post._id ? true : false}
+                commentModalClick={() => this.setState({showComments: { id: null }})}
+                commentsCount={post.comments.length}
+                postId={post._id}
+                post={post}
                 />))
             );
         }
@@ -122,7 +100,7 @@ class Profile extends Component {
                         <AccountCircleIcon/>
                     </div>
                     <h2>
-                        {this.props.user.username}
+                        {this.state.user.username}
                     </h2>
                 </div>
                 <div className={classes.ProfileControl}>
@@ -155,13 +133,7 @@ class Profile extends Component {
                         city='NY'
                         study='Bear College'
                         work='Google'/> */}
-                    <AddPost 
-                        username={this.props.user.username}
-                        addPost={(event) => this.addPostHandler(event)}> 
-                        <div className={classes.Inputs}>
-                            {form}
-                        </div>
-                    </AddPost>
+                    <AddPost />
                     {posts}
                 </div>
             </div>

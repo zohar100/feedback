@@ -9,7 +9,7 @@ import StarIcon from '@material-ui/icons/Star';
 const navigationitems = (props) => {
     return(
         <ul className={classes.NavigationItems}>
-            <NavigationItem link='/profile'>
+            <NavigationItem link={'/profile/' + props.userId}>
                 <AccountCircleIcon /> {props.username}
             </NavigationItem>
             <NavigationItem link='/' exact>

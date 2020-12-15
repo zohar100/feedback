@@ -30,11 +30,13 @@ connection.once("open", () => {
 seeds();
 
 //ROUTES
+const commentRoutes = require('./routes/comment');
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/users');
 
-app.use('/posts', postRoutes)
 app.use('/', userRoutes);
+app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

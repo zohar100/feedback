@@ -1,7 +1,8 @@
 export {
     fetchPosts,
     deletePost,
-    addPost
+    addPost,
+    addComment
 } from './post';
 
 export {

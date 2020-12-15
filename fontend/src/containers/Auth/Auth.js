@@ -207,6 +207,10 @@ class Auth extends Component {
                     </div>
             </Hoc>
         );
+        let err = null;
+        if(this.props.error){
+            err = <div className={classes.Error}> {this.props.error} </div> 
+        }
         if(this.props.loading){
             spinnerOrForm = (
             <div className={classes.SpinnerDiv}>
@@ -221,6 +225,7 @@ class Auth extends Component {
                 {authRedirect}
                 <div className={classes.Auth}>
                         <Logo/>
+                        {err}
                         {spinnerOrForm}
                 </div>
             </div>
@@ -231,7 +236,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth.token !== null,
-        loading: state.auth.loading
+        loading: state.auth.loading,
+        error: state.auth.error
     }
 }
 

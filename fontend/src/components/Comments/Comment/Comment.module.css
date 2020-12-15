@@ -1,0 +1,27 @@
+.Comment {
+  display: flex;
+  margin-top: 20px;
+}
+
+.CommentImage svg {
+  font-size: 40px;
+  margin-top: 20px;
+}
+
+.CommentBody {
+  padding: 10px;
+  margin-left: 10px;
+  background-color: #201e1e;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.CommentBody h3 {
+  width: fit-content;
+  font-size: 1rem;
+}
+
+.CommentBody p {
+  max-width: 400px;
+  width: fit-content;
+}
