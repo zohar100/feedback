@@ -1,6 +1,6 @@
 .Button {
   height: 40px;
-  width: 32.9%;
+  width: 150px;
   margin-top: 6px;
   background-color: #201e1e;
   color: white;
@@ -12,4 +12,8 @@
 
 .Button:hover {
   background-color: #63605e49;
+}
+
+.active {
+  color: darksalmon;
 }

@@ -1,7 +1,6 @@
 .Comments {
-  margin: auto;
-  margin-left: 15px;
-  margin-bottom: 10px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .CommentsInput {
@@ -17,4 +16,18 @@
 .CommentsInput svg {
   font-size: 35px;
   margin-top: 35px;
+}
+
+.Comments::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.Comments::-webkit-scrollbar-track {
+  border: 1px solid transparent;
+}
+
+.Comments::-webkit-scrollbar-thumb {
+  background: coral;
+  border-radius: 10px;
 }

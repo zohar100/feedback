@@ -50,8 +50,16 @@ class Posts extends Component {
         })
     }
 
+    likeClickHandler = (postId) => {
+        this.props.onLikePost(postId, this.props.user.id, this.props.token)
+    }
+
     deletePostHandler = (postId) => {
         this.props.onDeletePost(postId, this.props.token);
+    }
+
+    addToFavoriteHandler = (postId) => {
+        this.props.onAddToFavorite(postId, this.props.token)
     }
 
     render(){
@@ -78,6 +86,10 @@ class Posts extends Component {
                 showComments={this.state.showComments.id === post._id ? true : false}
                 commentModalClick={() => this.setState({showComments: { id: null }})}
                 commentsCount={post.comments.length}
+                likesCount={post.likes.length}
+                likeClick={() => this.likeClickHandler(post._id)}
+                likeActive={post.likes.find(like => like === this.props.user.id ? true : false)}
+                addToFavorite={() => this.addToFavoriteHandler(post._id)}
                 postId={post._id}
                 post={post}
                 />
@@ -109,7 +121,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchPosts: (token) => dispatch(actions.fetchPosts(token)),
         onDeletePost: (postId, token) => dispatch(actions.deletePost(postId, token)),
-        onAddPost: (post, token) => dispatch(actions.addPost(post, token))
+        onAddPost: (post, token) => dispatch(actions.addPost(post, token)),
+        onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
+        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token))
     }
 }
 

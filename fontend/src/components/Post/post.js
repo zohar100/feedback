@@ -64,13 +64,13 @@ const post = (props) => {
                             {props.commentsCount} Comments
                         </span>
                         <span>
-                            56 Likes
+                            {props.likesCount} Likes
                         </span>
                 </div>
                 <div className={classes.PostAction}>
-                    <Button><ThumbUpAltIcon /> Like</Button>
+                    <Button active={props.likeActive} clicked={props.likeClick}><ThumbUpAltIcon /> Like</Button>
                     <Button clicked={props.commentClick}><ChatBubbleOutlineIcon /> Comments</Button>
-                    <Button><ReplyIcon/> Share</Button>
+                    <Button clicked={props.addToFavorite}><ReplyIcon/> Share</Button>
                 </div>
             </div>   
         </Hoc>
@@ -92,6 +92,10 @@ post.propTypes = {
     commentClick: PropTypes.func.isRequired,
     commentModalClick: PropTypes.func.isRequired,
     commentsCount: PropTypes.number.isRequired,
+    likesCount: PropTypes.number.isRequired,
+    likeClick: PropTypes.func.isRequired,
+    likeActive: PropTypes.bool.isRequired,
+    addToFavorite: PropTypes.func.isRequired,
     postId: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired
 }

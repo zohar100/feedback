@@ -3,18 +3,6 @@
   flex-flow: row-reverse;
 }
 
-.Icon {
-  width: fit-content;
-  height: 70%;
-}
-
-.Icon div {
-  width: 35px;
-  height: 35px;
-  background-image: radial-gradient(circle, black 3px, transparent 3px);
-  background-size: 100% 33.33%;
-}
-
 @media (min-width: 600px) {
   .OptionModal {
     width: 145px;

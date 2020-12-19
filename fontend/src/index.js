@@ -9,12 +9,14 @@ import App from './App';
 
 import postReducer from './store/reducers/post';
 import authReducer from './store/reducers/auth';
+import userReducer from './store/reducers/user';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   post: postReducer,
-  auth: authReducer
+  auth: authReducer,
+  user: userReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

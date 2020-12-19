@@ -72,18 +72,15 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
   try {
     const user = await User.findById(req.user)
     const post = await Post.findById(req.params.id)
+    //find if the author of the post is the current user
       if(post.author.equals(req.user)){
-            console.log(user.posts);
-            const newPosts = await user.posts.filter(post=> !post.equals(req.params.id))
-              console.log(newPosts)
-              user.posts = newPosts;
-              await user.save();
-              console.log(user)
-          Post.findByIdAndDelete(req.params.id)
-          .then(post => {
-                res.json("Post deleted!");
-          })
-          .catch(err => res.status(400).json("Error: " + err));
+          //remove spacific post from the user object
+            const newPosts = await user.posts.filter(post=> !post.equals(req.params.id));
+            user.posts = newPosts;
+            await user.save();
+          //delete the post from the database
+            await Post.findByIdAndDelete(req.params.id)
+            res.json("Post deleted!");
         }else{
           res.status(400).json("Error: " + err)
         }
@@ -93,5 +90,47 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
       res.status(400).json("Error: " + err)
   }
 });
+
+//like to post
+router.post('/:id/like', isLoggedIn, async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  const postLike = await post.likes.find(like => like.equals(req.user))
+
+  if(postLike) {
+    post.likes.pull(req.user)
+  }else {
+    post.likes.push(req.user)
+  }
+  await post.save();
+  res.json(post);
+});
+
+//toggle post to spacific users favorite
+router.post('/:postId/favorite', isLoggedIn, async (req, res) => {
+  try{
+    const user = await User.findById(req.user)
+  
+    const postInFav = await user.favorites.find(post => post.equals(req.params.postId))
+  
+    if(postInFav) {
+      user.favorites.pull(req.params.postId)
+    }else {
+      user.favorites.push(req.params.postId)
+    }
+    await user.save();
+    const post = await Post.findById(req.params.postId)
+    .populate('author')
+    .populate({
+      path: "comments", // populate comments
+      populate: {
+         path: "author" // in comments, populate author
+      }
+    })
+    res.json(post);
+  }catch(err){
+    res.status(400).json("Error: " + err)
+  }
+})
 
 module.exports = router;

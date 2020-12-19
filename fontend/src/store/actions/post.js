@@ -123,3 +123,56 @@ export const addComment = (comment, postId, token) => {
             })
     }
 }
+
+//--------------Delete comment-----------------
+
+export const deleteCommentSuccess = (postId, commentId) => {
+    return {
+        type: actionTypes.DELETE_COMMENT_SUCCESS,
+        commentId: commentId,
+        postId: postId
+    }
+}
+
+export const deleteCommentFail = (err) => {
+    return {
+        type: actionTypes.DELETE_COMMENT_FAIL,
+        error: err
+    }
+}
+
+export const deleteComment = (postId, commentId, token) => {
+    return dispatch => {
+        axios.delete('comments/' + postId + '/' + commentId, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(deleteCommentSuccess(postId, commentId))
+            })
+            .catch(err => {
+                dispatch(deleteCommentFail(err.message))
+            })
+    }
+}
+
+//--------------Likes-----------------
+export const toggleLikeSuccess = (postId, userId) => {
+    return {
+        type: actionTypes.TOGGLE_LIKE_SUCCESS,
+        postId: postId,
+        userId: userId
+    }
+}
+
+export const toggleLikeFail = (err) => {
+    return {
+        type: actionTypes.TOGGLE_LIKE_FAIL,
+        error: err
+    }
+} 
+
+export const toggleLike = (postId, userId, token) => {
+    return dispatch => {
+        axios.post('posts/' + postId + '/like', null, {headers: { "x-auth-token": token }})
+            .then(response => dispatch(toggleLikeSuccess(postId, userId)))
+            .catch(err => dispatch(toggleLikeFail(err)));
+    }
+} 

@@ -1,4 +1,5 @@
 import React from 'react' ;
+import PropTypes from 'prop-types';
 
 import classes from './Friend.module.css';
 import Button from '../UI/Button/Button';
@@ -23,6 +24,13 @@ const friend = (props) => {
             </div>
         </div>
     )
+}
+
+friend.propTypes = { 
+    username: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    study: PropTypes.string.isRequired,
+    work: PropTypes.string.isRequired,
 }
 
 export default friend;

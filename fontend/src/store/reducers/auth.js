@@ -7,6 +7,9 @@ const initialState = {
         id: null,
         username: null,
         email: null,
+        posts: [],
+        favorites:[],
+        friends: []
     },
     error: null,
     loading: false
@@ -24,6 +27,8 @@ const authSuccess = (state, action) => {
         id: action.id,
         username: action.username,
         email: action.email,
+        posts: action.posts,
+        favorites: action.favorites
     })
     return updateObject(state, {
         token: action.token,
@@ -54,12 +59,38 @@ const authLogout = (state, action) => {
     })
 }
 
+//--------------Add post to favorite-----------------
+const addToFavoriteSuccess = (state, action) => {
+    let user = updateObject(state.user, {
+        favorites: state.user.favorites.concat(action.post)
+    });
+    state.user.favorites.map(post => {
+        if(post._id === action.post._id) {
+            return user = updateObject(state.user, {
+                favorites: state.user.favorites.filter(post => post._id !== action.post._id)
+            })
+        } return null;
+    })
+    return updateObject (state, {
+        user: user,
+        error: null
+    })
+}
+
+const addToFavoriteFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.AUTH_START: return authStart(state, action);
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+        case actionTypes.ADD_TO_FAVORITE_SUCCESS: return addToFavoriteSuccess(state, action);
+        case actionTypes.ADD_TO_FAVORITE_FAIL: return addToFavoriteFail(state, action);
         default:
             return state;
     }

@@ -14,6 +14,8 @@ export const authSuccess = (user,token) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        posts: user.posts,
+        favorites: user.favorites,
         token: token
     }
 }
@@ -66,7 +68,7 @@ export const authLogin = (email,  password) => {
             password: password
         }
 
-        axios.post('login', userData)
+        axios.post('/login', userData)
             .then(response => {
                 dispatch(authSuccess(response.data.user, response.data.token));
             })
@@ -75,3 +77,27 @@ export const authLogin = (email,  password) => {
             });
     };
 }
+
+//--------------Add post to favorite-----------------
+export const addToFavoriteSuccess = (post) => {
+    return {
+        type: actionTypes.ADD_TO_FAVORITE_SUCCESS,
+        post: post,
+    }
+}
+
+export const addToFavoriteFail = (err) => {
+    return {
+        type: actionTypes.ADD_TO_FAVORITE_FAIL,
+        error: err
+    }
+} 
+
+export const addToFavorite = (postId, token) => {
+    return dispatch => {
+        axios.post('posts/' + postId + '/favorite', null, {headers: { "x-auth-token": token }})
+            .then(response => dispatch(addToFavoriteSuccess(response.data)))
+            .catch(err => dispatch(addToFavoriteFail(err)));
+    }
+} 
+

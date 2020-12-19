@@ -7,6 +7,7 @@ import Layout from './hoc/Layout/Layout';
 import Posts from './containers/Posts/posts';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile'
+import Favorites from './containers/Favorites/Favorites';
 
 class App extends Component {
   
@@ -26,6 +27,7 @@ class App extends Component {
         <Layout show={this.props.isAuthenticated}>
             <Switch>
               <PrivateRoute authed={this.props.isAuthenticated} path='/profile/:id' component={Profile}/>
+              <PrivateRoute authed={this.props.isAuthenticated} path='/favorites' component={Favorites}/>
               <Route path='/auth' component={Auth}/>
               <PrivateRoute authed={this.props.isAuthenticated} path='/' exact component={Posts}/> 
             </Switch>

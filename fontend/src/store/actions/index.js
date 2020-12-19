@@ -2,11 +2,18 @@ export {
     fetchPosts,
     deletePost,
     addPost,
-    addComment
+    addComment,
+    deleteComment,
+    toggleLike
 } from './post';
 
 export {
     authRegister,
     authLogin,
-    authLogout
+    authLogout,
+    addToFavorite
 } from './auth';
+
+export {
+    fetchUser,
+} from './user';
