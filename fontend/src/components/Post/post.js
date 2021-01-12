@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+
 import MoreOptions from '../UI/MoreOptions/MoreOptions';
 import Option from '../UI/MoreOptions/OptionsModal/Option/Option';
 import classes from './Post.module.css';
@@ -13,7 +14,6 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ReplyIcon from '@material-ui/icons/Reply';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
@@ -45,9 +45,6 @@ const post = (props) => {
                                 <DeleteOutlineIcon /> Delete
                             </Option> : null}
                             <Option>
-                                <StarBorderIcon/> favorite
-                            </Option>
-                            <Option>
                             <ErrorOutlineIcon /> Report
                             </Option>
                         </MoreOptions>
@@ -68,11 +65,11 @@ const post = (props) => {
                         </span>
                 </div>
                 <div className={classes.PostAction}>
-                    <Button active={props.likeActive} clicked={props.likeClick}><ThumbUpAltIcon /> Like</Button>
+                    <Button clicked={props.likeClick} active={props.likeActive}><ThumbUpAltIcon /> Like</Button>
                     <Button clicked={props.commentClick}><ChatBubbleOutlineIcon /> Comments</Button>
-                    <Button clicked={props.addToFavorite}><ReplyIcon/> Share</Button>
+                    <Button clicked={props.addToFavorite} active={props.favoriteActive}><StarBorderIcon/> Favorites</Button>
                 </div>
-            </div>   
+            </div>  
         </Hoc>
          
     )
@@ -94,8 +91,9 @@ post.propTypes = {
     commentsCount: PropTypes.number.isRequired,
     likesCount: PropTypes.number.isRequired,
     likeClick: PropTypes.func.isRequired,
-    likeActive: PropTypes.bool.isRequired,
+    likeActive: PropTypes.string,
     addToFavorite: PropTypes.func.isRequired,
+    favoriteActive: PropTypes.string,
     postId: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired
 }

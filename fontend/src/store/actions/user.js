@@ -2,7 +2,6 @@ import axios from '../../axios';
 
 import * as actionTypes from './actionTypes';
 
-
 //--------------Fetching User-----------------
 export const fetchUserStart = () => {
     return { 
@@ -16,9 +15,10 @@ export const fetchUserSuccess = (user) => {
         id: user._id,
         username: user.username,
         email: user.email,
-        posts: user.posts,
         favorites: user.favorites,
-        friends: user.friends
+        posts: user.posts,
+        followers: user.followers,
+        following: user.following
     }
 }
 
@@ -42,3 +42,32 @@ export const fetchUser = (userId, token) => {
     };
 }
 
+//--------------Follow/unfollow user-----------------
+export const followUserSuccess = (currentUser) => {
+    return {
+        type: actionTypes.FOLLOW_USER_SUCCESS,
+        currentUser: currentUser
+    }
+}
+
+
+export const followUserFail = (err) => {
+    return {
+        type: actionTypes.FOLLOW_USER_FAIL,
+        error: err
+    }
+}
+
+export const followUser = (userId, token) => {
+    return dispatch => {
+        axios.post('/follow/' + userId, null, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(followUserSuccess(response.data.currentUser))
+                console.log(response);
+            })
+            .catch(err => {
+                dispatch(followUserFail(err))
+                console.log(err)
+            });
+    }
+}

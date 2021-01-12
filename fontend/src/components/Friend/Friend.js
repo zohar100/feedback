@@ -1,5 +1,6 @@
 import React from 'react' ;
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import classes from './Friend.module.css';
 import Button from '../UI/Button/Button';
@@ -8,7 +9,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const friend = (props) => {
     return(
-        <div className={classes.UserCard}>
+        <section className={classes.UserCard}>
             <div className={classes.UserImage}>
                 <AccountCircleIcon/>
                 <h3>{props.username}</h3>
@@ -19,10 +20,9 @@ const friend = (props) => {
                     <p><span>Work at:</span> {props.work}</p>
             </div>
             <div className={classes.UserControls}>
-                <Button>Add friend</Button>
-                <Button>Message</Button>
+                <Button><Link to={'/profile/' + props.userId}>View Profile</Link></Button>
             </div>
-        </div>
+        </section>
     )
 }
 
@@ -31,6 +31,7 @@ friend.propTypes = {
     city: PropTypes.string.isRequired,
     study: PropTypes.string.isRequired,
     work: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired
 }
 
 export default friend;

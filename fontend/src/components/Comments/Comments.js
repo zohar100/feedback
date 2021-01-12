@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './Comments.module.css';
@@ -8,61 +8,51 @@ import Input from '../UI/Input/Input';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import * as actions from '../../store/actions/index';
 
-class Comments extends Component {
-    state = {
-        showModal: {
-            id: null,
+const Comments = props => {
+    const [showModal, setShowModal] = useState(null);
+    const [commentsInput, setCommentsInput] = useState({
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'Write comment...'
         },
-        commentsInput: {
-            elementType: 'input',
-            elementConfig: {
-                type: 'text',
-                placeholder: 'Write comment...'
-            },
-            value: ''
-        }
+        value: ''
+    })
 
-    }
-
-    inputChangedHandler = (event) => {
+    const inputChangedHandler = (event) => {
         event.preventDefault();
         const updatedControl = {
-            ...this.state.commentsInput,
+            ...commentsInput,
             value: event.target.value
         }
-        this.setState({commentsInput: updatedControl});
+        setCommentsInput(updatedControl);
     }   
 
-    addCommentHandler = (event) => {
+    const addCommentHandler = (event) => {
         event.preventDefault();
         const comment = {
-            body: this.state.commentsInput.value,
+            body: commentsInput.value,
         }
-        this.props.onAddComment(comment, this.props.postId, this.props.token)
-        this.setState({commentsInput: {value: ''}})
+        props.onAddComment(comment, props.postId, props.token)
+        setCommentsInput({value: ''})
     }
 
-    showModalHandler = (commentId) => {
-        this.setState(prevState => {
-            if(prevState.showModal.id === commentId) {
-                return{
-                    showModal : {id:null}
-                }
+    const showModalHandler = (commentId) => {
+        setShowModal(prevState => {
+            if(prevState === commentId) {
+                return null;
             }
-            return {
-                showModal: {id: commentId}
-            }
+            return commentId
         });
     }
 
-    deleteCommentHandler = (commentId) => {
-        this.props.onDeleteComment(this.props.postId, commentId, this.props.token)
+    const deleteCommentHandler = (commentId) => {
+        props.onDeleteComment(props.postId, commentId, props.token)
     }
 
 
-    render(){
         let comments = 'No comments to this post'
-        const post = this.props.post
+        const post = props.post
         if(post.comments){
             if(post.comments.length > 0){
                 comments = post.comments.map(comment => (
@@ -70,30 +60,29 @@ class Comments extends Component {
                         key={comment._id}
                         username={comment.author.username}
                         body={comment.body}
-                        showDeleteButton={comment.author._id === this.props.user.id}
-                        deleteComment={() => this.deleteCommentHandler(comment._id)}
-                        showModal={this.state.showModal.id === comment._id}
-                        modalClicked={() => this.showModalHandler(comment._id)}
+                        showDeleteButton={comment.author._id === props.user.id}
+                        deleteComment={() => deleteCommentHandler(comment._id)}
+                        showModal={showModal === comment._id}
+                        modalClicked={() => showModalHandler(comment._id)}
                         />
                 ))
             }
         }
         return(
-            <Modal show={this.props.showComments} modalClosed={this.props.commentModalClick}>
+            <Modal show={props.showComments} modalClosed={props.commentModalClick}>
                 <div className={classes.Comments}>
                     {comments}
                 </div>
-                <form className={classes.CommentsInput} onSubmit={(event) => this.addCommentHandler(event)}>
+                <form className={classes.CommentsInput} onSubmit={(event) => addCommentHandler(event)}>
                     <AccountCircleIcon/>
                     <Input
-                        elementType={this.state.commentsInput.elementType} 
-                        elementConfig={this.state.commentsInput.elementConfig}
-                        value={this.state.commentsInput.value}
-                        changed={(event) => this.inputChangedHandler(event)}/>
+                        elementType={commentsInput.elementType} 
+                        elementConfig={commentsInput.elementConfig}
+                        value={commentsInput.value}
+                        changed={(event) => inputChangedHandler(event)}/>
                 </form>
             </Modal>
         )
-    }
 }
 
 const mapStateToProps = state => {

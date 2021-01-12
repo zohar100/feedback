@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post'
         }],
-    friends: [{
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],

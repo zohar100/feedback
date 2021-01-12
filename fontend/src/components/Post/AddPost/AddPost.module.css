@@ -1,7 +1,7 @@
 .AddPost {
   width: 90%;
   height: 170px;
-  background-color: #201e1e;
+  background-color: #353941;
   margin: 10px auto;
   color: white;
   font-family: "Roboto Condensed", sans-serif;
@@ -20,6 +20,11 @@
 .AddPost button {
   margin-left: 4px;
   display: inline-block;
+  background-color: #353941;
+}
+
+.AddPost button:hover {
+  background-color: #26282b;
 }
 
 .AddPost button svg {
@@ -37,4 +42,10 @@
 
 .BodyInput {
   width: 80%;
+}
+
+@media (min-width: 600px) {
+  .AddPost {
+    width: 600px;
+  }
 }

@@ -30,75 +30,34 @@
 }
 
 .ProfileControl {
-  margin-top: 50px;
-  margin-left: 15px;
+  margin-top: 60px;
   box-sizing: border-box;
-}
-.ProfileControl button {
-  width: 31.9%;
-  margin-right: 3px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .ProfileInfo {
-  margin-left: 10px;
   margin-top: 20px;
   display: flex;
-  flex-flow: row;
+  justify-content: space-around;
+  color: #f5f5f5;
+  border-top: 1px solid #353941;
+  border-bottom: 1px solid #353941;
 }
 
-.ProfileInfo .UserInfo {
-  width: 49%;
-  color: white;
-  border: 1px solid rgba(126, 121, 121, 0.534);
-  background-color: #201e1e;
-}
-
-.ProfileInfo .UserInfo ul {
-  list-style: none;
-}
-
-.ProfileInfo .UserInfo li {
-  margin-bottom: 5px;
-}
-
-.ProfileInfo .UserInfo h3 {
-  background-color: #ccc;
-  color: black;
+.ProfileInfo div {
   padding: 10px;
-  margin: 0;
 }
 
-.ProfileInfo .UserFriends {
-  width: 49%;
-  color: white;
-  border: 1px solid rgba(126, 121, 121, 0.534);
-  background-color: #201e1e;
-}
-
-.ProfileInfo .UserFriends h3 {
-  background-color: #ccc;
-  color: black;
-  padding: 10px;
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-.ProfileInfo .UserFriends svg {
-  font-size: 70px;
+.ProfileInfo div h2 {
+  width: fit-content;
+  margin: auto;
 }
 
 @media (max-width: 600px) {
-  .ProfileInfo {
+  /* .ProfileInfo {
     display: flex;
     flex-flow: column;
     margin-left: 25px;
-  }
-
-  .ProfileInfo .UserInfo {
-    width: 94%;
-  }
-
-  .ProfileInfo .UserFriends {
-    width: 94%;
-  }
+  } */
 }

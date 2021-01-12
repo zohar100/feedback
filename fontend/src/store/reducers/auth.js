@@ -7,9 +7,18 @@ const initialState = {
         id: null,
         username: null,
         email: null,
+        favorites:[],
+        followers: [],
+        following: []
+    },
+    fetchedUser:{
+        id: null,
+        username: null,
+        email: null,
         posts: [],
         favorites:[],
-        friends: []
+        followers: [],
+        following: []
     },
     error: null,
     loading: false
@@ -27,8 +36,9 @@ const authSuccess = (state, action) => {
         id: action.id,
         username: action.username,
         email: action.email,
-        posts: action.posts,
-        favorites: action.favorites
+        favorites: action.favorites,
+        followers: action.followers,
+        following: action.following
     })
     return updateObject(state, {
         token: action.token,
@@ -82,6 +92,7 @@ const addToFavoriteFail = (state, action) => {
         error: action.error
     })
 }
+
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {

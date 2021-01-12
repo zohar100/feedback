@@ -36,7 +36,7 @@ router.post("/new", isLoggedIn, async (req, res) => {
       await Post.populate(newPost, {path: 'author'})
       user.posts.push(newPost._id)
       user.save()
-      res.json(newPost)
+      res.json({post: newPost, msg: 'Add post successfuly'})
     }
 
   }catch(err){

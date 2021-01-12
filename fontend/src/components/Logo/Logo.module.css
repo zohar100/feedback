@@ -4,11 +4,11 @@
   box-sizing: border-box;
 }
 
-.Logo h2 {
+.Logo h1 {
   margin-top: 10px;
   color: white;
 }
 
-.Logo h2 span {
-  color: coral;
+.Logo h1 span {
+  color: #5f85db;
 }

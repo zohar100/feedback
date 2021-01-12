@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './posts.module.css';
@@ -6,105 +6,90 @@ import Post from '../../components/Post/Post';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import AddPost from '../../components/Post/AddPost/AddPost';
 import * as actions from '../../store/actions/index';
-import Hoc from '../../hoc/Hoc/Hoc';
 
-class Posts extends Component {
-    state = {
-        showModal: {
-            id: null,
-        },
-        showComments: {
-            id: null,
-        },
-    } 
+const Posts = props => {
+    const [showModal, setShowModal] = useState(null);
+    const [showComments, setShowComments] = useState(null);
 
-    componentDidMount () {
-        if(this.props.isAuthenticated){
-            this.props.onFetchPosts(this.props.token);
+    const { onFetchPosts, isAuthenticated, token } = props;
+
+    useEffect(() => {
+        if(isAuthenticated){
+            onFetchPosts(token);
         }
-    }
+    }, [onFetchPosts, isAuthenticated, token])
 
-    showModalHandler = (postId) => {
-        this.setState(prevState => {
-            if(prevState.showModal.id === postId) {
-                return{
-                    showModal : {id:null}
-                }
+    const showModalHandler = (postId) => {
+        setShowModal(prevState => {
+            if(prevState === postId) {
+                return null;
             }
-            return {
-                showModal: {id: postId}
-            }
+            return postId;
         });
     }
 
-    showCommentsHandler = (postId) => {
-        this.setState(prevState => {
-            if(prevState.showComments.id === postId) {
-                return{
-                    showComments : {id:null}
-                }
+    const showCommentsHandler = (postId) => {
+        setShowComments(prevState => {
+            if(prevState === postId) {
+                return null;
+
             }
-            return {
-                showComments: {id: postId}
-            }
+            return postId;
         })
     }
 
-    likeClickHandler = (postId) => {
-        this.props.onLikePost(postId, this.props.user.id, this.props.token)
+    const likeClickHandler = (postId) => {
+        props.onLikePost(postId, props.user.id, props.token)
     }
 
-    deletePostHandler = (postId) => {
-        this.props.onDeletePost(postId, this.props.token);
+    const deletePostHandler = (postId) => {
+        props.onDeletePost(postId, props.token);
     }
 
-    addToFavoriteHandler = (postId) => {
-        this.props.onAddToFavorite(postId, this.props.token)
+    const addToFavoriteHandler = (postId) => {
+        props.onAddToFavorite(postId, props.token)
     }
 
-    render(){
 
         let posts = <Spinner spinnerType="Primary-Spinner"/>;
-        if(!this.props.loading) {
+        if(!props.loading) {
             posts = (
-            this.props.posts
+            props.posts
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map(post => (
-                <Hoc>
                 <Post 
-                key={post._id}
-                userId={post.author._id}
-                username={post.author.username} 
-                body={post.body}
-                image={post.image}
-                createdAt = {post.createdAt}
-                showModal={this.state.showModal.id === post._id ? true : false}
-                modalClicked={() => this.showModalHandler(post._id)}
-                deletePost={() => this.deletePostHandler(post._id)}
-                showDeleteButton={post.author._id === this.props.user.id}
-                commentClick={() => this.showCommentsHandler(post._id)}
-                showComments={this.state.showComments.id === post._id ? true : false}
-                commentModalClick={() => this.setState({showComments: { id: null }})}
-                commentsCount={post.comments.length}
-                likesCount={post.likes.length}
-                likeClick={() => this.likeClickHandler(post._id)}
-                likeActive={post.likes.find(like => like === this.props.user.id ? true : false)}
-                addToFavorite={() => this.addToFavoriteHandler(post._id)}
-                postId={post._id}
-                post={post}
+                        key={post._id} 
+                        userId={post.author._id}
+                        username={post.author.username} 
+                        body={post.body}
+                        image={post.image}
+                        createdAt = {post.createdAt}
+                        showModal={showModal === post._id ? true : false}
+                        modalClicked={() => showModalHandler(post._id)}
+                        deletePost={() => deletePostHandler(post._id)}
+                        showDeleteButton={post.author._id === props.user.id}
+                        commentClick={() => showCommentsHandler(post._id)}
+                        showComments={showComments === post._id ? true : false}
+                        commentModalClick={() => setShowComments(null)}
+                        commentsCount={post.comments.length}
+                        likesCount={post.likes.length}
+                        likeClick={() => likeClickHandler(post._id)}
+                        likeActive={post.likes.find(like => like === props.user.id ? true : false)}
+                        addToFavorite={() => addToFavoriteHandler(post._id)}
+                        favoriteActive={props.user.favorites.find(favPost => favPost._id === post._id ? true : false)}
+                        postId={post._id}
+                        post={post}
                 />
-                </Hoc>
-))
+            ))
             );
         } 
 
         return(
             <div className={classes.Posts}>
                 <AddPost /> 
-                    {posts}
+                {posts}
             </div>
         )
-    }
 }
 
 const mapStateToProps = state => {

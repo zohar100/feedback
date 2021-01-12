@@ -1,8 +1,8 @@
 .UserCard {
   width: 250px;
-  background-color: #201e1e;
+  background-color: #353941;
   color: white;
-  border: 1px solid coral;
+  border: 1px solid #90b8f8;
   border-radius: 10px;
   margin-left: 5px;
 }
@@ -46,5 +46,10 @@
 }
 
 .UserControls button {
-  width: 120px;
+  width: 98%;
+}
+
+.UserControls button a {
+  text-decoration: none;
+  color: #f5f5f5;
 }

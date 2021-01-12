@@ -1,21 +1,13 @@
 .Layout {
-  margin-top: 55px;
+  padding-top: 69px;
   display: flex;
   flex-flow: row;
   width: 100%;
+  margin: auto;
 }
 
 @media (min-width: 600px) {
   .Layout {
     width: 40%;
-    margin-left: 30%;
-  }
-}
-
-@media (min-width: 600px) {
-  @media (max-width: 1300px) {
-    .Layout {
-      width: 70%;
-    }
   }
 }

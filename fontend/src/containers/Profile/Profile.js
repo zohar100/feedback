@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
  
 import classes from './Profile.module.css';
@@ -12,52 +12,61 @@ import * as actions from '../../store/actions/index';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
-class Profile extends Component {
-    state = {
-        showModal: {
-            id: null,
-        },
-        showComments: {
-            id: null
-        },
-    } 
+const Profile = props => {
+    const [showModal, setShowModal] = useState(null);
+    const [showComments, setShowComments] = useState(null); 
 
-    componentDidMount () {
-    //    console.log(this.props.match.params.id)
-    this.props.onFetchUser(this.props.userId, this.props.token)
+    useEffect(() => {
+        loadData();
+    })
+
+    const loadData = () => {
+        if(props.match.params.id){
+            if(!props.user.id || (props.user.id !== props.match.params.id)){
+                props.onFetchUser(props.match.params.id, props.token)
+            }
+        }
     }
 
-    deletePostHandler = (postId) => {
-        this.props.onDeletePost(postId, this.props.token);
+    const deletePostHandler = (postId) => {
+        props.onDeletePost(postId, props.token);
     }
 
-    showModalHandler = ( postId) => {
-        this.setState(prevState => {
-            if(prevState.showModal.id === postId) {
-                return{
-                    showModal : {id:null}
-                }
+    const showModalHandler = ( postId) => {
+        setShowModal(prevState => {
+            if(prevState === postId) {
+                return null;
             }
-            return {
-                showModal: {id: postId}
+            return postId;
+        });
+    }
+
+    const showCommentsHandler = (postId) => {
+        setShowComments(prevState => {
+            if(prevState === postId) {
+                return null;
+
             }
+            return postId;
         })
     }
 
-    showCommentsHandler = (postId) => {
-        this.setState(prevState => {
-            if(prevState.showComments.id === postId) {
-                return{
-                    showComments : {id:null}
-                }
-            }
-            return {
-                showComments: {id: postId}
-            }
-        })
+    const followUserHandler = (userId) => {
+        props.onFollowUser(userId, props.token);
     }
 
-    render () {
+    const likeClickHandler = (postId) => {
+        props.onLikePost(postId, props.user.id, props.token)
+    }
+
+    const addToFavoriteHandler = (postId) => {
+        props.onAddToFavorite(postId, props.token)
+    }
+
+
+        let followOrUnfollow = props.user.followers.find(user => 
+            user._id === props.currentUser.id
+        );
         let profile = (
             <div className={classes.Profile}>
             <div className={classes.ProfileImage} style={{backgroundImage: `url(${profilBackground})`}}>
@@ -65,43 +74,41 @@ class Profile extends Component {
                     <AccountCircleIcon/>
                 </div>
                 <h2>
-                    {this.props.user.username}
+                    {props.user.username}
                 </h2>
             </div>
             <div className={classes.ProfileControl}>
-                <Button>Edit Profile</Button>
-                <Button>Add friend</Button>
-                <Button>Message</Button>
+                {props.user.id === props.currentUser.id ? 
+                <Button btnType='Secondary'>Edit Profile</Button> : null}
+                {props.user.id !== props.currentUser.id ? 
+                <Button btnType='Secondary' clicked={() => followUserHandler(props.user.id)}>{followOrUnfollow ? 'Unfollow' : 'Follow'}</Button> : null}
+                {props.user.id !== props.currentUser.id ? 
+                <Button btnType='Secondary'>Message</Button>: null}
             </div>
             <div className={classes.ProfileInfo}>
-                <div className={classes.UserInfo}>
-                    <h3>Info</h3>
-                    <ul>
-                        <li><span>Studies at:</span> schoolName</li>
-                        <li><span>live in:</span> userCity</li>
-                        <li><span>work at:</span> userWord </li>
-                    </ul>
+                <div className={classes.UserFolowing}>
+                    <h2>{props.user.following.length}</h2>
+                    <h3>Following</h3>
+                    </div>
+                <div className={classes.UserFolowers}>
+                    <h2>{props.user.followers.length}</h2>
+                    <h3>Followers</h3>
                 </div>
-                <div className={classes.UserFriends}>
-                    <h3>Friends</h3>
-                    <AccountCircleIcon/>
-                    <AccountCircleIcon/>
-                    <AccountCircleIcon/>
-                    <AccountCircleIcon/>
-                    <AccountCircleIcon/>
-                    <AccountCircleIcon/>
+                <div className={classes.UserPosts}>
+                    <h2>{props.user.posts.length}</h2>
+                    <h3>Posts</h3>
                 </div>
             </div>
             <div className={classes.ProfilePosts}>
                 {/* <Friend
-                    username={this.props.user.username}
+                    username={props.user.username}
                     city='NY'
                     study='Bear College'
                     work='Google'/> */}
-                <AddPost />
-                {this.props.posts
+                {props.user.id === props.currentUser.id ? <AddPost /> : null}
+                {props.posts
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .filter(post => post.author._id === this.props.userId)
+                    .filter(post => post.author._id === props.user.id)
                     .map(post => (
                         <Post 
                         key={post._id} 
@@ -110,35 +117,39 @@ class Profile extends Component {
                         body={post.body}
                         image={post.image}
                         createdAt = {post.createdAt}
-                        showModal={this.state.showModal.id === post._id ? true : false}
-                        modalClicked={() => this.showModalHandler(post._id)}
-                        deletePost={() => this.deletePostHandler(post._id)}
-                        showDeleteButton={post.author._id === this.props.user.id}
-                        commentClick={() => this.showCommentsHandler(post._id)}
-                        showComments={this.state.showComments.id === post._id ? true : false}
-                        commentModalClick={() => this.setState({showComments: { id: null }})}
+                        showModal={showModal === post._id ? true : false}
+                        modalClicked={() => showModalHandler(post._id)}
+                        deletePost={() => deletePostHandler(post._id)}
+                        showDeleteButton={post.author._id === props.user.id}
+                        commentClick={() => showCommentsHandler(post._id)}
+                        showComments={showComments === post._id ? true : false}
+                        commentModalClick={() => setShowComments(null)}
                         commentsCount={post.comments.length}
+                        likesCount={post.likes.length}
+                        likeClick={() => likeClickHandler(post._id)}
+                        likeActive={post.likes.find(like => like === props.user.id ? true : false)}
+                        addToFavorite={() => addToFavoriteHandler(post._id)}
+                        favoriteActive={props.currentUser.favorites.find(favPost => favPost._id === post._id ? true : false)}
                         postId={post._id}
                         post={post}
                     />))}
             </div>
         </div>
             );
-            if(this.props.loading){
+            if(props.loading){
                 profile = <Spinner spinnerType="Primary-Spinner"/>
             }
 
         return profile;
-    }
 }
 
 const mapStateToProps = state  => {
     return {
-        userId: state.auth.user.id,
+        currentUser: state.auth.user,
         posts: state.post.posts,
-        loading: state.user.loading,
+        loading: state.auth.loading,
         token: state.auth.token,
-        user: state.user.user
+        user: state.user.fetchedUser
     }
 }
 
@@ -146,7 +157,10 @@ const mapDispatchToProps = dispatch => {
     return {
         onDeletePost: (postId, token) => dispatch(actions.deletePost(postId, token)),
         onAddPost: (post, token) => dispatch(actions.addPost(post, token)),
-        onFetchUser: (userId, token) => dispatch(actions.fetchUser(userId, token))
+        onFetchUser: (userId, token) => dispatch(actions.fetchUser(userId, token)),
+        onFollowUser: (userId, token) => dispatch(actions.followUser(userId, token)),
+        onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
+        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token))
     }
 }
 

@@ -4,7 +4,8 @@ import { updateObject } from '../utility';
 const initialState = {
     posts: [],
     loading: false,
-    error: null
+    error: null,
+    message: null
 }
 
 //--------------Fetching posts-----------------
@@ -31,7 +32,8 @@ const fetchPostsFail = (state, action) => {
 const deletePostSuccess = (state, action) => {
     const newPosts = state.posts.filter(post => post._id !== action.postId)
     return updateObject(state, {
-        posts: newPosts
+        posts: newPosts,
+        error: null,
     })
 }
 
@@ -45,6 +47,7 @@ const deletePostFail = (state, action) => {
 const addPostSuccess = (state, action) => {
     return updateObject (state, {
         posts: state.posts.concat(action.post),
+        message: action.message,
         error: null,
         loading: false
     })
@@ -120,19 +123,19 @@ const deleteCommentFail = (state, action) => {
 
 //--------------Likes-----------------
 const toggleLikeSuccess = (state, action) => {
-    const post = state.posts.filter(post => post._id === action.postId)
-    console.log(post);
-    const postLike = post[0].likes.find(like => like === action.userId)
-    console.log(postLike);
-    if(postLike){
-        post[0].likes = post[0].likes.filter(like => like !== action.userId)
-        console.log(post);
-    }else{
-        post[0].likes = post[0].likes.concat(action.userId)
-        console.log(post[0]);
-    }
-    const posts = state.posts.filter(post => post._id !== action.postId).concat(post[0])
-    console.log(posts);
+    const foundPost = state.posts.filter(post => post._id === action.postId)
+    const postLike = foundPost[0].likes.find(like => like === action.userId)
+    const posts =  state.posts.map(post =>{ 
+        if(post._id === action.postId) {
+            if(!postLike){
+                return updateObject(post, {likes: post.likes.concat(action.userId)})
+            }else{
+                return updateObject(post, {likes: post.likes.filter(like => like !== action.userId)})
+            }
+        }else{
+            return post;
+        }
+    })
  return updateObject(state, {
      error: null,
      posts: posts

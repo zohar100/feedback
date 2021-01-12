@@ -4,15 +4,15 @@
 }
 
 .CommentImage svg {
-  font-size: 40px;
-  margin-top: 20px;
+  font-size: 60px;
+  margin-top: 10px;
 }
 
 .CommentBody {
   padding: 10px;
   margin-left: 10px;
-  background-color: #201e1e;
-  border: 1px solid #ccc;
+  background-color: #353941;
+  border: 1px solid #90b8f8;
   border-radius: 20px;
 }
 

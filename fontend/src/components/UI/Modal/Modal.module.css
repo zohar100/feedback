@@ -1,7 +1,7 @@
 .Modal {
   position: fixed;
   z-index: 500;
-  background-color: #2c2b2b;
+  background-color: #26282b;
   width: 70%;
   max-height: 90%;
   border: 1px solid #ccc;
@@ -16,9 +16,39 @@
   flex-direction: column;
 }
 
+.ModalOpen {
+  animation: modalOpen 0.3s ease-out forwards;
+}
+
+.ModalClosed {
+  animation: modalClosed 0.3s ease-out forwards;
+}
+
 @media (min-width: 600px) {
   .Modal {
     width: 550px;
     left: calc(50% - 250px);
+  }
+}
+
+@keyframes modalOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalClosed {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
   }
 }

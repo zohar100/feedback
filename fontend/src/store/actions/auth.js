@@ -14,7 +14,8 @@ export const authSuccess = (user,token) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        posts: user.posts,
+        followers: user.followers,
+        following: user.following,
         favorites: user.favorites,
         token: token
     }
@@ -78,6 +79,7 @@ export const authLogin = (email,  password) => {
     };
 }
 
+
 //--------------Add post to favorite-----------------
 export const addToFavoriteSuccess = (post) => {
     return {
@@ -100,4 +102,3 @@ export const addToFavorite = (postId, token) => {
             .catch(err => dispatch(addToFavoriteFail(err)));
     }
 } 
-

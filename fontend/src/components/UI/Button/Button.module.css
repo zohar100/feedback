@@ -2,7 +2,7 @@
   height: 40px;
   width: 150px;
   margin-top: 6px;
-  background-color: #201e1e;
+  background-color: #26282b;
   color: white;
   border: none;
   border-radius: 4px;
@@ -11,9 +11,17 @@
 }
 
 .Button:hover {
-  background-color: #63605e49;
+  background-color: #353941;
 }
 
 .active {
-  color: darksalmon;
+  color: #90b8f8;
+}
+
+.Secondary {
+  background-color: #5f85db;
+}
+
+.Secondary:hover {
+  background-color: #90b8f8;
 }

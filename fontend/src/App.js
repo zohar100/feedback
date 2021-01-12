@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -9,9 +9,8 @@ import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile'
 import Favorites from './containers/Favorites/Favorites';
 
-class App extends Component {
+const app = props => {
   
-  render(){
     const PrivateRoute = ({component: Component, authed, ...rest}) => {
       return (
         <Route
@@ -22,19 +21,19 @@ class App extends Component {
         />
       )
     }
+    
     return(
       <Hoc>
-        <Layout show={this.props.isAuthenticated}>
+        <Layout show={props.isAuthenticated}>
             <Switch>
-              <PrivateRoute authed={this.props.isAuthenticated} path='/profile/:id' component={Profile}/>
-              <PrivateRoute authed={this.props.isAuthenticated} path='/favorites' component={Favorites}/>
+              <PrivateRoute authed={props.isAuthenticated} path='/profile/:id' component={Profile}/>
+              <PrivateRoute authed={props.isAuthenticated} path='/favorites' component={Favorites}/>
               <Route path='/auth' component={Auth}/>
-              <PrivateRoute authed={this.props.isAuthenticated} path='/' exact component={Posts}/> 
+              <PrivateRoute authed={props.isAuthenticated} path='/' exact component={Posts}/> 
             </Switch>
         </Layout>
       </Hoc>
     )
-  }
 }
 
 const mapStateToProps = state => {
@@ -43,4 +42,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(app);

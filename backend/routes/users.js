@@ -48,6 +48,12 @@ router.post('/register', async (req, res) => {
         }).populate({
             path: 'favorites',
             model: 'Post'
+        }).populate({
+            path: 'followers',
+            model: 'User'
+        }).populate({
+            path: 'following',
+            model: 'User'
         })
 
         res.json({
@@ -57,7 +63,9 @@ router.post('/register', async (req, res) => {
                 email: user.email,
                 username: user.username,
                 posts: user.posts,
-                favorites: user.favorites
+                favorites: user.favorites,
+                following: user.following,
+                followers: user.followers
             }
          });
 
@@ -86,7 +94,6 @@ router.post('/login', async (req, res) => {
 
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
 
-
         const newUser = await User.findById(user._id).populate({
             path: 'posts',
             model: 'Post',
@@ -105,6 +112,12 @@ router.post('/login', async (req, res) => {
         }).populate({
             path: 'favorites',
             model: 'Post'
+        }).populate({
+            path: 'followers',
+            model: 'User'
+        }).populate({
+            path: 'following',
+            model: 'User'
         })
 
         res.json({
@@ -114,40 +127,62 @@ router.post('/login', async (req, res) => {
                 email: newUser.email,
                 username: newUser.username,
                 posts: newUser.posts,
-                favorites: newUser.favorites
+                favorites: newUser.favorites,
+                following: newUser.following,
+                followers: newUser.followers
             }
          });
         req.user = user;
     }catch(err){
-    
         return res.status(500).json({ error: err.message });
     }
 });
 
-router.get('/user/:id', isLoggedIn, (req, res) => {
-    User.findById(req.params.id).populate({
-        path: 'posts',
-        model: 'Post',
-        populate: [{
-            path: 'comments',
-            model: 'Comment', 
-            populate:{
-                path: 'author',
+//get spacific user
+router.get('/user/:id', isLoggedIn, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).populate({
+            path: 'posts', //populate posts in user
+            model: 'Post',
+            populate: [{
+                path: 'comments', //populate comments in post 
+                model: 'Comment', 
+                populate:{
+                    path: 'author', //populate author in comment
+                    model: 'User'
+                }
+            },
+            {
+                path: 'author',//populate author in post
                 model: 'User'
-            }
-        },
-        {
-            path: 'author',
+            },],
+        }).populate({
+            path: 'favorites',//populate favorites in user
+            model: 'Post'
+        })
+        .populate({
+            path: 'followers',
             model: 'User'
-        },],
-    }).populate({
-        path: 'favorites',
-        model: 'Post'
-    })
-        .then(user => res.json(user))
-        .catch(err => res.status(400).json({ msg: 'User not exist.' }))
+        }).populate({
+            path: 'following',
+            model: 'User'
+        })
+                
+        res.json(user)
+    }catch(err) {
+        return res.status(400).json({ msg: 'User not exist.' })
+    }
+ 
 })
 
+//get all users
+router.get('/allusers', isLoggedIn, async (req, res) => {
+    const users = await User.find({});
+
+    res.json(users);
+})
+
+//delete spacific user
 router.delete('/delete', isLoggedIn, async (req, res) => {
     try{
         const deletedUser = await User.findByIdAndDelete(req.user)
@@ -156,6 +191,40 @@ router.delete('/delete', isLoggedIn, async (req, res) => {
         return res.status(500).json({ error: err.massege });
     }
 });
+
+//folow and unfolow
+router.post('/follow/:userId', isLoggedIn, async (req, res) => {
+    try {
+        const userToFolow = await User.findById(req.params.userId);
+        const currentUser = await User.findById(req.user);
+    
+        //check if the current user already follow this userToFolow
+        const userFollow = await currentUser.following.find(user => user.equals(req.params.userId));
+        
+        //if the user already follow
+        if(userFollow) {
+            //pull out the userId from current user folowing
+            currentUser.following.pull(req.params.userId)
+            //pull out the userId from user folowers
+            userToFolow.followers.pull(req.user)
+            console.log(currentUser);
+            console.log(userToFolow);
+        }else {
+            //push the userId to current user folowing
+            currentUser.following.push(req.params.userId)
+            //push the userId to user folowers
+            userToFolow.followers.push(req.user)
+            console.log(currentUser);
+            console.log(userToFolow);
+        }
+    
+        await userToFolow.save()
+        await currentUser.save()
+        return res.json({user: userToFolow, currentUser: currentUser});
+    }catch (err){
+        return res.status(500).json({ error: err.massege });
+    }
+})
 
 router.post('/tokenIsValid', async (req,res) => {
     try {   

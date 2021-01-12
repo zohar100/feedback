@@ -14,7 +14,7 @@ const sideDrawer = (props) => {
     return(
         <Hoc>
         <Backdrop show={props.open} clicked={props.closed}/>
-        <div className={attachedClasses.join(' ')}>
+        <div className={attachedClasses.join(' ')} onClick={props.closed}>
             <NavigationItems 
             username={props.username}
             userId={props.userId}/>

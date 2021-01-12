@@ -2,16 +2,17 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
-    user:{
+    fetchedUser:{
         id: null,
         username: null,
         email: null,
         posts: [],
-        favorites: [],
-        friends: []
+        favorites:[],
+        followers: [],
+        following: []
     },
+    loading: false,
     error: null,
-    loading: false
 }
 
 //--------------Fetching User-----------------
@@ -23,16 +24,17 @@ const fetchUserStart = (state, action) => {
 }
 
 const fetchUserSuccess = (state, action) => {
-    const user = updateObject(state.user, {
+    const user = updateObject(state.fetchedUser, {
         id: action.id,
         username: action.username,
         email: action.email,
         posts: action.posts,
         favorites: action.favorites,
-        friends: action.friends
+        following: action.following,
+        followers: action.followers,
     })
     return updateObject(state, {
-        user: user,
+        fetchedUser: user,
         loading: false,
         error: null
     })
@@ -45,12 +47,37 @@ const fetchUserFail = (state, action) => {
     })
 }
 
+//--------------Follow/unfollow user-----------------
+const followUserSuccess = (state, action) => {
+    let fetchedUser = updateObject(state.fetchedUser, {
+        followers: state.fetchedUser.followers.concat(action.currentUser)
+    })
+    state.fetchedUser.followers.map(post => {
+        if(post._id === action.currentUser._id) {
+            return fetchedUser = updateObject(state.fetchedUser, {
+                followers: state.fetchedUser.followers.filter(post => post._id !== action.currentUser._id)
+            })
+        } return null;
+    })
+    return updateObject (state, {
+        fetchedUser: fetchedUser,
+        error: null
+    })
+}
+
+const followUserFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error
+    })
+}
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.FETCH_USER_START: return fetchUserStart(state, action);
         case actionTypes.FETCH_USER_SUCCESS: return fetchUserSuccess(state, action);
         case actionTypes.FETCH_USER_FAIL: return fetchUserFail(state, action);
+        case actionTypes.FOLLOW_USER_SUCCESS: return followUserSuccess(state, action);
+        case actionTypes.FOLLOW_USER_FAIL: return followUserFail(state, action);
         default:
             return state;
     }

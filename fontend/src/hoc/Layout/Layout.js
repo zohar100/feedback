@@ -1,73 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import Hoc from '../Hoc/Hoc';
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/toolbar/toolbar';
 import SideDrawer from '../../components/Navigation/sideDrawer/SideDrawer';
-import SideMenu from '../../components/Navigation/sideMenu/sideMenu';
 import ChatSideBar from '../../components/Chat/SideBar/SideBar';
+import Friends from '../../containers/Friends/Friends';
 import * as actions from '../../store/actions/index';
 
-class Layout extends Component {
-    state ={
-        showUserModal: false,
-        showSideDrawer: false,
-        show: true
+const Layout = props => {
+    const [showUserModal, setShowUserModal] = useState(false);
+    const [showSideDrawer, setShowSideDrawer] = useState(false);
+
+    const showUserModalHandler = () => {
+        setShowUserModal(!showUserModal);
     }
 
-    showUserModalHandler = () => {
-        this.setState((prevState) => {
-            return {showUserModal: !prevState.showUserModal}
-        })
+    const sideDrawerClosedHandler = () => {
+        setShowSideDrawer(false)
     }
 
-    sideDrawerClosedHandler = () => {
-        this.setState({showSideDrawer: false})
+    const sideDrawerOpenHandler = () => {
+        setShowSideDrawer(!showSideDrawer)
     }
 
-    sideDrawerOpenHandler = () => {
-        this.setState((prevState) => {
-            return{showSideDrawer: !prevState.showSideDrawer}
-        })
+    const logoutHandler = () => {
+        props.onAuthLogout();
     }
 
-    logoutHandler = () => {
-        this.props.onAuthLogout();
-    }
-
-    render() {
         let layout = (
-            <Hoc show={this.props.show}>
+            <Hoc>
                 <Toolbar 
-                clicked={this.sideDrawerOpenHandler} 
-                username={this.props.user.username}
-                showUserModal={this.state.showUserModal}
-                clickToShowModal={this.showUserModalHandler}
-                logout={this.logoutHandler}/>
+                clicked={sideDrawerOpenHandler} 
+                username={props.user.username}
+                showUserModal={showUserModal}
+                clickToShowModal={showUserModalHandler}
+                logout={logoutHandler}/>
                 <SideDrawer 
-                open={this.state.showSideDrawer} 
-                username={this.props.user.username} 
-                closed={this.sideDrawerClosedHandler}
-                userId={this.props.user.id}/>
-                <SideMenu 
-                username={this.props.user.username}
-                userId={this.props.user.id}/>
+                open={showSideDrawer} 
+                username={props.user.username} 
+                closed={sideDrawerClosedHandler}
+                userId={props.user.id}/>
                 <ChatSideBar/>
+                <Friends/>
             </Hoc>
         );
-        if (!this.props.show) {
+        if (!props.show) {
             layout = null
         }
     return (
         <Hoc>
             {layout}
             <main className={classes.Layout}>
-                {this.props.children}
+                {props.children}
             </main>
         </Hoc>
     )
-    }
 }
 
 const mapStateToProps = state => {

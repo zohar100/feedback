@@ -29,7 +29,6 @@ export const fetchPosts = (token) => {
             axios.get('/posts', {headers: { "x-auth-token": token }})
             .then(response => {
                     dispatch(fetchPostsSuccess(response.data));
-                    console.log(response.headers);
             })
             .catch(error => dispatch(fetchPostsFail(error)));
     }
@@ -66,7 +65,7 @@ export const deletePost = (postId, token) => {
 export const addPostSuccess = (post) => {
     return {
         type: actionTypes.ADD_POST_SUCCESS,
-        post: post
+        post: post,
     }
 }
 
@@ -81,7 +80,7 @@ export const addPost = (post, token) => {
     return dispatch => {
         axios.post('posts/new/', post,  {headers: { "x-auth-token": token }})
             .then(response => {
-                dispatch(addPostSuccess(response.data))
+                dispatch(addPostSuccess(response.data.post))
             })
             .catch(err => {
                 dispatch(addPostFail(err.response.data.msg))

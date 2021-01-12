@@ -1,17 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import classes from './Auth.module.css';
 import Logo from '../../components/Logo/Logo';
 import Input from '../../components/UI/Input/Input';
+import Button from '../../components/UI/Button/Button'; 
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Hoc from '../../hoc/Hoc/Hoc';
 import * as actions from '../../store/actions/index';
+import checkValidity from '../../utilities/checkFormValidity';
+import useForm from '../../utilities/useForm';
 
-class Auth extends Component {
-    state = {
-        registerControls: {
+const Auth = props => {
+
+    const formRules = {
+        username: {
+            required: true
+        },
+        email: {
+            required: true,
+            isEmail: true,
+        },
+        password: {
+            required: true,
+            minLength: 6,
+        }
+    } 
+    const [formValue, setFormValue] = useForm(checkValidity, formRules);
+    const [registerForm, setRegisterForm] = useState({
             username: {
                 elementType: 'input',
                 elementConfig: {
@@ -53,8 +70,8 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             },
-        },
-        loginControls: {
+        });
+    const [loginForm, setLoginForm] = useState({
             email: {
                 elementType: 'input',
                 elementConfig: {
@@ -83,82 +100,49 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             },
-        },
-        isSingup: false
-    }
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (!rules) {
-            return true;
-        }
-        
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
+        });
+    const [isSingup, setIsSignup] = useState(false);
 
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        return isValid;
-    }
-
-    inputChangedHandler = (event, controlName) => {
-        let currentControls = this.state.isSingup ? this.state.registerControls : this.state.loginControls;
+    const inputChangedHandler = (event, controlName) => {
+        let currentControls = isSingup ? registerForm : loginForm;
         const updatedControls = {
             ...currentControls,
             [controlName]: {
                 ...currentControls[controlName],
                 value: event.target.value,
-                valid: this.checkValidity(event.target.value, currentControls[controlName].validation),
+                valid: checkValidity(event.target.value, currentControls[controlName].validation),
                 touched: true
             }
         }
-        if(this.state.isSingup){
-            this.setState({registerControls: updatedControls})
+        if(isSingup){
+            setRegisterForm(updatedControls)
         }
-        this.setState({loginControls: updatedControls});
+        setLoginForm(updatedControls);
     }
 
-    switchAuthModeHandler = () => {
-        this.setState(prevState => {
-            return { isSingup: !prevState.isSingup }
-        });
+    const switchAuthModeHandler = () => {
+        setIsSignup(!isSingup);
     }
 
-    onSubmitHandler = (event) => {
+    const onSubmitHandler = (event) => {
         event.preventDefault();
-        if(this.state.isSingup) {
-            this.props.onAuthRegister(
-                this.state.registerControls.username.value,
-                this.state.registerControls.email.value,
-                this.state.registerControls.password.value
+        if(isSingup) {
+            props.onAuthRegister(
+                registerForm.username.value,
+                registerForm.email.value,
+                registerForm.password.value
                 )
         }else{
-            this.props.onAuthLogin(
-                this.state.loginControls.email.value,
-                this.state.loginControls.password.value
+            props.onAuthLogin(
+                loginForm.email.value,
+                loginForm.password.value
             )
         }
     }
 
-    render() {
+
         let FormElementArray = [];
-        let currentControls = this.state.isSingup ? this.state.registerControls : this.state.loginControls;
+        let currentControls = isSingup ? registerForm : loginForm;
         for(let key in currentControls) {
             FormElementArray.push({
                 id: key,
@@ -179,39 +163,41 @@ class Auth extends Component {
                 invalid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+                changed={(event) => inputChangedHandler(event, formElement.id)}/>
             </Hoc>
         ) 
     })
 
         let authRedirect = null;
-        if(this.props.isAuthenticated) {
+        if(props.isAuthenticated) {
           authRedirect= <Redirect to='/'/>
         }
 
         let spinnerOrForm = (
             <Hoc>
                     <div className={classes.FormDiv}>
-                        <form onSubmit = {this.onSubmitHandler}>
+                        <form >
                             {form}
-                            <button>
-                            {this.state.isSingup ? 'Signup' : 'Login'}
-                            </button>
                         </form>
-                        <p >
-                            {this.state.isSingup ? 'have an account?' : 'dont have an account?'} 
-                            <span onClick={this.switchAuthModeHandler} className={classes.SwitchButton}>
-                                 click here
-                            </span>
-                        </p>
+                        <div className={classes.SwitchAuth}>
+                            <Button clicked={onSubmitHandler}>
+                                {isSingup ? 'Signup' : 'Login'}
+                            </Button>
+                            <p >
+                                {isSingup ? 'have an account?' : 'dont have an account?'} 
+                                <span onClick={switchAuthModeHandler} className={classes.SwitchButton}>
+                                    click here
+                                </span>
+                            </p>
+                        </div>
                     </div>
             </Hoc>
         );
         let err = null;
-        if(this.props.error){
-            err = <div className={classes.Error}> {this.props.error} </div> 
+        if(props.error){
+            err = <div className={classes.Error}> {props.error} </div> 
         }
-        if(this.props.loading){
+        if(props.loading){
             spinnerOrForm = (
             <div className={classes.SpinnerDiv}>
                 <Spinner spinnerType="Secendary-Spinner"/>
@@ -223,14 +209,15 @@ class Auth extends Component {
         return (
             <div className={classes.Background}>
                 {authRedirect}
+                <div className={classes.Logo}>
+                    <Logo/>
+                </div>
                 <div className={classes.Auth}>
-                        <Logo/>
                         {err}
                         {spinnerOrForm}
                 </div>
             </div>
         )
-    }
 }
 
 const mapStateToProps = state => {

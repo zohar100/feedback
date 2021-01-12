@@ -11,9 +11,10 @@ export {
     authRegister,
     authLogin,
     authLogout,
-    addToFavorite
+    addToFavorite,
 } from './auth';
 
 export {
-    fetchUser,
-} from './user';
+    followUser,
+    fetchUser
+}from './user';
