@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
             username: username
         });
         const savedUser = await newUser.save();
-        const token = jwt.sign({id: savedUser._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({id: savedUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         const user = await User.findById(savedUser._id).populate({
             path: 'posts',
@@ -92,7 +92,7 @@ router.post('/login', async (req, res) => {
         if(!passwordIsMatch)
             return res.status(400).json({ msg: 'Invalid email or password.' });
 
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
         const newUser = await User.findById(user._id).populate({
             path: 'posts',
@@ -237,7 +237,42 @@ router.post('/tokenIsValid', async (req,res) => {
         const user = await User.findOne({_id: verified.id})
         if(!user) return res.json(false);
 
-        return res.json(true);
+        const sendUser = await User.findById(user._id).populate({
+            path: 'posts',
+            model: 'Post',
+            populate: [{
+                path: 'comments',
+                model: 'Comment', 
+                populate:{
+                    path: 'author',
+                    model: 'User'
+                }
+            },
+            {
+                path: 'author',
+                model: 'User'
+            },],
+        }).populate({
+            path: 'favorites',
+            model: 'Post'
+        }).populate({
+            path: 'followers',
+            model: 'User'
+        }).populate({
+            path: 'following',
+            model: 'User'
+        })
+
+
+        return res.json({user: {
+                    id: sendUser._id,
+                    email: sendUser.email,
+                    username: sendUser.username,
+                    posts: sendUser.posts,
+                    favorites: sendUser.favorites,
+                    following: sendUser.following,
+                    followers: sendUser.followers
+                    }, token: token});
     }catch(err){
         return res.status(500).json({ error: err.message });
     }

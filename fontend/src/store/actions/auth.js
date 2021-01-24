@@ -28,15 +28,9 @@ export const authFail = (error) => {
     }
 }
 
-export const checkAuthTimeout = (expirationTime) => {
-    return dispatch => {
-        setTimeout(() => {
-            dispatch(authLogout());
-        }, expirationTime * 1000);
-    }
-}
-
 export const authLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
     return {
         type: actionTypes.AUTH_LOGOUT
     }
@@ -53,6 +47,8 @@ export const authRegister = (username, email, password ) => {
 
         axios.post('/register', userData)
             .then(response => {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.user, response.data.token));
             })
             .catch(error => {
@@ -71,12 +67,36 @@ export const authLogin = (email,  password) => {
 
         axios.post('/login', userData)
             .then(response => {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.user, response.data.token));
             })
             .catch(error => {
                 dispatch(authFail(error.response.data.msg));
             });
     };
+}
+
+export const authCheckState = () => {
+    return dispatch => {
+        const token = localStorage.getItem('token');
+        if(!token) {
+            dispatch(authLogout());
+        }else{
+            axios.post('/tokenIsValid', null, {headers: { "x-auth-token": token }})
+                .then(response => {
+                    if(response.data !== false){
+                        dispatch(authSuccess(response.data.user, response.data.token));
+                    }else{
+                        console.log('logout');
+                        dispatch(authLogout);
+                    }
+                }).catch(error => {
+                    console.log("error!!");
+                    dispatch(authLogout());
+                });
+        }
+    }
 }
 
 

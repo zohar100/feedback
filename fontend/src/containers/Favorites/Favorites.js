@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './Favorites.module.css';
-import Post from '../../components/Post/Post';
+import Post from '../../components/Posts/Post/Post';
 import * as actions from '../../store/actions/index';
 
 const Favorites = props => {

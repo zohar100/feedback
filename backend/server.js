@@ -3,12 +3,16 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const initListeners = require("./socket");
+const socketio = require('socket.io');
+const http = require('http')
 const seeds = require('./seeds');
-const User = require('./models/user.model');
 
+const server = http.createServer(app);
+const io = socketio(server);
 require("dotenv").config();
 
-//BASIC CONFIGURATIONS
+//MIDDLEWARES
 app.use(cors({ 
   credentials: true, 
   origin: 'http://localhost:3000',
@@ -28,6 +32,8 @@ const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB database connect");
 });
+
+initListeners(io);
 seeds();
 
 //ROUTES
@@ -40,6 +46,6 @@ app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("Connect succesfully on port: " + port);
 });

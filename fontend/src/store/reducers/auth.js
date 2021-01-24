@@ -2,20 +2,11 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
 
 const initialState = {
-    token: null,
+    token: localStorage.getItem('token'),
     user:{
         id: null,
         username: null,
         email: null,
-        favorites:[],
-        followers: [],
-        following: []
-    },
-    fetchedUser:{
-        id: null,
-        username: null,
-        email: null,
-        posts: [],
         favorites:[],
         followers: [],
         following: []
@@ -61,6 +52,9 @@ const authLogout = (state, action) => {
         id: null,
         username: null,
         email: null,
+        favorites: null,
+        followers: null,
+        following: null
     })
     return updateObject(state, {
         error: null,

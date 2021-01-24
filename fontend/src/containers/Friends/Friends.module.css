@@ -1,13 +1,8 @@
 .Friends {
-  width: 30%;
+  width: 100%;
   height: 100%;
-  position: fixed;
   z-index: 80;
   background-color: #26282b;
-  border-left: 1px solid #353941;
-  margin-left: 70%;
-  margin-top: 69px;
-  display: none;
 }
 
 .FriendsList {
@@ -36,9 +31,9 @@
   background: #90b8f8;
   border-radius: 10px;
 }
-
-@media (min-width: 1580px) {
+/* 
+@media (min-width: 1200px) {
   .Friends {
     display: inline;
   }
-}
+} */

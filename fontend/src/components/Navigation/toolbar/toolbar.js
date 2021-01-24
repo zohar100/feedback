@@ -12,6 +12,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HomeIcon from '@material-ui/icons/Home';
 import StarIcon from '@material-ui/icons/Star';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 const toolbar = (props) => {
@@ -25,6 +26,9 @@ const toolbar = (props) => {
                     </NavigationItem>
                     <NavigationItem link='/favorites'>
                         <StarIcon />
+                    </NavigationItem>
+                    <NavigationItem link='/search'>
+                        <SearchIcon />
                     </NavigationItem>
                 </ul>
             </div>

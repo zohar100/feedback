@@ -17,7 +17,8 @@ const sideDrawer = (props) => {
         <div className={attachedClasses.join(' ')} onClick={props.closed}>
             <NavigationItems 
             username={props.username}
-            userId={props.userId}/>
+            userId={props.userId}
+            clicked={props.closed}/>
         </div>
         </Hoc>
     );

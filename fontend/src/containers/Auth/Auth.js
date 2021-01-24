@@ -13,7 +13,6 @@ import checkValidity from '../../utilities/checkFormValidity';
 import useForm from '../../utilities/useForm';
 
 const Auth = props => {
-
     const formRules = {
         username: {
             required: true
@@ -27,146 +26,62 @@ const Auth = props => {
             minLength: 6,
         }
     } 
-    const [formValue, setFormValue] = useForm(checkValidity, formRules);
-    const [registerForm, setRegisterForm] = useState({
-            username: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Username'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-            email: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Email'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isEmail: true,
-                },
-                valid: false,
-                touched: false
-            },
-        password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Password'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    minLength: 6,
-                },
-                valid: false,
-                touched: false
-            },
-        });
-    const [loginForm, setLoginForm] = useState({
-            email: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Email'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isEmail: true
-                },
-                valid: false,
-                touched: false
-            },
-        password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Password'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    minLength: 6,
-                },
-                valid: false,
-                touched: false
-            },
-        });
-    const [isSingup, setIsSignup] = useState(false);
 
-    const inputChangedHandler = (event, controlName) => {
-        let currentControls = isSingup ? registerForm : loginForm;
-        const updatedControls = {
-            ...currentControls,
-            [controlName]: {
-                ...currentControls[controlName],
-                value: event.target.value,
-                valid: checkValidity(event.target.value, currentControls[controlName].validation),
-                touched: true
-            }
-        }
-        if(isSingup){
-            setRegisterForm(updatedControls)
-        }
-        setLoginForm(updatedControls);
-    }
-
-    const switchAuthModeHandler = () => {
-        setIsSignup(!isSingup);
-    }
-
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
+    const submitHandler = () => {
         if(isSingup) {
             props.onAuthRegister(
-                registerForm.username.value,
-                registerForm.email.value,
-                registerForm.password.value
+                formValue.username,
+                formValue.email,
+                formValue.password
                 )
         }else{
             props.onAuthLogin(
-                loginForm.email.value,
-                loginForm.password.value
+                formValue.email,
+                formValue.password
             )
         }
     }
 
+    const [formValue, valid, touched, setInputValue, handleSubmit] = useForm(checkValidity, formRules, submitHandler);
+    const [isSingup, setIsSignup] = useState(false);
 
-        let FormElementArray = [];
-        let currentControls = isSingup ? registerForm : loginForm;
-        for(let key in currentControls) {
-            FormElementArray.push({
-                id: key,
-                config: currentControls[key]
-            });
-        }
-
-        let form = FormElementArray.map(formElement => {
-            return (
+    const switchAuthModeHandler = () => {
+        setIsSignup(!isSingup);
+    }
+        let form = (
             <Hoc>
+            {  isSingup ? <Input
+                label="username"
+                icon="Username"
+                elementType="input" 
+                elementConfig={{type: 'text', placeholder: 'Username', name: 'username'}}
+                value={formValue.username || ""}
+                invalid={!valid.username || false}
+                shouldValidate={formRules.username}
+                touched={touched.username || false}
+                changed={setInputValue}/> : null}
                 <Input
-                key= {formElement.id}
-                label={formElement.config.elementConfig.placeholder}
-                icon={formElement.config.elementConfig.placeholder}
-                elementType={formElement.config.elementType} 
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                shouldValidate={formElement.config.validation}
-                touched={formElement.config.touched}
-                changed={(event) => inputChangedHandler(event, formElement.id)}/>
+                label="email"
+                icon="Email"
+                elementType="input" 
+                elementConfig={{type: 'text', placeholder: 'Email', name: 'email'}}
+                value={formValue.email || ""}
+                invalid={!valid.email || false}
+                shouldValidate={formRules.email}
+                touched={touched.email || false}
+                changed={setInputValue}/>
+                <Input
+                label="password"
+                icon="Password"
+                elementType="input" 
+                elementConfig={{type: 'password', placeholder: 'password', name: 'password'}}
+                value={formValue.password || ""}
+                invalid={!valid.password || false}
+                shouldValidate={formRules.password}
+                touched={touched.password || false}
+                changed={setInputValue}/>
             </Hoc>
         ) 
-    })
 
         let authRedirect = null;
         if(props.isAuthenticated) {
@@ -180,7 +95,7 @@ const Auth = props => {
                             {form}
                         </form>
                         <div className={classes.SwitchAuth}>
-                            <Button clicked={onSubmitHandler}>
+                            <Button clicked={handleSubmit}>
                                 {isSingup ? 'Signup' : 'Login'}
                             </Button>
                             <p >
@@ -205,7 +120,6 @@ const Auth = props => {
             )
         }
     
-
         return (
             <div className={classes.Background}>
                 {authRedirect}

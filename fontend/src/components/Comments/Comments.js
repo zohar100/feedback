@@ -1,58 +1,16 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 import classes from './Comments.module.css';
-import Modal from '../UI/Modal/Modal';
 import Comment from './Comment/Comment';
-import Input from '../UI/Input/Input';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import * as actions from '../../store/actions/index';
+import CommentForm from './CommentForm/CommentForm';
 
-const Comments = props => {
-    const [showModal, setShowModal] = useState(null);
-    const [commentsInput, setCommentsInput] = useState({
-        elementType: 'input',
-        elementConfig: {
-            type: 'text',
-            placeholder: 'Write comment...'
-        },
-        value: ''
-    })
+const Comments = ({ deleteCommentHandler, showCommentModal,
+                    showCommentModalHandler, post, userId,
+                    showComments, bodyValue, inputValueChanged,
+                    handleSubmit}) => {
 
-    const inputChangedHandler = (event) => {
-        event.preventDefault();
-        const updatedControl = {
-            ...commentsInput,
-            value: event.target.value
-        }
-        setCommentsInput(updatedControl);
-    }   
-
-    const addCommentHandler = (event) => {
-        event.preventDefault();
-        const comment = {
-            body: commentsInput.value,
-        }
-        props.onAddComment(comment, props.postId, props.token)
-        setCommentsInput({value: ''})
-    }
-
-    const showModalHandler = (commentId) => {
-        setShowModal(prevState => {
-            if(prevState === commentId) {
-                return null;
-            }
-            return commentId
-        });
-    }
-
-    const deleteCommentHandler = (commentId) => {
-        props.onDeleteComment(props.postId, commentId, props.token)
-    }
-
-
-        let comments = 'No comments to this post'
-        const post = props.post
+        let comments = <p>No comments to this post</p>
         if(post.comments){
             if(post.comments.length > 0){
                 comments = post.comments.map(comment => (
@@ -60,44 +18,44 @@ const Comments = props => {
                         key={comment._id}
                         username={comment.author.username}
                         body={comment.body}
-                        showDeleteButton={comment.author._id === props.user.id}
-                        deleteComment={() => deleteCommentHandler(comment._id)}
-                        showModal={showModal === comment._id}
-                        modalClicked={() => showModalHandler(comment._id)}
+                        showDeleteButton={comment.author._id === userId}
+                        deleteComment={() => deleteCommentHandler(comment._id, post._id)}
+                        showModal={showCommentModal === comment._id}
+                        modalClicked={() => showCommentModalHandler(comment._id)}
                         />
                 ))
             }
         }
+
+        const animationTiming = {
+            enter: 300,
+            exit: 300
+        }
+
         return(
-            <Modal show={props.showComments} modalClosed={props.commentModalClick}>
-                <div className={classes.Comments}>
-                    {comments}
+            <CSSTransition 
+            mountOnEnter
+            unmountOnExit
+            in={showComments}
+            timeout={animationTiming}
+            classNames={{
+              enter: '',
+              enterActive: classes.CommentsOpen,
+              exit: '',
+              exitActive: classes.CommentsClosed
+            }}>
+                <div className={classes.CommentDiv}>
+                    <div className={classes.Comments}>
+                        {comments}
+                    </div>
+                    <CommentForm 
+                        postId={post._id}
+                        bodyValue={bodyValue}
+                        inputValueChanged={inputValueChanged}
+                        handleSubmit={handleSubmit}/>
                 </div>
-                <form className={classes.CommentsInput} onSubmit={(event) => addCommentHandler(event)}>
-                    <AccountCircleIcon/>
-                    <Input
-                        elementType={commentsInput.elementType} 
-                        elementConfig={commentsInput.elementConfig}
-                        value={commentsInput.value}
-                        changed={(event) => inputChangedHandler(event)}/>
-                </form>
-            </Modal>
+            </CSSTransition>
         )
 }
 
-const mapStateToProps = state => {
-    return{
-        token: state.auth.token,
-        user: state.auth.user,
-        posts: state.post.posts
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onAddComment: (comment, postId, token) => dispatch(actions.addComment(comment, postId, token)),
-        onDeleteComment: (postId, commentId, token) => dispatch(actions.deleteComment(postId, commentId, token))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+export default Comments;

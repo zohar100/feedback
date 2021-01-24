@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
  
 import classes from './Profile.module.css';
+import useForm from '../../utilities/useForm';
+import Posts from '../../components/Posts/Posts'
 import profilBackground from '../../assets/images/profileBackground.jpg'
 import Button from '../../components/UI/Button/Button';
-import Post from '../../components/Post/Post';
-import AddPost from '../../components/Post/AddPost/AddPost';
+import PostForm from '../../components/Posts/PostForm/PostForm';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 
@@ -13,8 +14,27 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 const Profile = props => {
+    const addPostHandler = () => {
+        const post = {
+             author: props.user.id,
+             body: postFormValue.body,
+             image: postFormValue.image
+         }
+         props.onAddPost(post, props.token)
+    }
+    const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
+
+    const addCommentHandler = (postId) => {
+        const comment = {
+            body: commentFormValue.body
+        }
+        props.onAddComment(comment, postId, props.token)
+    }
+     const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
+    
     const [showModal, setShowModal] = useState(null);
-    const [showComments, setShowComments] = useState(null); 
+    const [showComments, setShowComments] = useState(null);
+    const [showCommentModal, setShowCommentModal] = useState(null);
 
     useEffect(() => {
         loadData();
@@ -28,11 +48,7 @@ const Profile = props => {
         }
     }
 
-    const deletePostHandler = (postId) => {
-        props.onDeletePost(postId, props.token);
-    }
-
-    const showModalHandler = ( postId) => {
+    const showModalHandler = (postId) => {
         setShowModal(prevState => {
             if(prevState === postId) {
                 return null;
@@ -45,24 +61,39 @@ const Profile = props => {
         setShowComments(prevState => {
             if(prevState === postId) {
                 return null;
-
             }
             return postId;
         })
-    }
-
-    const followUserHandler = (userId) => {
-        props.onFollowUser(userId, props.token);
     }
 
     const likeClickHandler = (postId) => {
         props.onLikePost(postId, props.user.id, props.token)
     }
 
+    const deletePostHandler = (postId) => {
+        props.onDeletePost(postId, props.token);
+    }
+
     const addToFavoriteHandler = (postId) => {
         props.onAddToFavorite(postId, props.token)
     }
 
+    const showCommentModalHandler = (commentId) => {
+        setShowCommentModal(prevState => {
+            if(prevState === commentId) {
+                return null;
+            }
+            return commentId
+        });
+    }
+
+    const deleteCommentHandler = (commentId, postId) => {
+        props.onDeleteComment(postId, commentId, props.token)
+    }
+
+    const followUserHandler = (userId) => {
+        props.onFollowUser(userId, props.token);
+    }
 
         let followOrUnfollow = props.user.followers.find(user => 
             user._id === props.currentUser.id
@@ -105,34 +136,30 @@ const Profile = props => {
                     city='NY'
                     study='Bear College'
                     work='Google'/> */}
-                {props.user.id === props.currentUser.id ? <AddPost /> : null}
-                {props.posts
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .filter(post => post.author._id === props.user.id)
-                    .map(post => (
-                        <Post 
-                        key={post._id} 
-                        userId={post.author._id}
-                        username={post.author.username} 
-                        body={post.body}
-                        image={post.image}
-                        createdAt = {post.createdAt}
-                        showModal={showModal === post._id ? true : false}
-                        modalClicked={() => showModalHandler(post._id)}
-                        deletePost={() => deletePostHandler(post._id)}
-                        showDeleteButton={post.author._id === props.user.id}
-                        commentClick={() => showCommentsHandler(post._id)}
-                        showComments={showComments === post._id ? true : false}
-                        commentModalClick={() => setShowComments(null)}
-                        commentsCount={post.comments.length}
-                        likesCount={post.likes.length}
-                        likeClick={() => likeClickHandler(post._id)}
-                        likeActive={post.likes.find(like => like === props.user.id ? true : false)}
-                        addToFavorite={() => addToFavoriteHandler(post._id)}
-                        favoriteActive={props.currentUser.favorites.find(favPost => favPost._id === post._id ? true : false)}
-                        postId={post._id}
-                        post={post}
-                    />))}
+                {props.user.id === props.currentUser.id ?                 
+                <PostForm 
+                    bodyValue={postFormValue.body || ""}
+                    imageValue={postFormValue.image || ""}
+                    inputValueChanged={setPostInputValue}
+                    submitHandler={handlePostSubmit}
+                    currentUser={props.user}/>  : null}
+                <Posts
+                    posts={props.posts.filter(post => post.author._id === props.user.id)}
+                    loading={props.loading}
+                    currentUser={props.currentUser}
+                    showModal={showModal}
+                    showModalHandler={showModalHandler}
+                    deletePostHandler={deletePostHandler}
+                    showCommentsHandler={showCommentsHandler}
+                    likeClickHandler={likeClickHandler}
+                    addToFavoriteHandler={addToFavoriteHandler}
+                    showComments={showComments}
+                    deleteCommentHandler={deleteCommentHandler}
+                    showCommentModal={showCommentModal}
+                    showCommentModalHandler={showCommentModalHandler}
+                    bodyValue={commentFormValue.body || ""}
+                    inputValueChanged={setCommentInputValue}
+                    commentHandleSubmit={handleCommentSubmit}/>
             </div>
         </div>
             );
@@ -160,7 +187,9 @@ const mapDispatchToProps = dispatch => {
         onFetchUser: (userId, token) => dispatch(actions.fetchUser(userId, token)),
         onFollowUser: (userId, token) => dispatch(actions.followUser(userId, token)),
         onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
-        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token))
+        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token)),
+        onAddComment: (comment, postId, token) => dispatch(actions.addComment(comment, postId, token)),
+        onDeleteComment: (postId, commentId, token) => dispatch(actions.deleteComment(postId, commentId, token))
     }
 }
 

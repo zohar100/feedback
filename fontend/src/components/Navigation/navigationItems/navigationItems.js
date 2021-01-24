@@ -3,20 +3,20 @@ import React from 'react';
 import classes from './navigationItems.module.css';
 import NavigationItem from './navigationItem/navigationItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import HomeIcon from '@material-ui/icons/Home';
-import StarIcon from '@material-ui/icons/Star';
+import SettingsIcon from '@material-ui/icons/Settings';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 const navigationitems = (props) => {
     return(
-        <ul className={classes.NavigationItems}>
+        <ul className={classes.NavigationItems} onClick={props.clicked}>
             <NavigationItem link={'/profile/' + props.userId}>
                 <AccountCircleIcon /> {props.username}
             </NavigationItem>
             <NavigationItem link='/' exact>
-                <HomeIcon /> Home
+                <SettingsIcon /> Setting
             </NavigationItem>
             <NavigationItem link='/favorites'>
-                <StarIcon /> Favorite
+                <LogoutIcon /> Logout
             </NavigationItem>
         </ul>
     )

@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Hoc from './hoc/Hoc/Hoc';
 import Layout from './hoc/Layout/Layout';
-import Posts from './containers/Posts/posts';
+import Feed from './containers/Posts/posts';
 import Auth from './containers/Auth/Auth';
-import Profile from './containers/Profile/Profile'
+import Profile from './containers/Profile/Profile';
+import Friends from './containers/Friends/Friends';
 import Favorites from './containers/Favorites/Favorites';
+import * as actions from './store/actions/index';
 
-const app = props => {
+
+const App = props => {
+  const { onTryAutoSignin } = props;
+
+  useEffect(() => {
+    onTryAutoSignin();
+ }, [onTryAutoSignin])
   
     const PrivateRoute = ({component: Component, authed, ...rest}) => {
       return (
@@ -28,8 +36,9 @@ const app = props => {
             <Switch>
               <PrivateRoute authed={props.isAuthenticated} path='/profile/:id' component={Profile}/>
               <PrivateRoute authed={props.isAuthenticated} path='/favorites' component={Favorites}/>
+              <PrivateRoute authed={props.isAuthenticated} path='/search' component={Friends}/>
               <Route path='/auth' component={Auth}/>
-              <PrivateRoute authed={props.isAuthenticated} path='/' exact component={Posts}/> 
+              <PrivateRoute authed={props.isAuthenticated} path='/' exact component={Feed}/> 
             </Switch>
         </Layout>
       </Hoc>
@@ -42,4 +51,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(app);
+const madDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignin: () => dispatch(actions.authCheckState())
+  }
+}
+
+export default connect(mapStateToProps, madDispatchToProps)(App);

@@ -2,12 +2,52 @@
   padding-top: 69px;
   display: flex;
   flex-flow: row;
-  width: 100%;
+  width: 70%;
   margin: auto;
 }
 
-@media (min-width: 600px) {
-  .Layout {
-    width: 40%;
+.Main {
+  width: 60%;
+  margin-left: 38%;
+}
+
+.RightBar {
+  width: 25%;
+  height: 100vh;
+  position: fixed;
+}
+
+/* .LeftBar {
+  width: 20%;
+} */
+
+/* @media (min-width: 600px) {
+  @media (max-width: 880px) {
+    .Layout {
+      width: 80%;
+    }
   }
 }
+
+@media (min-width: 800px) {
+  @media (max-width: 1200px) {
+    .Layout {
+      width: 69%;
+      margin-left: 30%;
+    }
+  }
+}
+
+@media (min-width: 880px) {
+  @media (max-width: 1100px) {
+    .Layout {
+      width: 55%;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .Layout {
+    width: 39%;
+  }
+} */

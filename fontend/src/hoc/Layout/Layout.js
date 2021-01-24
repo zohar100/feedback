@@ -6,7 +6,6 @@ import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/toolbar/toolbar';
 import SideDrawer from '../../components/Navigation/sideDrawer/SideDrawer';
 import ChatSideBar from '../../components/Chat/SideBar/SideBar';
-import Friends from '../../containers/Friends/Friends';
 import * as actions from '../../store/actions/index';
 
 const Layout = props => {
@@ -42,8 +41,6 @@ const Layout = props => {
                 username={props.user.username} 
                 closed={sideDrawerClosedHandler}
                 userId={props.user.id}/>
-                <ChatSideBar/>
-                <Friends/>
             </Hoc>
         );
         if (!props.show) {
@@ -53,7 +50,10 @@ const Layout = props => {
         <Hoc>
             {layout}
             <main className={classes.Layout}>
-                {props.children}
+                <div className={classes.RightBar}><ChatSideBar/></div>
+                <div className={classes.Main}>
+                    {props.children}
+                </div>
             </main>
         </Hoc>
     )

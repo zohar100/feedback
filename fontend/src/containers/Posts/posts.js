@@ -2,14 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './posts.module.css';
-import Post from '../../components/Post/Post';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import AddPost from '../../components/Post/AddPost/AddPost';
+import useForm from '../../utilities/useForm';
+import PostForm from '../../components/Posts/PostForm/PostForm';
+import Posts from '../../components/Posts/Posts';
 import * as actions from '../../store/actions/index';
 
-const Posts = props => {
+const Feed = props => {
+    const addPostHandler = () => {
+        const post = {
+             author: props.user.id,
+             body: postFormValue.body,
+             image: postFormValue.image
+         }
+         props.onAddPost(post, props.token)
+    }
+    const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
+
+    const addCommentHandler = (postId) => {
+        const comment = {
+            body: commentFormValue.body
+        }
+        props.onAddComment(comment, postId, props.token)
+    }
+     const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
+    
     const [showModal, setShowModal] = useState(null);
     const [showComments, setShowComments] = useState(null);
+    const [showCommentModal, setShowCommentModal] = useState(null);
+
 
     const { onFetchPosts, isAuthenticated, token } = props;
 
@@ -32,7 +52,6 @@ const Posts = props => {
         setShowComments(prevState => {
             if(prevState === postId) {
                 return null;
-
             }
             return postId;
         })
@@ -50,44 +69,44 @@ const Posts = props => {
         props.onAddToFavorite(postId, props.token)
     }
 
+    const showCommentModalHandler = (commentId) => {
+        setShowCommentModal(prevState => {
+            if(prevState === commentId) {
+                return null;
+            }
+            return commentId
+        });
+    }
 
-        let posts = <Spinner spinnerType="Primary-Spinner"/>;
-        if(!props.loading) {
-            posts = (
-            props.posts
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map(post => (
-                <Post 
-                        key={post._id} 
-                        userId={post.author._id}
-                        username={post.author.username} 
-                        body={post.body}
-                        image={post.image}
-                        createdAt = {post.createdAt}
-                        showModal={showModal === post._id ? true : false}
-                        modalClicked={() => showModalHandler(post._id)}
-                        deletePost={() => deletePostHandler(post._id)}
-                        showDeleteButton={post.author._id === props.user.id}
-                        commentClick={() => showCommentsHandler(post._id)}
-                        showComments={showComments === post._id ? true : false}
-                        commentModalClick={() => setShowComments(null)}
-                        commentsCount={post.comments.length}
-                        likesCount={post.likes.length}
-                        likeClick={() => likeClickHandler(post._id)}
-                        likeActive={post.likes.find(like => like === props.user.id ? true : false)}
-                        addToFavorite={() => addToFavoriteHandler(post._id)}
-                        favoriteActive={props.user.favorites.find(favPost => favPost._id === post._id ? true : false)}
-                        postId={post._id}
-                        post={post}
-                />
-            ))
-            );
-        } 
+    const deleteCommentHandler = (commentId, postId) => {
+        props.onDeleteComment(postId, commentId, props.token)
+    }
 
         return(
             <div className={classes.Posts}>
-                <AddPost /> 
-                {posts}
+                <PostForm 
+                    bodyValue={postFormValue.body || ""}
+                    imageValue={postFormValue.image || ""}
+                    inputValueChanged={setPostInputValue}
+                    submitHandler={handlePostSubmit}
+                    currentUser={props.user}/> 
+                <Posts
+                    posts={props.posts}
+                    loading={props.loading}
+                    currentUser={props.user}
+                    showModal={showModal}
+                    showModalHandler={showModalHandler}
+                    deletePostHandler={deletePostHandler}
+                    showCommentsHandler={showCommentsHandler}
+                    likeClickHandler={likeClickHandler}
+                    addToFavoriteHandler={addToFavoriteHandler}
+                    showComments={showComments}
+                    deleteCommentHandler={deleteCommentHandler}
+                    showCommentModal={showCommentModal}
+                    showCommentModalHandler={showCommentModalHandler}
+                    bodyValue={commentFormValue.body || ""}
+                    inputValueChanged={setCommentInputValue}
+                    commentHandleSubmit={handleCommentSubmit}/>
             </div>
         )
 }
@@ -108,8 +127,10 @@ const mapDispatchToProps = dispatch => {
         onDeletePost: (postId, token) => dispatch(actions.deletePost(postId, token)),
         onAddPost: (post, token) => dispatch(actions.addPost(post, token)),
         onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
-        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token))
+        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token)),
+        onAddComment: (comment, postId, token) => dispatch(actions.addComment(comment, postId, token)),
+        onDeleteComment: (postId, commentId, token) => dispatch(actions.deleteComment(postId, commentId, token))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

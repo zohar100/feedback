@@ -1,0 +1,13 @@
+.CommentsInput {
+  display: flex;
+  flex-flow: row;
+  padding: 5px 0 20px 5px;
+  bottom: 0;
+  background-color: #353941;
+  border-top: 1px solid #90b8f8;
+}
+
+.CommentsInput svg {
+  font-size: 35px;
+  margin-top: 35px;
+}
