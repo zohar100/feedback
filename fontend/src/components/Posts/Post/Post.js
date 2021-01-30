@@ -6,11 +6,11 @@ import MoreOptions from '../../UI/MoreOptions/MoreOptions';
 import Option from '../../UI/MoreOptions/OptionsModal/Option/Option';
 import classes from './Post.module.css';
 import Button from '../../UI/Button/Button';
+import ProfileImage from '../../ProfileImage/ProfileImage';
 
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
@@ -19,7 +19,7 @@ const post = (props) => {
             <div className={classes.Post}>
                 <div className={classes.UserInfo}>
                     <Link to={'/profile/' + props.userId}>
-                        <AccountCircleIcon/>
+                        <ProfileImage imageUrl={props.profileImage}/>
                     </Link>
                     <div className={classes.BasicInfo}>
                     <Link to={'/profile/' + props.userId}>

@@ -1,0 +1,54 @@
+.Layout {
+  padding-top: 69px;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  margin: auto;
+}
+
+.Main {
+  width: 100%;
+}
+
+.RightBar {
+  /* width: 25%;
+  height: 100vh; */
+  position: fixed;
+  display: none;
+}
+
+/* .LeftBar {
+  width: 20%;
+} */
+
+@media (min-width: 750px) {
+  .Layout {
+    width: 100%;
+  }
+  .Main {
+    width: 60%;
+    margin-left: 38%;
+  }
+  .RightBar {
+    width: 37%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+  }
+}
+
+@media (min-width: 1200px) {
+  .Layout {
+    width: 80%;
+  }
+  .Main {
+    width: 55%;
+    margin-left: 43%;
+  }
+  .RightBar {
+    width: 33%;
+    height: 100vh;
+    display: block;
+    position: fixed;
+  }
+}

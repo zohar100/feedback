@@ -26,6 +26,7 @@ const Posts = ({ posts, loading, currentUser,
                     key={post._id} 
                     userId={post.author._id}
                     username={post.author.username} 
+                    profileImage={post.author.profileImage}
                     body={post.body}
                     image={post.image}
                     createdAt = {post.createdAt}

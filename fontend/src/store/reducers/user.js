@@ -5,6 +5,10 @@ const initialState = {
     fetchedUser:{
         id: null,
         username: null,
+        profileImage: {
+            url: null,
+            filename: null
+        },
         email: null,
         posts: [],
         favorites:[],
@@ -27,6 +31,7 @@ const fetchUserSuccess = (state, action) => {
     const user = updateObject(state.fetchedUser, {
         id: action.id,
         username: action.username,
+        profileImage: action.profileImage,
         email: action.email,
         posts: action.posts,
         favorites: action.favorites,

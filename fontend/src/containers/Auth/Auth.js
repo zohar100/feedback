@@ -28,12 +28,11 @@ const Auth = props => {
     } 
 
     const submitHandler = () => {
+        // axios.post("https://httpbin.org/anything", formData)
+        //     .then((res) => console.log(res))
+        //     .catch((err) => console.log(err))
         if(isSingup) {
-            props.onAuthRegister(
-                formValue.username,
-                formValue.email,
-                formValue.password
-                )
+                props.onAuthRegister(formData)
         }else{
             props.onAuthLogin(
                 formValue.email,
@@ -42,7 +41,7 @@ const Auth = props => {
         }
     }
 
-    const [formValue, valid, touched, setInputValue, handleSubmit] = useForm(checkValidity, formRules, submitHandler);
+    const [formValue, valid, touched, setInputValue, handleSubmit, formData] = useForm(checkValidity, formRules, submitHandler);
     const [isSingup, setIsSignup] = useState(false);
 
     const switchAuthModeHandler = () => {
@@ -50,16 +49,24 @@ const Auth = props => {
     }
         let form = (
             <Hoc>
-            {  isSingup ? <Input
+            {  isSingup ? <> 
+            <Input
                 label="username"
                 icon="Username"
-                elementType="input" 
                 elementConfig={{type: 'text', placeholder: 'Username', name: 'username'}}
                 value={formValue.username || ""}
                 invalid={!valid.username || false}
                 shouldValidate={formRules.username}
                 touched={touched.username || false}
-                changed={setInputValue}/> : null}
+                changed={setInputValue}/> 
+                <Input
+                label="Image"
+                elementType="input" 
+                elementConfig={{type: 'file', placeholder: 'Profile image', name: 'file'}}
+                value={formValue.file || ""}
+                touched={touched.file || false}
+                changed={setInputValue}/> 
+                </>: null}
                 <Input
                 label="email"
                 icon="Email"
@@ -91,7 +98,7 @@ const Auth = props => {
         let spinnerOrForm = (
             <Hoc>
                     <div className={classes.FormDiv}>
-                        <form >
+                        <form>
                             {form}
                         </form>
                         <div className={classes.SwitchAuth}>

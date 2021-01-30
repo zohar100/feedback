@@ -3,12 +3,13 @@
   z-index: 500;
   background-color: #26282b;
   width: 70%;
-  max-height: 90%;
+  min-height: 550px;
+  height: fit-content;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 1px black;
   left: 15%;
   color: white;
-  top: 20%;
+  top: 15%;
   bottom: 20%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
@@ -27,6 +28,8 @@
 @media (min-width: 600px) {
   .Modal {
     width: 550px;
+    min-height: 300px;
+    height: fit-content;
     left: calc(50% - 250px);
   }
 }

@@ -8,8 +8,14 @@ const socketio = require('socket.io');
 const http = require('http')
 const seeds = require('./seeds');
 
+const ServerError = require('./utility/ServerError');
+
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+  cors: {
+    origin: '*'
+  }
+});
 require("dotenv").config();
 
 //MIDDLEWARES
@@ -44,6 +50,11 @@ const userRoutes = require('./routes/users');
 app.use('/', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
+
+app.use((err, req, res, next) => {
+  const { status };
+  res.status(status).json("Error: " + err)
+})
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => {

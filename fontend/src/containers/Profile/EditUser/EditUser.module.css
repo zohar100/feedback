@@ -1,0 +1,28 @@
+.ProfileImage div {
+  width: fit-content;
+  margin: auto;
+}
+
+.ProfileImage svg {
+  width: 160px;
+  height: 160px;
+}
+
+.ProfileImage img {
+  width: 160px;
+  height: 160px;
+}
+
+.ProfileImage h3 {
+  width: fit-content;
+  margin: auto;
+  font-size: 2rem;
+}
+
+.Form {
+  padding: 10px;
+}
+
+.Form button {
+  margin-left: 35%;
+}

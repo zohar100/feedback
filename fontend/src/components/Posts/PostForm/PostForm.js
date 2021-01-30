@@ -3,8 +3,8 @@ import React from 'react';
 import classes from './PostForm.module.css';
 import Button from '../../UI/Button/Button';
 import Input from '../../UI/Input/Input';
+import ProfileImage from '../../ProfileImage/ProfileImage';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 
@@ -29,7 +29,7 @@ const PostForm = ({ bodyValue, imageValue,
         return(
             <div className={classes.AddPost}>
                 <div>
-                    <AccountCircleIcon/>
+                    <ProfileImage imageUrl={currentUser.profileImage.url}/>
                     <p>{currentUser.username}</p>
                 </div>
                 <form>

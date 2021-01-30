@@ -12,8 +12,9 @@ export const fetchUserStart = () => {
 export const fetchUserSuccess = (user) => {
     return {
         type: actionTypes.FETCH_USER_SUCCESS,
-        id: user._id,
+        id: user.id,
         username: user.username,
+        profileImage: user.profileImage,
         email: user.email,
         favorites: user.favorites,
         posts: user.posts,
@@ -34,10 +35,10 @@ export const fetchUser = (userId, token) => {
         dispatch(fetchUserStart());
         axios.get('user/' + userId, {headers: { "x-auth-token": token }})
             .then(response => {
-                dispatch(fetchUserSuccess(response.data));
+                dispatch(fetchUserSuccess(response.data.user));
             })
             .catch(error => {
-                dispatch(fetchUserFail(error.response.data.msg));
+                dispatch(fetchUserFail(error.response.data));
             });
     };
 }

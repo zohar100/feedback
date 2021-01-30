@@ -8,9 +8,9 @@ import profilBackground from '../../assets/images/profileBackground.jpg'
 import Button from '../../components/UI/Button/Button';
 import PostForm from '../../components/Posts/PostForm/PostForm';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import EditUser from './EditUser/EditUser';
+import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import * as actions from '../../store/actions/index';
-
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 const Profile = props => {
@@ -35,6 +35,7 @@ const Profile = props => {
     const [showModal, setShowModal] = useState(null);
     const [showComments, setShowComments] = useState(null);
     const [showCommentModal, setShowCommentModal] = useState(null);
+    const [showEditUserModal, setShowEditUserModal] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -95,6 +96,11 @@ const Profile = props => {
         props.onFollowUser(userId, props.token);
     }
 
+    const editUserButtonClicked = () => {
+        console.log('clicked');
+        setShowEditUserModal(true);
+    }
+
         let followOrUnfollow = props.user.followers.find(user => 
             user._id === props.currentUser.id
         );
@@ -102,7 +108,8 @@ const Profile = props => {
             <div className={classes.Profile}>
             <div className={classes.ProfileImage} style={{backgroundImage: `url(${profilBackground})`}}>
                 <div >
-                    <AccountCircleIcon/>
+                    <ProfileImage 
+                    imageUrl={props.user.profileImage.url}/>
                 </div>
                 <h2>
                     {props.user.username}
@@ -110,7 +117,13 @@ const Profile = props => {
             </div>
             <div className={classes.ProfileControl}>
                 {props.user.id === props.currentUser.id ? 
-                <Button btnType='Secondary'>Edit Profile</Button> : null}
+                <>
+                <Button btnType='Secondary' clicked={() => editUserButtonClicked()}>Edit Profile</Button> 
+                <EditUser 
+                showModal={showEditUserModal}
+                clickedModal={() => setShowEditUserModal(false)}/>
+                </>
+                : null}
                 {props.user.id !== props.currentUser.id ? 
                 <Button btnType='Secondary' clicked={() => followUserHandler(props.user.id)}>{followOrUnfollow ? 'Unfollow' : 'Follow'}</Button> : null}
                 {props.user.id !== props.currentUser.id ? 

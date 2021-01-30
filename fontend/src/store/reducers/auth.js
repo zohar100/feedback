@@ -6,6 +6,10 @@ const initialState = {
     user:{
         id: null,
         username: null,
+        profileImage: {
+            url: null,
+            filename: null
+        }, 
         email: null,
         favorites:[],
         followers: [],
@@ -27,6 +31,7 @@ const authSuccess = (state, action) => {
         id: action.id,
         username: action.username,
         email: action.email,
+        profileImage: action.profileImage,
         favorites: action.favorites,
         followers: action.followers,
         following: action.following
@@ -52,6 +57,7 @@ const authLogout = (state, action) => {
         id: null,
         username: null,
         email: null,
+        profileImage: null,
         favorites: null,
         followers: null,
         following: null
@@ -87,6 +93,37 @@ const addToFavoriteFail = (state, action) => {
     })
 }
 
+//--------------Edit user-----------------
+const editUserStart = (state, action) => {
+    return updateObject(state, {
+        loading: true, 
+        error: null
+    })
+}
+
+const editUserSuccess = (state, action) => {
+    const user = updateObject(state.user, {
+        username: action.username,
+        email: action.email,
+        profileImage: action.profileImage,
+    })
+    return updateObject(state, {
+        token: action.token,
+        user: user,
+        loading: false,
+        error: null
+    })
+}
+
+
+const editUserFail = (state, action) => {
+    return updateObject(state, {
+        loading: false,
+        error: action.error
+    })
+}
+
+
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
@@ -96,6 +133,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
         case actionTypes.ADD_TO_FAVORITE_SUCCESS: return addToFavoriteSuccess(state, action);
         case actionTypes.ADD_TO_FAVORITE_FAIL: return addToFavoriteFail(state, action);
+        case actionTypes.EDIT_USER_START: return editUserStart(state, action);
+        case actionTypes.EDIT_USER_SUCCESS: return editUserSuccess(state, action);
+        case actionTypes.EDIT_USER_FAIL: return editUserFail(state, action);
         default:
             return state;
     }

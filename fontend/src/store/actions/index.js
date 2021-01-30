@@ -12,7 +12,8 @@ export {
     authLogin,
     authLogout,
     addToFavorite,
-    authCheckState
+    authCheckState,
+    editUser
 } from './auth';
 
 export {

@@ -13,6 +13,7 @@ export const authSuccess = (user,token) => {
         type: actionTypes.AUTH_SUCCESS,
         id: user.id,
         username: user.username,
+        profileImage: user.profileImage,
         email: user.email,
         followers: user.followers,
         following: user.following,
@@ -36,16 +37,14 @@ export const authLogout = () => {
     }
 }
 
-export const authRegister = (username, email, password ) => {
+export const authRegister = (user) => {
     return dispatch => {
         dispatch(authStart());
-        const userData = {
-            email: email,
-            username: username,
-            password: password
-        }
-
-        axios.post('/register', userData)
+        axios.post('/register', user, {
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            }
+        })
             .then(response => {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user.id);
@@ -67,6 +66,7 @@ export const authLogin = (email,  password) => {
 
         axios.post('/login', userData)
             .then(response => {
+                console.log(response.data);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.user, response.data.token));
@@ -122,3 +122,40 @@ export const addToFavorite = (postId, token) => {
             .catch(err => dispatch(addToFavoriteFail(err)));
     }
 } 
+
+//--------------Edit user-----------------
+
+export const editUserStart = () => {
+    return { 
+        type: actionTypes.EDIT_USER_START
+    }
+}
+
+export const editUserSuccess = (user) => {
+    return {
+        type: actionTypes.EDIT_USER_SUCCESS,
+        username: user.username,
+        profileImage: user.profileImage,
+        email: user.email,
+    }
+}
+
+export const editUserFail = (error) => {
+    return {
+        type: actionTypes.EDIT_USER_FAIL,
+        error: error
+    }
+}
+
+export const editUser = (userId, userData, token) => {
+    return dispatch => {
+        dispatch(editUserStart());
+        axios.put('/user/' + userId, userData, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(editUserSuccess(response.data.user));
+            })
+            .catch(error => {
+                dispatch(editUserFail(error.response.data.msg));
+            });
+    };
+}

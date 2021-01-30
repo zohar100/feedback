@@ -2,14 +2,16 @@ const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const isLoggedIn = require('../middlewares/middleware');
+const muletr = require('multer');
+const { storage, cloudinary } = require('../cloudinary');
+const upload = muletr({ storage })
 const User = require("../models/user.model");
 
-router.post('/register', async (req, res) => {
+router.post('/register', upload.single('file'), async (req, res) => {
     try{
         const {email, username, password} = req.body;
-        
-        //validate
 
+        //validate
         if(!email || !password || !username)
             return res.status(400).json({ msg: 'Not all fields have been entered.' });
         if(password.length < 5)
@@ -18,12 +20,16 @@ router.post('/register', async (req, res) => {
         const existingUser = await User.findOne({email: email});
         if(existingUser)
             return res.status(400).json({ msg: 'User with same email are exist.' });
-
+ 
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
-  
+
         const newUser = await new User({
             email: email,
+            profileImage: {
+                url: req.file.path,
+                filename: req.file.filename
+            },
             password: passwordHash,
             username: username
         });
@@ -62,6 +68,7 @@ router.post('/register', async (req, res) => {
                 id: user._id,
                 email: user.email,
                 username: user.username,
+                profileImage: user.profileImage,
                 posts: user.posts,
                 favorites: user.favorites,
                 following: user.following,
@@ -126,13 +133,13 @@ router.post('/login', async (req, res) => {
                 id: newUser._id,
                 email: newUser.email,
                 username: newUser.username,
+                profileImage: newUser.profileImage,
                 posts: newUser.posts,
                 favorites: newUser.favorites,
                 following: newUser.following,
                 followers: newUser.followers
             }
          });
-        req.user = user;
     }catch(err){
         return res.status(500).json({ error: err.message });
     }
@@ -168,11 +175,63 @@ router.get('/user/:id', isLoggedIn, async (req, res) => {
             model: 'User'
         })
                 
-        res.json(user)
+        res.json({
+            user: {
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            profileImage: user.profileImage,
+            posts: user.posts,
+            favorites: user.favorites,
+            following: user.following,
+            followers: user.followers
+        }
+    });
     }catch(err) {
         return res.status(400).json({ msg: 'User not exist.' })
     }
  
+})
+
+//edit user
+router.put('/user/:id', isLoggedIn, upload.single('file'), async (req, res) => {
+    const { username, email, password, newPassword } = req.body;
+
+    if(!username && !email && !newPassword) {
+        return res.status(400).json({ msg: 'No make any changes' });
+    }
+
+    const user = await User.findById(req.params.id);
+    const passwordIsMatch = await bcrypt.compare(password, user.password);
+    if(!passwordIsMatch){
+        return res.status(400).json({ msg: 'Invalid email or password.' });
+    }
+    if(newPassword) {
+            if(password.length < 5 || newPassword.length < 5){
+                return res.status(400).json({ msg: 'The password needs to be at leat 6 characters long.' });
+            }
+            const salt = await bcrypt.genSalt();
+            const passwordHash = await bcrypt.hash(newPassword, salt);
+            user.password = passwordHash;
+    }
+    if(req.file) {
+        await cloudinary.uploader.destroy(user.profileImage.filename);
+        user.profileImage = {
+            url: req.file.path,
+            filename: req.file.filename
+        }
+    }
+
+    if(username) {
+        user.username = username;
+    }
+    if(email) {
+        user.email = email;
+    }
+
+    console.log(user);
+    await user.save();
+    return res.json({msg: 'User updated successfuly!', user: user});
 })
 
 //get all users
@@ -268,6 +327,7 @@ router.post('/tokenIsValid', async (req,res) => {
                     id: sendUser._id,
                     email: sendUser.email,
                     username: sendUser.username,
+                    profileImage: sendUser.profileImage,
                     posts: sendUser.posts,
                     favorites: sendUser.favorites,
                     following: sendUser.following,

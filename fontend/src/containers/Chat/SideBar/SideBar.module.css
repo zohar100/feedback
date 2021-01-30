@@ -1,0 +1,19 @@
+.SideBar {
+  width: 100%;
+  height: 100%;
+  z-index: 80;
+  /* background-color: #26282b; */
+  background-color: white;
+}
+.SideBar h3 {
+  margin: auto;
+  width: fit-content;
+  font-size: 2rem;
+  color: aliceblue;
+}
+
+/* @media (min-width: 800px) {
+  .SideBar {
+    display: inline;
+  }
+} */

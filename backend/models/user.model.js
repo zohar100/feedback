@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    profileImage: {
+        url: {type: String},
+        filename: {type: String}
+    },
     email: {
         type: String, 
         required: true, 

@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Hoc from './hoc/Hoc/Hoc';
-import Layout from './hoc/Layout/Layout';
+import Layout from './containers/Layout/Layout';
 import Feed from './containers/Posts/posts';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile';
