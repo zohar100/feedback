@@ -15,6 +15,7 @@
   height: 100vh; */
   position: fixed;
   display: none;
+  z-index: 100;
 }
 
 /* .LeftBar {
@@ -39,14 +40,14 @@
 
 @media (min-width: 1200px) {
   .Layout {
-    width: 80%;
+    width: 70%;
   }
   .Main {
-    width: 55%;
-    margin-left: 43%;
+    width: 53%;
+    margin-left: 45%;
   }
   .RightBar {
-    width: 33%;
+    width: 31%;
     height: 100vh;
     display: block;
     position: fixed;

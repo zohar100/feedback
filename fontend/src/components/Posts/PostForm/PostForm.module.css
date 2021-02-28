@@ -17,6 +17,10 @@
   margin: 5px;
 }
 
+.AddPost div img {
+  margin: 5px;
+}
+
 .AddPost button {
   margin-left: 4px;
   display: inline-block;

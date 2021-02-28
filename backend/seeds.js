@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Post = require("./models/post.model");
+const Chat = require('./models/chat.model');
 
 //Data for seeding the database
 data = {
@@ -65,6 +66,24 @@ data = {
             comments: []
         }
     ],
+    chats: [
+        {
+            users: ['5fe369df01344944bca578b3', '5fe369f101344944bca578b4'],
+            messages: []
+        },
+        {
+            users: ['5fe369df01344944bca578b3', '5fe36a1301344944bca578b5'],
+            messages: []
+        },
+        {
+            users: ['5fe369df01344944bca578b3', '5fe4b0c7fd61ed4320cf7043'],
+            messages: []
+        },
+        {
+            users: ['5fe369df01344944bca578b3', '6012ce0f126f42508c86e4b6'],
+            messages: []
+        }
+]
 };
 
 //function for seeding the database with the data
@@ -82,6 +101,20 @@ function seedDB() {
       else if (index === data.posts.length - 1) {
         console.log('ADD POSTS')
       }
+    });
+  });
+
+  Chat.deleteMany()
+    .then(() => {console.log('CHATS REMOVED SUCCESSFULLY')})
+    .catch(err => {console.log(err)});
+  data.chats.map((chat, index) => {
+    Chat.create(chat, (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else if (index === data.chats.length - 1) {
+            console.log('ADD CHATS')
+        }
     });
   });
 }

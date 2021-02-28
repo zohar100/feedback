@@ -20,8 +20,7 @@ require("dotenv").config();
 
 //MIDDLEWARES
 app.use(cors({ 
-  credentials: true, 
-  origin: 'http://localhost:3000',
+  credentials: true
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -46,14 +45,16 @@ seeds();
 const commentRoutes = require('./routes/comment');
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/users');
+const chatRoutes = require('./routes/chats')
 
 app.use('/', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
+app.use('/chats', chatRoutes);
 
 app.use((err, req, res, next) => {
-  const { status };
-  res.status(status).json("Error: " + err)
+  const { status = 500, message = 'Something Went Wrong'} = err;
+  res.status(status).json({msg: message})
 })
 
 const port = process.env.PORT || 5000;

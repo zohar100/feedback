@@ -3,6 +3,7 @@ const Post = require("../models/post.model");
 const User = require("../models/user.model");
 const isLoggedIn  = require("../middlewares/middleware");
 
+
 //get all posts
 router.get("/", isLoggedIn, (req, res) => {
     Post.find()

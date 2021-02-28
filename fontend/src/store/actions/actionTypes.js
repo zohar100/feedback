@@ -41,3 +41,12 @@ export const ADD_TO_FAVORITE_FAIL = 'ADD_TO_FAVORITE_FAIL';
 
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const FOLLOW_USER_FAIL = 'FOLLOW_USER_FAIL';
+
+//--------------Chat-----------------
+export const FETCH_CHATS_START = 'FETCH_CHATS_START';
+export const FETCH_CHATS_SUCCESS = 'FETCH_CHATS_SUCCESS';
+export const FETCH_CHATS_FAIL = 'FETCH_CHATS_FAIL';
+
+export const FETCH_CHAT_START = 'FETCH_CHAT_START';
+export const FETCH_CHAT_SUCCESS = 'FETCH_CHAT_SUCCESS';
+export const FETCH_CHAT_FAIL = 'FETCH_CHAT_FAIL';

@@ -51,6 +51,10 @@
   color: #f5f5f5;
 }
 
+.UserInfo img {
+  margin: 6px;
+}
+
 .UserInfo .BasicInfo {
   display: flex;
   flex-flow: column;

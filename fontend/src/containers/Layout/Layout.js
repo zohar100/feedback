@@ -5,7 +5,7 @@ import Hoc from '../../hoc/Hoc/Hoc';
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/toolbar/toolbar';
 import SideDrawer from '../../components/Navigation/sideDrawer/SideDrawer';
-import ChatSideBar from '../Chat/SideBar/SideBar';
+import Chats from '../../components/Chats/Chats';
 import * as actions from '../../store/actions/index';
 
 const Layout = props => {
@@ -50,7 +50,9 @@ const Layout = props => {
         <Hoc>
             {layout}
             <main className={classes.Layout}>
-                <div className={classes.RightBar}><ChatSideBar/></div>
+                <div className={classes.RightBar}>
+                    <Chats/>
+                </div>
                 <div className={classes.Main}>
                     {props.children}
                 </div>
@@ -61,7 +63,8 @@ const Layout = props => {
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user
+        user: state.auth.user,
+        token: state.auth.token
     }
 } 
 

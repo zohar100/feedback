@@ -5,7 +5,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const ProfileImage = ({ imageUrl }) => {
     let image = <AccountCircleIcon/>
-    if(imageUrl !== null)
+    if(imageUrl && imageUrl !== null && imageUrl !== '')
     image = <img src={imageUrl} alt='profile'/>
 
     return (

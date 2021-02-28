@@ -20,3 +20,8 @@ export {
     followUser,
     fetchUser,
 }from './user';
+
+export {
+    fetchChats,
+    fetchChat
+}from './chat';
