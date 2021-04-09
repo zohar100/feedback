@@ -50,3 +50,11 @@ export const FETCH_CHATS_FAIL = 'FETCH_CHATS_FAIL';
 export const FETCH_CHAT_START = 'FETCH_CHAT_START';
 export const FETCH_CHAT_SUCCESS = 'FETCH_CHAT_SUCCESS';
 export const FETCH_CHAT_FAIL = 'FETCH_CHAT_FAIL';
+export const DELETE_CHAT = 'DELETE_CHAT';
+
+export const SET_SOCKET = 'SET_SOCKET';
+
+
+//--------------Message-----------------
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const REMOVE_MESSAGE = 'REMOVE_MESSAGE';

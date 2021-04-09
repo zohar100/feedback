@@ -8,6 +8,7 @@ const initialState = {
         users: [],
         messages: [],
     },
+    socket: null,
     error: null,
     loading: false
 }
@@ -38,8 +39,13 @@ const fetchChatStart = (state, action) => {
 }
 
 const fetchChatSuccess = (state, action) => {
+    const chat = updateObject(state.chat, {
+        id: action.chat._id,
+        users: action.chat.users,
+        messages: action.chat.messages,
+    })
     return updateObject(state, {
-        chat: action.chat,
+        chat: chat,
         loading: false,
         error: null
     })
@@ -48,6 +54,36 @@ const fetchChatSuccess = (state, action) => {
 const fetchChatFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
+        loading: false
+    })
+}
+
+const deleteChat = (state, action) => {
+    const chat = updateObject(state.chat,{
+        id: null,
+        users: [],
+        messages: [],
+    })
+    return updateObject(state, {
+        chat: chat
+    })
+}
+
+//--------------Add/Remove message-----------------
+const addMessage = (state, action) => {
+    console.log('Add Message REDUCER');
+    return updateObject(state.chat, {
+        messages: state.chat.messages.concat(action.message)
+    })
+}
+
+
+//--------------Socket-----------------
+const setSocket = (state, action) => {
+    console.log('=======Reducer=========', action.socket);
+    return updateObject(state, {
+        socket: action.socket,
+        error: null,
         loading: false
     })
 }
@@ -62,6 +98,11 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_CHAT_START: return fetchChatStart(state, action);
         case actionTypes.FETCH_CHAT_SUCCESS: return fetchChatSuccess(state, action);
         case actionTypes.FETCH_CHAT_FAIL: return fetchChatFail(state, action);
+        case actionTypes.DELETE_CHAT: return deleteChat(state, action);
+        //--------------Add/Remove message-----------------
+        case actionTypes.ADD_MESSAGE: return addMessage(state, action);
+        //--------------Socket-----------------
+        case actionTypes.SET_SOCKET: return setSocket(state, action);
     default: 
         return state;
     }

@@ -1,0 +1,14 @@
+.ChatInfo {
+  background-color: #353941;
+  display: flex;
+  padding: 5px;
+}
+
+.ChatInfo svg {
+  font-size: 70px;
+}
+
+.ChatInfo h3 {
+  margin-left: 10px;
+  margin-bottom: 18px;
+}

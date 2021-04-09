@@ -1,0 +1,11 @@
+.ChatForm {
+  padding: 5px;
+}
+
+.ChatForm form {
+  display: flex;
+}
+
+.ChatForm button {
+  margin-top: 22px;
+}

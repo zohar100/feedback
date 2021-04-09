@@ -23,5 +23,8 @@ export {
 
 export {
     fetchChats,
-    fetchChat
+    fetchChat,
+    deleteChat, 
+    setSocket,
+    addMessage
 }from './chat';

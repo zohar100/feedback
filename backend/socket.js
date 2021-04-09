@@ -20,16 +20,15 @@ module.exports = async (io) => {
     socket.on('Join', async (data) => {
     try{
         const foundChat = await Chat.findById(data.chatId);  
-        // console.log(foundChat);
         socket.join(data.chatId); 
     }catch(error) {
         console.error(error)
     }  
     })
 
-    socket.on('Input Message', async (data) => {
+    socket.on('inputMessage', async (data) => {
         // data required chatId and message
-        try {  
+        try { 
             const chat = await Chat.findById(data.chatId);
             const newMessage = await new Message({user: socket.userId, text: data.message})
             chat.messages.push(newMessage._id)
@@ -37,8 +36,8 @@ module.exports = async (io) => {
             await newMessage.save().then((result) => {
                 Message.populate(newMessage, {path: 'user'})
                 .then(comment => {
-                    console.log(newMessage);
-                    io.sockets.in(data.chatId).emit('outputMessage', comment);     
+                    io.sockets.in(data.chatId).emit('outputMessage', comment); 
+                    console.log('after emit /n' + comment);    
                 })
             });
         }catch(error) {
