@@ -19,7 +19,7 @@ const post = (props) => {
             <div className={classes.Post}>
                 <div className={classes.UserInfo}>
                     <Link to={'/profile/' + props.userId}>
-                        <ProfileImage imageUrl={props.profileImage.url}/>
+                        <ProfileImage imageUrl={props.profileImage.url || ''}/>
                     </Link>
                     <div className={classes.BasicInfo}>
                     <Link to={'/profile/' + props.userId}>

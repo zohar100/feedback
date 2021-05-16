@@ -8,7 +8,6 @@ const initialState = {
         users: [],
         messages: [],
     },
-    socket: null,
     error: null,
     loading: false
 }
@@ -72,19 +71,12 @@ const deleteChat = (state, action) => {
 //--------------Add/Remove message-----------------
 const addMessage = (state, action) => {
     console.log('Add Message REDUCER');
-    return updateObject(state.chat, {
-        messages: state.chat.messages.concat(action.message)
-    })
-}
-
-
-//--------------Socket-----------------
-const setSocket = (state, action) => {
-    console.log('=======Reducer=========', action.socket);
+    const updatedChat = updateObject(state.chat, {
+        messages: state.chat.messages.concat(action.message),
+    });
     return updateObject(state, {
-        socket: action.socket,
-        error: null,
-        loading: false
+        chat: updatedChat,
+        error: null
     })
 }
 
@@ -101,8 +93,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.DELETE_CHAT: return deleteChat(state, action);
         //--------------Add/Remove message-----------------
         case actionTypes.ADD_MESSAGE: return addMessage(state, action);
-        //--------------Socket-----------------
-        case actionTypes.SET_SOCKET: return setSocket(state, action);
     default: 
         return state;
     }

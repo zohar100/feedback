@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Hoc from '../../hoc/Hoc/Hoc';
 import classes from './Layout.module.css';
@@ -10,16 +10,22 @@ import Chat from '../Chat/Chat';
 import * as actions from '../../store/actions/index';
 
 const Layout = props => {
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.token);
+    const user = useSelector(state => state.auth.user);
+    const chats = useSelector(state => state.chat.chats);
+    const chat = useSelector(state => state.chat.chat);
+    
     const [showUserModal, setShowUserModal] = useState(false);
     const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-    const {user, token, onFetchChats} = props;
+    const {fetchChats, fetchChat, authLogout} = actions;
 
     useEffect(() => {
     if(token && user.id){
-            onFetchChats(user.id, token)
+            dispatch(fetchChats(user.id, token))
     }
-    }, [user, token, onFetchChats,])
+    }, [user, token, fetchChats, dispatch])
 
     const showUserModalHandler = () => {
         setShowUserModal(!showUserModal);
@@ -34,27 +40,27 @@ const Layout = props => {
     }
 
     const logoutHandler = () => {
-        props.onAuthLogout();
+        dispatch(authLogout())
     }
 
     const onClickedChat = (chatId) => {
-        props.onFetchChat(chatId, props.token);
-        console.log(props.chat);
+        dispatch(fetchChat(chatId, token));
+        console.log(chat);
     }
 
         let layout = (
             <Hoc>
                 <Toolbar 
                 clicked={sideDrawerOpenHandler} 
-                username={props.user.username}
+                username={user.username}
                 showUserModal={showUserModal}
                 clickToShowModal={showUserModalHandler}
                 logout={logoutHandler}/>
                 <SideDrawer 
                 open={showSideDrawer} 
-                username={props.user.username} 
+                username={user.username} 
                 closed={sideDrawerClosedHandler}
-                userId={props.user.id}/>
+                userId={user.id}/>
             </Hoc>
         );
         if (!props.show) {
@@ -66,8 +72,8 @@ const Layout = props => {
             <main className={classes.Layout}>
                 <div className={classes.RightBar}>
                     <ChatsList 
-                    chats={props.chats}
-                    user={props.user}
+                    chats={chats}
+                    user={user}
                     chatClicked={onClickedChat}/>
                     <Chat/>
                 </div>
@@ -79,25 +85,7 @@ const Layout = props => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        user: state.auth.user,
-        token: state.auth.token,
-        chats: state.chat.chats,
-        chat: state.chat.chat,
-        socket: state.chat.socket
-    }
-} 
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onAuthLogout: () => dispatch(actions.authLogout()),
-        onFetchChats: (userId, token) => dispatch(actions.fetchChats(userId, token)),
-        onFetchChat: (chatId, token) => dispatch(actions.fetchChat(chatId, token)),
-        onSetSocket: (socket) => dispatch(actions.setSocket(socket))
-    }
-}
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default Layout;

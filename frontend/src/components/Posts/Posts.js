@@ -39,7 +39,7 @@ const Posts = ({ posts, loading, currentUser,
                     likesCount={post.likes.length}
                     likeClick={() => likeClickHandler(post._id)}
                     likeActive={post.likes.find(like => like === currentUser.id ? true : false)}
-                    addToFavorite={() => addToFavoriteHandler(post._id)}
+                    addToFavorite={() => addToFavoriteHandler(post._id, currentUser.id)}
                     favoriteActive={currentUser.favorites.find(favPost => favPost._id === post._id ? true : false)}
                 />
                 <Comments

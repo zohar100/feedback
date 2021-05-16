@@ -33,7 +33,7 @@ export const fetchUserFail = (error) => {
 export const fetchUser = (userId, token) => {
     return dispatch => {
         dispatch(fetchUserStart());
-        axios.get('user/' + userId, {headers: { "x-auth-token": token }})
+        axios.get('/users/' + userId, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(fetchUserSuccess(response.data.user));
             })
@@ -43,7 +43,7 @@ export const fetchUser = (userId, token) => {
     };
 }
 
-//--------------Follow/unfollow user-----------------
+//--------------Follow/Unfollow User-----------------
 export const followUserSuccess = (currentUser) => {
     return {
         type: actionTypes.FOLLOW_USER_SUCCESS,
@@ -61,7 +61,7 @@ export const followUserFail = (err) => {
 
 export const followUser = (userId, token) => {
     return dispatch => {
-        axios.post('/follow/' + userId, null, {headers: { "x-auth-token": token }})
+        axios.post('/users/follow/' + userId, null, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(followUserSuccess(response.data.currentUser))
                 console.log(response);
@@ -70,5 +70,39 @@ export const followUser = (userId, token) => {
                 dispatch(followUserFail(err))
                 console.log(err)
             });
+    }
+}
+
+//--------------Search Users-----------------
+export const searchUsersStart = () => {
+    return {
+        type: actionTypes.SEARCH_USERS_START
+    }
+}
+export const searchUsersSuccess = (users) => {
+    return {
+        type: actionTypes.SEARCH_USERS_SUCCESS,
+        users: users
+    }
+}
+export const searchUsersFail = (err) => {
+    return {
+        type: actionTypes.SEARCH_USERS_FAIL,
+        error: err
+    }
+}
+
+export const searchUsers = (token, searchValue, searchRef) => {
+    return dispatch => {
+        if(searchValue=== searchRef){
+            dispatch(searchUsersStart())
+            const query = 
+            searchValue ? searchValue.length === 0 ? 
+            '' : `?username=${searchValue}` : '';
+            axios.get('/users' + query, {headers: { "x-auth-token": token }})
+            .then((response)=> {
+                dispatch(searchUsersSuccess(response.data))
+            }).catch(err=> dispatch(searchUsersFail(err)))
+          }  
     }
 }

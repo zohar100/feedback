@@ -79,11 +79,9 @@ export const deleteChat = (chatId, token) => {
 
 //--------------Add/Remove message-----------------
 export const addMessage = (msg) => {
-    console.log('Add Message ACTION');
     return{
         type: actionTypes.ADD_MESSAGE,
         message: msg,
-        error: null
     }
 }
 
@@ -92,13 +90,5 @@ export const removeMessage = (msgId) => {
         type: actionTypes.REMOVE_MESSAGE,
         messageId: msgId,
         error: null
-    }
-}
-
-//--------------Socket-----------------
-export const setSocket = (socket) => {
-    return {
-        type: actionTypes.SET_SOCKET,
-        socket: socket
     }
 }

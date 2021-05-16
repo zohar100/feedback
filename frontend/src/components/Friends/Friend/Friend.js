@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import classes from './Friend.module.css';
-import Button from '../UI/Button/Button';
+import Button from '../../UI/Button/Button';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 

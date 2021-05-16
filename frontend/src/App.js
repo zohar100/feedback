@@ -6,7 +6,7 @@ import Layout from './containers/Layout/Layout';
 import Feed from './containers/Posts/posts';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile';
-import Friends from './containers/Friends/Friends';
+import Search from './containers/Search/Search';
 import Favorites from './containers/Favorites/Favorites';
 import * as actions from './store/actions/index';
 
@@ -30,7 +30,7 @@ const App = props => {
     <Switch>
       <Route path='/profile/:id' exact component={Profile}/>
       <Route path='/favorites' component={Favorites}/>
-      <Route path='/search' component={Friends}/>
+      <Route path='/search' component={Search}/>
       <Route path='/auth' render={() => <Auth/>}/>
       <Route path='/' component={Feed}/> 
       <Redirect to="/auth"/>

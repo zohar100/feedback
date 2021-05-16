@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import classes from './Auth.module.css';
@@ -12,32 +12,32 @@ import * as actions from '../../store/actions/index';
 import checkValidity from '../../utilities/checkFormValidity';
 import useForm from '../../utilities/useForm';
 
-const Auth = props => {
-    const formRules = {
-        username: {
-            required: true
-        },
-        email: {
-            required: true,
-            isEmail: true,
-        },
-        password: {
-            required: true,
-            minLength: 6,
-        }
-    } 
+const formRules = {
+    username: {
+        required: true
+    },
+    email: {
+        required: true,
+        isEmail: true,
+    },
+    password: {
+        required: true,
+        minLength: 6,
+    }
+} 
+
+const Auth = () => {
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(state => state.auth.token !== null)
+    const {loading, error} = useSelector(state => state.auth)
+
+    const {authRegister, authLogin} = actions;
 
     const submitHandler = () => {
-        // axios.post("https://httpbin.org/anything", formData)
-        //     .then((res) => console.log(res))
-        //     .catch((err) => console.log(err))
         if(isSingup) {
-                props.onAuthRegister(formData)
+            dispatch(authRegister(formData))
         }else{
-            props.onAuthLogin(
-                formValue.email,
-                formValue.password
-            )
+            dispatch(authLogin(formValue.email,formValue.password))
         }
     }
 
@@ -91,7 +91,7 @@ const Auth = props => {
         ) 
 
         let authRedirect = null;
-        if(props.isAuthenticated) {
+        if(isAuthenticated) {
           authRedirect= <Redirect to='/'/>
         }
 
@@ -116,10 +116,10 @@ const Auth = props => {
             </Hoc>
         );
         let err = null;
-        if(props.error){
-            err = <div className={classes.Error}> {props.error} </div> 
+        if(error){
+            err = <div className={classes.Error}> {error} </div> 
         }
-        if(props.loading){
+        if(loading){
             spinnerOrForm = (
             <div className={classes.SpinnerDiv}>
                 <Spinner spinnerType="Secendary-Spinner"/>
@@ -141,19 +141,4 @@ const Auth = props => {
         )
 }
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth.token !== null,
-        loading: state.auth.loading,
-        error: state.auth.error
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onAuthRegister: (username, email, password) => dispatch(actions.authRegister(username, email, password)),
-        onAuthLogin: (email, password) => dispatch(actions.authLogin(email, password))
-    }
-}
-
-export default connect(mapStateToProps ,mapDispatchToProps)(Auth);
+export default Auth;

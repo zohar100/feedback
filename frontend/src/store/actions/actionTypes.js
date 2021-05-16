@@ -3,6 +3,10 @@ export const FETCH_POSTS_START = 'FETCH_POSTS_START';
 export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
 export const FETCH_POSTS_FAIL = 'FETCH_POSTS_FAIL';
 
+export const FETCH_FAVORITES_START = 'FETCH_FAVORITES_START';
+export const FETCH_FAVORITES_SUCCESS = 'FETCH_FAVORITES_SUCCESS';
+export const FETCH_FAVORITES_FAIL = 'FETCH_FAVORITES_FAIL';
+
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 export const DELETE_POST_FAIL = 'DELETE_POST_SUCCESS';
 
@@ -42,6 +46,12 @@ export const ADD_TO_FAVORITE_FAIL = 'ADD_TO_FAVORITE_FAIL';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const FOLLOW_USER_FAIL = 'FOLLOW_USER_FAIL';
 
+
+//--------------User-----------------
+export const SEARCH_USERS_START = 'SEARCH_USERS_START';
+export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
+export const SEARCH_USERS_FAIL = 'SEARCH_USERS_FAIL';
+
 //--------------Chat-----------------
 export const FETCH_CHATS_START = 'FETCH_CHATS_START';
 export const FETCH_CHATS_SUCCESS = 'FETCH_CHATS_SUCCESS';
@@ -51,8 +61,6 @@ export const FETCH_CHAT_START = 'FETCH_CHAT_START';
 export const FETCH_CHAT_SUCCESS = 'FETCH_CHAT_SUCCESS';
 export const FETCH_CHAT_FAIL = 'FETCH_CHAT_FAIL';
 export const DELETE_CHAT = 'DELETE_CHAT';
-
-export const SET_SOCKET = 'SET_SOCKET';
 
 
 //--------------Message-----------------

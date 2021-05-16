@@ -4,7 +4,6 @@
   background-color: #353941;
   margin: 10px auto;
   color: white;
-  font-family: "Roboto Condensed", sans-serif;
   border-radius: 10px;
 }
 
@@ -13,12 +12,16 @@
 }
 
 .AddPost div svg {
-  font-size: 40px;
+  font-size: 65px;
   margin: 5px;
 }
 
 .AddPost div img {
   margin: 5px;
+}
+
+.AddPost div p {
+  font-size: 1.3rem;
 }
 
 .AddPost button {

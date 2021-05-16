@@ -97,7 +97,6 @@ const Profile = props => {
     }
 
     const editUserButtonClicked = () => {
-        console.log('clicked');
         setShowEditUserModal(true);
     }
 
@@ -144,11 +143,6 @@ const Profile = props => {
                 </div>
             </div>
             <div className={classes.ProfilePosts}>
-                {/* <Friend
-                    username={props.user.username}
-                    city='NY'
-                    study='Bear College'
-                    work='Google'/> */}
                 {props.user.id === props.currentUser.id ?                 
                 <PostForm 
                     bodyValue={postFormValue.body || ""}

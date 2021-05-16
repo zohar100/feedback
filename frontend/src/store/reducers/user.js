@@ -15,6 +15,7 @@ const initialState = {
         followers: [],
         following: []
     },
+    users: [],
     loading: false,
     error: null,
 }
@@ -52,7 +53,7 @@ const fetchUserFail = (state, action) => {
     })
 }
 
-//--------------Follow/unfollow user-----------------
+//--------------Follow/Unfollow User-----------------
 const followUserSuccess = (state, action) => {
     let fetchedUser = updateObject(state.fetchedUser, {
         followers: state.fetchedUser.followers.concat(action.currentUser)
@@ -76,6 +77,27 @@ const followUserFail = (state, action) => {
     })
 }
 
+//--------------Search Users-----------------
+const searchUsersStart = (state, action) => {
+    return updateObject(state, {
+        loading: true, 
+        error: null
+    })
+}
+
+const searchUsersSuccess = (state, action) => {
+    return updateObject(state, {
+        users: action.users
+    })
+}
+
+const searchUsersFail = (state, action) => {
+    return updateObject(state, {
+        loading: false,
+        error: action.error
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.FETCH_USER_START: return fetchUserStart(state, action);
@@ -83,6 +105,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_USER_FAIL: return fetchUserFail(state, action);
         case actionTypes.FOLLOW_USER_SUCCESS: return followUserSuccess(state, action);
         case actionTypes.FOLLOW_USER_FAIL: return followUserFail(state, action);
+        case actionTypes.SEARCH_USERS_START: return searchUsersStart(action, action);
+        case actionTypes.SEARCH_USERS_SUCCESS: return searchUsersSuccess(action, action);
+        case actionTypes.SEARCH_USERS_FAIL: return searchUsersFail(action, action);
         default:
             return state;
     }

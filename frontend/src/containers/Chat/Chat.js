@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import classes from './Chat.module.css';
 import ChatInfo from '../../components/ChatInfo/ChatInfo'; 
@@ -12,50 +12,57 @@ import * as actions from '../../store/actions/index';
 
 
 const Chat = (props) => {
+    const dispatch = useDispatch();
+    const {token, user} = useSelector(state => state.auth);
+    const chat = useSelector(state => state.chat.chat)
     const [showChat, setShowChat] = useState(false);
 
-    const {chat, token} = props;
+    const {deleteChat, addMessage} = actions;
 
-    const { send, messages } = useWebSockets({
+    const { join, send } = useWebSockets({
         token: token,
-        enabled: token ? true: false
+        enabled: token ? true: false,
+        addMessage: addMessage
     })
 
     const submitHandler = () => {
-        // ref.current.emit('inputMessage', ({chatId: chat.id, message:formValue.text}), () => {
-        //     console.log('onEmitMessage');
-        // });
         send(formValue.text, chat.id)
       }
   
-      const [formValue, setInputValue, handleSubmit] = useForm(null, null, submitHandler);
+    const [formValue, setInputValue, handleSubmit] = useForm(null, null, submitHandler);
 
     useEffect(() => {
-        if(chat.id !== null) setShowChat(true)
+        if(chat.id !== null) setShowChat(true);
     }, [chat])
+
+    useEffect(() => {
+        if(chat.id !== null) {
+            join(chat.id);
+        }
+    }, [chat, join])
 
     const modalClickedHandler = () => {
         setShowChat(false)
-        props.onDeleteChat()
+        dispatch(deleteChat())
     }
 
-    // useEffect(() => {
-//   if(ref.current)
-//   ref.current.on('outputMessage', (message) => {
-//       console.log('recivingChatdata')
-//       actions.addMessage(message)
-//   })
-//   console.log(chat.messages);
-// }, [chat.messages, ref]);
+    let username;
+    let profileImage;
+    if(chat.id){
+        username = chat.users[0]._id === user.id ? chat.users[1].username : chat.users[0].username;
+        profileImage=chat.users[0]._id === user.id ? chat.users[1].profileImage.url : chat.users[0].profileImage.url;
+    }
 
    return(
+       
        <Modal show={showChat} modalClosed={() => modalClickedHandler()}>
             <ChatInfo
-            username={'username'}/>
+            username={username}
+            profileImage={profileImage}/>
             <div className={classes.Messages}>
                 <Messages
-                messages={messages}
-                currentUserId={props.user.id}/>
+                messages={chat.messages}
+                currentUserId={user.id}/>
             </div>
             <ChatForm
             formValue={formValue.text}
@@ -64,22 +71,6 @@ const Chat = (props) => {
             />
        </Modal>
    )
-}
+};
 
-const mapStateToProps = state => {
-    return {
-        user: state.auth.user,
-        chat: state.chat.chat,
-        socket: state.chat.socket,
-        token: state.auth.token,
-    }
-} 
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onFetchChat: (chatId, token) => dispatch(actions.fetchChat(chatId, token)),
-        onDeleteChat: () => dispatch(actions.deleteChat())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default Chat;

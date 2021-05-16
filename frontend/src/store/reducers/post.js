@@ -10,7 +10,11 @@ const initialState = {
 
 //--------------Fetching posts-----------------
 const fetchPostsStart = (state, action) => {
-    return updateObject(state, {loading: true, error: null});
+    return updateObject(state, {
+        loading: true, 
+        error: null,
+        posts:[]
+    });
 }
 
 const fetchPostsSuccess = (state, action) => {
@@ -22,6 +26,30 @@ const fetchPostsSuccess = (state, action) => {
 }
 
 const fetchPostsFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false
+    });
+}
+
+//--------------Fetching favorites-----------------
+const fetchFavoritesStart = (state, action) => {
+    return updateObject(state, {
+        loading: true, 
+        error: null,
+        posts:[]
+    });
+}
+
+const fetchFavoritesSuccess = (state, action) => {
+    return updateObject(state, {
+        posts: action.posts,
+        loading: false,
+        error: null
+    });
+}
+
+const fetchFavoritesFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false
@@ -155,6 +183,10 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_POSTS_START: return fetchPostsStart(state, action);
         case actionTypes.FETCH_POSTS_SUCCESS: return fetchPostsSuccess(state, action);
         case actionTypes.FETCH_POSTS_FAIL: return fetchPostsFail(state, action);
+        //--------------Fetching favorites-----------------
+        case actionTypes.FETCH_FAVORITES_START: return fetchFavoritesStart(state, action);
+        case actionTypes.FETCH_FAVORITES_SUCCESS: return fetchFavoritesSuccess(state, action);
+        case actionTypes.FETCH_FAVORITES_FAIL: return fetchFavoritesFail(state, action);
         //--------------Delete post-----------------
         case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
         case actionTypes.DELETE_POST_FAIL: return deletePostFail(state, action);

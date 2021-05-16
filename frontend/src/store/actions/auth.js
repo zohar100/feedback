@@ -116,9 +116,9 @@ export const addToFavoriteFail = (err) => {
     }
 } 
 
-export const addToFavorite = (postId, token) => {
+export const addToFavorite = (token, postId, userId) => {
     return dispatch => {
-        axios.post('posts/' + postId + '/favorite', null, {headers: { "x-auth-token": token }})
+        axios.post('users/' + userId + '/favorite', {postId: postId}, {headers: { "x-auth-token": token }})
             .then(response => dispatch(addToFavoriteSuccess(response.data)))
             .catch(err => dispatch(addToFavoriteFail(err)));
     }
@@ -151,7 +151,8 @@ export const editUserFail = (error) => {
 export const editUser = (userId, userData, token) => {
     return dispatch => {
         dispatch(editUserStart());
-        axios.put('/user/' + userId, userData, {headers: { "x-auth-token": token }})
+        console.log(userData);
+        axios.put('/users/' + userId, userData, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(editUserSuccess(response.data.user));
             })

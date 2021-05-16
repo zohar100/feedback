@@ -1,5 +1,6 @@
 export {
     fetchPosts,
+    fetchFavorites,
     deletePost,
     addPost,
     addComment,
@@ -19,12 +20,12 @@ export {
 export {
     followUser,
     fetchUser,
+    searchUsers
 }from './user';
 
 export {
     fetchChats,
     fetchChat,
     deleteChat, 
-    setSocket,
     addMessage
 }from './chat';

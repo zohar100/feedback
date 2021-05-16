@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import classes from './posts.module.css';
 import useForm from '../../utilities/useForm';
@@ -7,37 +7,43 @@ import PostForm from '../../components/Posts/PostForm/PostForm';
 import Posts from '../../components/Posts/Posts';
 import * as actions from '../../store/actions/index';
 
-const Feed = props => {
+const Feed = () => {
+    const dispatch = useDispatch();
+    const {user, token} = useSelector(state => state.auth);
+    const {posts, loading} = useSelector(state => state.post);
+
+    const { fetchPosts, deletePost,
+            addPost, toggleLike,
+            addToFavorite, addComment,
+            deleteComment } = actions;
+
     const addPostHandler = () => {
         const post = {
-             author: props.user.id,
+             author: user.id,
              body: postFormValue.body,
              image: postFormValue.image
          }
-         props.onAddPost(post, props.token)
+         dispatch(addPost(post, token))
     }
-    const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
-
     const addCommentHandler = (postId) => {
         const comment = {
             body: commentFormValue.body
         }
-        props.onAddComment(comment, postId, props.token)
+        dispatch(addComment(comment, postId, token));
     }
-     const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
+
+    const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
+    const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
     
     const [showModal, setShowModal] = useState(null);
     const [showComments, setShowComments] = useState(null);
     const [showCommentModal, setShowCommentModal] = useState(null);
 
-
-    const { onFetchPosts, isAuthenticated, token } = props;
-
     useEffect(() => {
-        if(isAuthenticated){
-            onFetchPosts(token);
+        if(token !== null){
+            dispatch(fetchPosts(token));
         }
-    }, [onFetchPosts, isAuthenticated, token])
+    }, [fetchPosts, token, dispatch])
 
     const showModalHandler = (postId) => {
         setShowModal(prevState => {
@@ -58,15 +64,15 @@ const Feed = props => {
     }
 
     const likeClickHandler = (postId) => {
-        props.onLikePost(postId, props.user.id, props.token)
+        dispatch(toggleLike(postId, user.id, token));
     }
 
     const deletePostHandler = (postId) => {
-        props.onDeletePost(postId, props.token);
+        dispatch(deletePost(postId, token));
     }
 
-    const addToFavoriteHandler = (postId) => {
-        props.onAddToFavorite(postId, props.token)
+    const addToFavoriteHandler = (postId, userId) => {
+        dispatch(addToFavorite(token, postId, userId));
     }
 
     const showCommentModalHandler = (commentId) => {
@@ -79,7 +85,7 @@ const Feed = props => {
     }
 
     const deleteCommentHandler = (commentId, postId) => {
-        props.onDeleteComment(postId, commentId, props.token)
+        dispatch(deleteComment(postId, commentId, token));
     }
 
         return(
@@ -89,11 +95,11 @@ const Feed = props => {
                     imageValue={postFormValue.image || ""}
                     inputValueChanged={setPostInputValue}
                     submitHandler={handlePostSubmit}
-                    currentUser={props.user}/> 
+                    currentUser={user}/> 
                 <Posts
-                    posts={props.posts}
-                    loading={props.loading}
-                    currentUser={props.user}
+                    posts={posts}
+                    loading={loading}
+                    currentUser={user}
                     showModal={showModal}
                     showModalHandler={showModalHandler}
                     deletePostHandler={deletePostHandler}
@@ -111,26 +117,4 @@ const Feed = props => {
         )
 }
 
-const mapStateToProps = state => {
-    return{
-        user: state.auth.user,
-        posts: state.post.posts,
-        loading: state.post.loading,
-        token: state.auth.token,
-        isAuthenticated: state.auth.token !== null
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onFetchPosts: (token) => dispatch(actions.fetchPosts(token)),
-        onDeletePost: (postId, token) => dispatch(actions.deletePost(postId, token)),
-        onAddPost: (post, token) => dispatch(actions.addPost(post, token)),
-        onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
-        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token)),
-        onAddComment: (comment, postId, token) => dispatch(actions.addComment(comment, postId, token)),
-        onDeleteComment: (postId, commentId, token) => dispatch(actions.deleteComment(postId, commentId, token))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default Feed;

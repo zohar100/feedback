@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios'
 
 import classes from './EditUser.module.css';
 import useForm from '../../../utilities/useForm';
@@ -32,7 +33,9 @@ const EditUser = (props) => {
     } 
 
     const submitHandler = () => {
-        console.log(formData);
+        axios.post("https://httpbin.org/anything", formData)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
         props.onEditUser(props.user.id, formData, props.token);
     }
 

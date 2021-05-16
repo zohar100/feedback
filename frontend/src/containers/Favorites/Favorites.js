@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './Favorites.module.css';
 import Post from '../../components/Posts/Post/Post';
+// import Posts from '../../components/Posts/Posts';
 import * as actions from '../../store/actions/index';
 
 const Favorites = props => {
     const [showModal, setShowModal] = useState(null);
     const [showComments, setShowComments] = useState(null); 
+
+    useEffect(() => {
+        props.onFetchFavorites(props.token, props.user.id)
+    },[])
 
     const deletePostHandler = (postId) => {
         props.onDeletePost(postId, props.token);
@@ -48,6 +53,7 @@ const Favorites = props => {
                 username={post.author.username} 
                 body={post.body}
                 image={post.image}
+                profileImage={post.author.profileImage}
                 createdAt = {post.createdAt}
                 showModal={showModal === post._id ? true : false}
                 modalClicked={() => showModalHandler(post._id)}
@@ -70,6 +76,23 @@ const Favorites = props => {
             <div className={classes.Favorites}>
                 <h2>FAVORITES</h2>
                 {posts}
+                {/* <Posts
+                    posts={props.posts}
+                    loading={props.loading}
+                    currentUser={props.user}
+                    showModal={showModal}
+                    showModalHandler={showModalHandler}
+                    deletePostHandler={deletePostHandler}
+                    showCommentsHandler={showCommentsHandler}
+                    likeClickHandler={likeClickHandler}
+                    addToFavoriteHandler={addToFavoriteHandler}
+                    showComments={showComments}
+                    deleteCommentHandler={deleteCommentHandler}
+                    showCommentModal={showCommentModal}
+                    showCommentModalHandler={showCommentModalHandler}
+                    bodyValue={commentFormValue.body || ""}
+                    inputValueChanged={setCommentInputValue}
+                    commentHandleSubmit={handleCommentSubmit}/> */}
             </div>
         )
 }
@@ -77,7 +100,7 @@ const Favorites = props => {
 const mapStateToProps = state  => {
     return {
         user: state.auth.user,
-        posts: state.auth.user.favorites,
+        posts: state.post.posts,
         token: state.auth.token
     }
 }
@@ -89,7 +112,8 @@ const mapDispatchToProps = dispatch => {
         onFetchUser: (userId, token) => dispatch(actions.fetchUser(userId, token)),
         onFollowUser: (userId, token) => dispatch(actions.followUser(userId, token)),
         onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
-        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token))
+        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token)),
+        onFetchFavorites: (token, userId) => dispatch(actions.fetchFavorites(token, userId))
     }
 }
 

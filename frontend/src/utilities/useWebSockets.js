@@ -1,10 +1,16 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import io from 'socket.io-client';
 
 
-const useWebSockets = ({token, enabled, onConnected}) => {
+const useWebSockets = ({token, enabled, addMessage, onConnected}) => {
   const ref = useRef();
-  const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
+
+  const join = (chatId) => {
+    ref.current.emit('join', ({chatId: chatId}), () => {
+  });
+  };
 
   const send = (msg, chatId) => {
     ref.current.emit('inputMessage', ({chatId: chatId, message:msg}), () => {
@@ -29,8 +35,7 @@ const useWebSockets = ({token, enabled, onConnected}) => {
     });
 
     socket.on('outputMessage', (message) => {
-      console.log('hello');
-      setMessages((prev) => prev.concat(message))
+      dispatch(addMessage(message))
   });
 
     socket.on('connect', () => {
@@ -42,11 +47,11 @@ const useWebSockets = ({token, enabled, onConnected}) => {
     ref.current = socket;
 
     return () => socket.disconnect();
-  }, [enabled, token, onConnected]);
+  }, [enabled, token, onConnected, addMessage, dispatch]);
 
   return {
-    send,
-    messages
+    join,
+    send
   };
 };
 

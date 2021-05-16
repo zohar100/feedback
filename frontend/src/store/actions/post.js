@@ -34,6 +34,39 @@ export const fetchPosts = (token) => {
     }
 }
 
+//--------------Fetching favorites-----------------
+export const fetchFavoritesStart = () => {
+    return {
+        type: actionTypes.FETCH_FAVORITES_START,
+    }
+}
+
+export const fetchFavoritesSuccess = (posts) => {
+    return {
+        type: actionTypes.FETCH_FAVORITES_SUCCESS,
+        posts: posts
+    }
+}
+
+export const fetchFavoritesFail = (err) => {
+    return {
+        type: actionTypes.FETCH_FAVORITES_FAIL,
+        error: err
+    }
+}
+
+export const fetchFavorites = (token, userId) => {
+    return dispatch => {
+        dispatch(fetchFavoritesStart())
+            axios.get('/users/'+ userId +'/favorites', {headers: { "x-auth-token": token }})
+            .then(response => {
+                    dispatch(fetchFavoritesSuccess(response.data));
+            })
+            .catch(error => dispatch(fetchFavoritesFail(error)));
+    }
+}
+
+
 
 //--------------Delete post-----------------
 export const deletePostSuccess = (postId) => {

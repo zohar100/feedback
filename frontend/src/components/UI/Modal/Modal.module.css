@@ -5,8 +5,9 @@
   width: 70%;
   min-height: 550px;
   height: fit-content;
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 1px black;
+  border: 1px solid rgb(53, 53, 53);
+  border-radius: 10px;
+  box-shadow: 1px 1px 40px black;
   left: 15%;
   color: white;
   top: 15%;
