@@ -17,7 +17,7 @@ module.exports = async (io) => {
     io.on('connection',  (socket) => {
         console.log('Connected: ' + socket.userId)
     
-    socket.on('Join', async (data) => {
+    socket.on('join', async (data) => {
     try{
         const foundChat = await Chat.findById(data.chatId);  
         socket.join(data.chatId); 
@@ -37,7 +37,6 @@ module.exports = async (io) => {
                 Message.populate(newMessage, {path: 'user'})
                 .then(comment => {
                     io.sockets.in(data.chatId).emit('outputMessage', comment); 
-                    console.log('after emit /n' + comment);    
                 })
             });
         }catch(error) {
