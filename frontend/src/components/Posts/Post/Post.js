@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import MoreOptions from '../../UI/MoreOptions/MoreOptions';
-import Option from '../../UI/MoreOptions/OptionsModal/Option/Option';
+import OptionsModal from '../../UI/OptionsModal/OptionsModal';
 import classes from './Post.module.css';
 import Button from '../../UI/Button/Button';
 import ProfileImage from '../../ProfileImage/ProfileImage';
 
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
@@ -15,29 +15,41 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const post = (props) => {
+    const postOptionList = [
+        {
+            text: 'Delete',
+            show: props.showDeleteButton,
+            click: props.deletePost,
+            svgComponent: DeleteOutlineIcon
+        },
+        {
+            text: 'Report',
+            // click: props.deletePost,
+            svgComponent: ErrorOutlineIcon
+        }
+    ]
+
     return(
             <div className={classes.Post}>
                 <div className={classes.UserInfo}>
-                    <Link to={'/profile/' + props.userId}>
-                        <ProfileImage imageUrl={props.profileImage.url || ''}/>
-                    </Link>
+                    <div className={classes.profileImage}>
+                        <Link to={'/profile/' + props.userId}>
+                            <ProfileImage imageUrl={props.profileImage.url || ''}/>
+                        </Link>
+                    </div>
                     <div className={classes.BasicInfo}>
-                    <Link to={'/profile/' + props.userId}>
-                        <p>{props.username}</p>
-                    </Link>
+                        <Link to={'/profile/' + props.userId}>
+                            <p className={classes.Username}>{props.username}</p>
+                        </Link>
                         <small>{props.createdAt}</small>
                     </div>
-                    <div className={classes.IconPost}>
-                        <MoreOptions
-                        showModal={props.showModal}
-                        clicked={props.modalClicked}>
-                        {  props.showDeleteButton ?  <Option clicked={props.deletePost}>
-                                <DeleteOutlineIcon /> Delete
-                            </Option> : null}
-                            <Option>
-                            <ErrorOutlineIcon /> Report
-                            </Option>
-                        </MoreOptions>
+                    <div className={classes.PostOptions}>
+                        <div className={classes.OptionsIcon}>
+                            <MoreVertIcon onClick={props.modalClicked}/>    
+                        </div>
+                        <OptionsModal
+                        show={props.showModal}
+                        optionList={postOptionList}/>
                     </div>
                 </div>
                 <div className={classes.PostBody}>

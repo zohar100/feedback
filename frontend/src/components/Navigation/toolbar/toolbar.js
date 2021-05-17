@@ -4,8 +4,7 @@ import classes from './toolbar.module.css';
 import Logo from '../../Logo/Logo';
 import Button from '../../UI/Button/Button';
 import DrawerToggle from '../sideDrawer/DrawerToggle/DrawerToggle';
-import OptionsModal from '../../UI/MoreOptions/OptionsModal/OptionsModal';
-import Option from '../../UI/MoreOptions/OptionsModal/Option/Option';
+import OptionsModal from '../../UI/OptionsModal/OptionsModal';
 import NavigationItem from '../navigationItems/navigationItem/navigationItem';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -14,8 +13,19 @@ import HomeIcon from '@material-ui/icons/Home';
 import StarIcon from '@material-ui/icons/Star';
 import SearchIcon from '@material-ui/icons/Search';
 
-
-const toolbar = (props) => {
+const toolbar = ({showUserModal, logout, clicked, clickToShowModal, username}) => {
+    const optionList = [
+        {
+            text: 'Profile'
+        },
+        {
+            text: 'Setting'
+        },
+        {
+            text: 'Logout',
+            click: logout
+        }
+    ]
     return(
         <header className={classes.Toolbar}>
             <Logo/>
@@ -33,19 +43,16 @@ const toolbar = (props) => {
                 </ul>
             </div>
             <div className={classes.UserInfo}>
-                <Button clicked={props.clickToShowModal}>
+                <Button clicked={clickToShowModal}>
                 <AccountCircleIcon/>
-                <span> {props.username} </span>
+                <span> {username} </span>
                     <ExpandMoreIcon/>
                 </Button>
-                <OptionsModal showModal={props.showUserModal}> 
-                    <Option>Profile</Option>
-                    <Option>Setting</Option>
-                    <Option>Help</Option>
-                    <Option clicked={props.logout}>Logout</Option>
-                </OptionsModal>
+                <OptionsModal 
+                show={showUserModal} 
+                optionList={optionList}/>
             </div>
-            <DrawerToggle clicked={props.clicked}/>
+            <DrawerToggle clicked={clicked}/>
         </header>
     )
 }

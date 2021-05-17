@@ -79,10 +79,6 @@ data = {
             users: ['5fe369df01344944bca578b3', '5fe4b0c7fd61ed4320cf7043'],
             messages: []
         },
-        {
-            users: ['5fe369df01344944bca578b3', '6012ce0f126f42508c86e4b6'],
-            messages: []
-        }
 ]
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 
 import classes from './EditUser.module.css';
@@ -11,32 +11,37 @@ import Button from '../../../components/UI/Button/Button';
 import ProfileImage from '../../../components/ProfileImage/ProfileImage';
 import * as actions from '../../../store/actions/index';
 
+const formRules = {
+    username: {
+        required: true
+    },
+    image: {
+        required: true
+    },
+    email: {
+        required: true,
+        isEmail: true,
+    },
+    password: {
+        required: true,
+        minLength: 6,
+    },
+    newPassword: {
+        minLength: 6,
+    }
+} 
+
 const EditUser = (props) => {
-    const formRules = {
-        username: {
-            required: true
-        },
-        image: {
-            required: true
-        },
-        email: {
-            required: true,
-            isEmail: true,
-        },
-        password: {
-            required: true,
-            minLength: 6,
-        },
-        newPassword: {
-            minLength: 6,
-        }
-    } 
+    const dispatch = useDispatch();
+    const {token, user} = useSelector(state => state.auth)
+
+    const { editUser } = actions;
 
     const submitHandler = () => {
         axios.post("https://httpbin.org/anything", formData)
             .then((res) => console.log(res))
             .catch((err) => console.log(err))
-        props.onEditUser(props.user.id, formData, props.token);
+        dispatch(editUser(user.id, formData, token));
     }
 
     const [formValue, valid, touched, setInputValue, handleSubmit, formData] = useForm(checkValidity, formRules, submitHandler);
@@ -47,8 +52,8 @@ const EditUser = (props) => {
         show={props.showModal} 
         modalClosed={props.clickedModal}>
             <div className={classes.ProfileImage}>
-                <ProfileImage imageUrl={props.user.profileImage.url}/>
-                <h3>{props.user.username}</h3>
+                <ProfileImage imageUrl={user.profileImage.url}/>
+                <h3>{user.username}</h3>
             </div>
             <from className={classes.Form}>
                 <Input
@@ -56,7 +61,7 @@ const EditUser = (props) => {
                 icon="Username"
                 elementType="input" 
                 elementConfig={{type: 'text', placeholder: 'Username', name: 'username'}}
-                value={formValue.username || props.user.username}
+                value={formValue.username || user.username}
                 invalid={!valid.username || false}
                 shouldValidate={formRules.username}
                 touched={touched.username || false}
@@ -66,7 +71,7 @@ const EditUser = (props) => {
                 icon="Email"
                 elementType="input" 
                 elementConfig={{type: 'text', placeholder: 'Email', name: 'email'}}
-                value={formValue.email || props.user.email}
+                value={formValue.email || user.email}
                 invalid={!valid.email || false}
                 shouldValidate={formRules.email}
                 touched={touched.email || false}
@@ -106,18 +111,4 @@ const EditUser = (props) => {
     )
 }
 
-const mapStateToProps = state  => {
-    return {
-        user: state.auth.user,
-        token: state.auth.token,
-        loading: state.auth.loading
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onEditUser: (userId, user, token) => dispatch(actions.editUser(userId, user, token))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditUser);
+export default EditUser;

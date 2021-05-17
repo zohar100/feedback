@@ -18,6 +18,22 @@
   color: #90b8f8;
 }
 
+.OptionBtn {
+  width: 100%;
+  margin: 0;
+  border-radius:0;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  font-size: 0.8em;
+  display: flex;
+}
+
+.OptionBtn svg {
+  font-size: 35px;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
 .Secondary {
   background-color: #5f85db;
 }
