@@ -19,7 +19,6 @@ module.exports = async (io) => {
     
     socket.on('join', async (data) => {
     try{
-        const foundChat = await Chat.findById(data.chatId);  
         socket.join(data.chatId); 
     }catch(error) {
         console.error(error)

@@ -26,7 +26,7 @@ export const fetchChatsFail = (error) => {
 
 export const fetchChats = (userId, token) => {
     return dispatch => {
-        axios.get('http://127.0.0.1:5000/chats?id=' + userId , {headers: { "x-auth-token": token }})
+        axios.get('/chats?id=' + userId , {headers: { "x-auth-token": token }})
         .then(response => {
             dispatch(fetchChatsSuccess(response.data));
         })
@@ -60,7 +60,7 @@ export const fetchChatFail = (error) => {
 
 export const fetchChat = (chatId, token) => {
     return dispatch => {
-        axios.get('http://127.0.0.1:5000/chats/' + chatId , {headers: { "x-auth-token": token }})
+        axios.get('/chats/' + chatId , {headers: { "x-auth-token": token }})
         .then(response => {
             dispatch(fetchChatSuccess(response.data));
         })

@@ -16,11 +16,12 @@ const io = socketio(server, {
     origin: '*'
   }
 });
+
 require("dotenv").config();
 
 //MIDDLEWARES
 app.use(cors({ 
-  credentials: true
+  credentials: true,
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -31,8 +32,7 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
-});
-  
+}); 
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB database connect");
@@ -57,7 +57,7 @@ app.use((err, req, res, next) => {
   res.status(status).json({msg: message})
 })
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log("Connect succesfully on port: " + port);
 });

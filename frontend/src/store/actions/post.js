@@ -34,40 +34,6 @@ export const fetchPosts = (token) => {
     }
 }
 
-//--------------Fetching favorites-----------------
-export const fetchFavoritesStart = () => {
-    return {
-        type: actionTypes.FETCH_FAVORITES_START,
-    }
-}
-
-export const fetchFavoritesSuccess = (posts) => {
-    return {
-        type: actionTypes.FETCH_FAVORITES_SUCCESS,
-        posts: posts
-    }
-}
-
-export const fetchFavoritesFail = (err) => {
-    return {
-        type: actionTypes.FETCH_FAVORITES_FAIL,
-        error: err
-    }
-}
-
-export const fetchFavorites = (token, userId) => {
-    return dispatch => {
-        dispatch(fetchFavoritesStart())
-            axios.get('/users/'+ userId +'/favorites', {headers: { "x-auth-token": token }})
-            .then(response => {
-                    dispatch(fetchFavoritesSuccess(response.data));
-            })
-            .catch(error => dispatch(fetchFavoritesFail(error)));
-    }
-}
-
-
-
 //--------------Delete post-----------------
 export const deletePostSuccess = (postId) => {
     return{
@@ -121,69 +87,7 @@ export const addPost = (post, token) => {
     }
 }
 
-//--------------Add comment-----------------
 
-export const addCommentStart = () => {
-    return {
-        type: actionTypes.ADD_COMMENT_START
-    }
-}
-
-export const addCommentSuccess = (comment, postId) => {
-    return {
-        type: actionTypes.ADD_COMMENT_SUCCESS,
-        comment: comment,
-        postId: postId
-    }
-}
-
-export const addCommentFail = (err) => {
-    return {
-        type: actionTypes.ADD_COMMENT_FAIL,
-        error: err
-    }
-}
-
-export const addComment = (comment, postId, token) => {
-    return dispatch => {
-        axios.post('comments/' + postId, comment, {headers: { "x-auth-token": token }})
-            .then(response => {
-                dispatch(addCommentSuccess(response.data, postId))
-            })
-            .catch(err => {
-                dispatch(addCommentFail(err.message))
-            })
-    }
-}
-
-//--------------Delete comment-----------------
-
-export const deleteCommentSuccess = (postId, commentId) => {
-    return {
-        type: actionTypes.DELETE_COMMENT_SUCCESS,
-        commentId: commentId,
-        postId: postId
-    }
-}
-
-export const deleteCommentFail = (err) => {
-    return {
-        type: actionTypes.DELETE_COMMENT_FAIL,
-        error: err
-    }
-}
-
-export const deleteComment = (postId, commentId, token) => {
-    return dispatch => {
-        axios.delete('comments/' + postId + '/' + commentId, {headers: { "x-auth-token": token }})
-            .then(response => {
-                dispatch(deleteCommentSuccess(postId, commentId))
-            })
-            .catch(err => {
-                dispatch(deleteCommentFail(err.message))
-            })
-    }
-}
 
 //--------------Likes-----------------
 export const toggleLikeSuccess = (postId, userId) => {

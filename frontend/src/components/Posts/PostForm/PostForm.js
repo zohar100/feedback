@@ -28,7 +28,7 @@ const PostForm = ({ bodyValue, imageValue,
 
         return(
             <div className={classes.AddPost}>
-                <div>
+                <div className={classes.UserInfo}>
                     <ProfileImage imageUrl={currentUser.profileImage.url}/>
                     <p>{currentUser.username}</p>
                 </div>
@@ -36,7 +36,8 @@ const PostForm = ({ bodyValue, imageValue,
                     <div className={classes.Inputs}>
                         {form}
                     </div>
-                    <Button clicked={submitHandler}><PostAddIcon/> Post</Button>
+                    <Button 
+                    clicked={submitHandler}><PostAddIcon/>Post</Button>
                 </form>
             </div>
         )

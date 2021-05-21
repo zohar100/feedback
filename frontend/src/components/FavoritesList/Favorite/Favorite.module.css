@@ -1,0 +1,19 @@
+.Favorite {
+  display: flex;
+  flex-flow: row;
+  background-color: #353941;
+  margin-bottom: 10px;
+  padding: 10px 10px 10px 0px;
+}
+
+.FavoriteUser {
+  display: flex;
+  flex-flow: row;
+}
+
+.FavoriteUser span {
+  max-width: 10px 10px;
+  height: fit-content;
+  margin: auto 10px;
+  color: azure;
+}

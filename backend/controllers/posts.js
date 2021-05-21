@@ -4,12 +4,7 @@ const catchAsync = require('../utility/catchAsync');
 
 //-----------All Posts-----------//
 module.exports.index = catchAsync(async (req, res) => {
-    const posts = await Post.find({}).populate('author').populate({
-        path: 'comments',
-        populate: {
-            path:'author'
-        }
-    });
+    const posts = await Post.find({}).populate('author');
 
     res.json(posts)
 });

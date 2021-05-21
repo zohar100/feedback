@@ -3,7 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Layout from './containers/Layout/Layout';
-import Feed from './containers/Posts/posts';
+import Feed from './containers/Feed/Feed';
+import Post from './containers/Post/Post';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile';
 import Search from './containers/Search/Search';
@@ -29,7 +30,8 @@ const App = props => {
    routes = (
     <Switch>
       <Route path='/profile/:id' exact component={Profile}/>
-      <Route path='/favorites' component={Favorites}/>
+      <Route path='/favorites' exact component={Favorites}/>
+      <Route path='/favorites/:id' exact component={Post}/>
       <Route path='/search' component={Search}/>
       <Route path='/auth' render={() => <Auth/>}/>
       <Route path='/' component={Feed}/> 

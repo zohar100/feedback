@@ -1,10 +1,14 @@
 const router = require("express").Router();
-const Post = require("../models/post.model");
-const Comment = require("../models/comment.model");
 const comments = require('../controllers/comments');
 const isLoggedIn  = require("../middlewares/middleware");
 
-//Add comment
+//All Comments
+router.get("/", isLoggedIn, comments.index);
+
+//Spacific Comment
+router.get("/:commentId", isLoggedIn, comments.showCommenet);
+
+//Add Comment
 router.post("/:postId", isLoggedIn, comments.newComment);
 
 //Remove Comment

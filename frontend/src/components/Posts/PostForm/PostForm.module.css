@@ -5,15 +5,11 @@
   margin: 10px auto;
   color: white;
   border-radius: 10px;
+  padding: 10px;
 }
 
-.AddPost div {
+.AddPost .UserInfo {
   display: flex;
-}
-
-.AddPost div svg {
-  font-size: 65px;
-  margin: 5px;
 }
 
 .AddPost div img {
@@ -25,17 +21,11 @@
 }
 
 .AddPost button {
-  margin-left: 4px;
-  display: inline-block;
   background-color: #353941;
 }
 
 .AddPost button:hover {
   background-color: #26282b;
-}
-
-.AddPost button svg {
-  margin-bottom: -5px;
 }
 
 .AddPost .Inputs {

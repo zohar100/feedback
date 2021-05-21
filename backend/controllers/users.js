@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { cloudinary } = require('../cloudinary');
-const User = require("../models/user.model");
+const User = require('../models/user.model');
+const Post = require('../models/post.model')
 const SerevrError = require('../utility/ServerError');
 const catchAsync = require('../utility/catchAsync');
 
@@ -9,7 +10,6 @@ const catchAsync = require('../utility/catchAsync');
 //-----------Register New User-----------//
 module.exports.register = catchAsync(async (req, res, next) => {
         const {email, username, password} = req.body;
-
         //validate
         if(!email || !password || !username)
             return res.status(400).json({ msg: 'Not all fields have been entered.' });
@@ -49,7 +49,26 @@ module.exports.register = catchAsync(async (req, res, next) => {
             {
                 path: 'author',
                 model: 'User'
-            },],
+            },
+        ]
+        }).populate({
+            path: 'favorites',
+            model: 'Post',
+            populate: [
+                {
+                path: 'author',
+                model: 'User'
+                },
+                {
+                path: 'comments',
+                model: 'Comment', 
+                populate:
+                    {
+                    path: 'author',
+                    model: 'User'
+                    }
+                }
+            ]
         }).populate({
             path: 'followers',
             model: 'User'
@@ -76,7 +95,6 @@ module.exports.register = catchAsync(async (req, res, next) => {
 //-----------Login Exist User-----------//
 module.exports.login = catchAsync(async (req, res, next) => {
         const {email, password} = req.body;
-
         //validate
         if(!email || !password)
             throw new SerevrError('Not all fields have been entered.', 401)
@@ -109,6 +127,24 @@ module.exports.login = catchAsync(async (req, res, next) => {
                 path: 'author',
                 model: 'User'
                 },
+            ]
+        }).populate({
+            path: 'favorites',
+            model: 'Post',
+            populate: [
+                {
+                path: 'author',
+                model: 'User'
+                },
+                {
+                path: 'comments',
+                model: 'Comment', 
+                populate:
+                    {
+                    path: 'author',
+                    model: 'User'
+                    }
+                }
             ]
         }).populate({
             path: 'followers',
@@ -268,42 +304,17 @@ module.exports.followUser = catchAsync(async (req, res) => {
         return res.json({user: userToFolow, currentUser: currentUser});
 });
 
-//-----------Get Spacific User's Favorites-----------//
-module.exports.usersFavorites = catchAsync(async (req, res) => {
-    const user = await User.findById(req.params.userId).populate({
-        path: 'favorites',
-        model: 'Post',
-        populate: [
-            {
-            path: 'author',
-            model: 'User'
-            },
-            {
-            path: 'comments',
-            model: 'Comment', 
-            populate:
-                {
-                path: 'author',
-                model: 'User'
-                }
-            }
-        ]
-    });
-    const favorites =  user.favorites;
-    res.json(favorites);
-});
-
 //-----------Add To User's Favorites / Remove From User's Favorites-----------//
 module.exports.toggleFavorite = catchAsync(async (req, res) => {
     const user = await User.findById(req.params.userId);
     const postInFav = await user.favorites.find(post => post.equals(req.body.postId))
-        
+
     if(postInFav) {
         user.favorites.pull(req.body.postId)
     }else {
         user.favorites.push(req.body.postId)
     }
-        
+
     await user.save();
 
     const post = await Post.findById(req.body.postId)
@@ -314,6 +325,7 @@ module.exports.toggleFavorite = catchAsync(async (req, res) => {
                 path: "author" // in comments, populate author
                 }
             });
+    
     res.json(post);
   });
 
@@ -345,7 +357,22 @@ module.exports.tokenValidation = catchAsync(async (req,res) => {
         },],
     }).populate({
         path: 'favorites',
-        model: 'Post'
+        model: 'Post',
+        populate: [
+            {
+            path: 'author',
+            model: 'User'
+            },
+            {
+            path: 'comments',
+            model: 'Comment', 
+            populate:
+                {
+                path: 'author',
+                model: 'User'
+                }
+            }
+        ]
     }).populate({
         path: 'followers',
         model: 'User'

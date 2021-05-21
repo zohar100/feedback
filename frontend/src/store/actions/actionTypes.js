@@ -13,6 +13,20 @@ export const DELETE_POST_FAIL = 'DELETE_POST_SUCCESS';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAIL = 'ADD_POST_FAIL';
 
+//--------------Comment-----------------
+export const FETCH_COMMENTS_START = 'FETCH_COMMENTS_START';
+export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
+export const FETCH_COMMENTS_FAIL = 'FETCH_COMMENTS_FAIL';
+
+export const ADD_COMMENT_START = 'ADD_COMMENT_START';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAIL = 'ADD_COMMENT_FAIL';
+
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAIL = 'DELETE_COMMENT_SUCCESS';
+
+export const CLEAR_COMMENTS = 'CLEAR_COMMENTS'
+
 //--------------Auth-----------------
 export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
@@ -23,13 +37,6 @@ export const EDIT_USER_START = 'EDIT_USER_START';
 export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const EDIT_USER_FAIL = 'EDIT_USER_FAIL';
 
-//--------------Comment-----------------
-export const ADD_COMMENT_START = 'ADD_COMMENT_START';
-export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
-export const ADD_COMMENT_FAIL = 'ADD_COMMENT_FAIL';
-
-export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
-export const DELETE_COMMENT_FAIL = 'DELETE_COMMENT_SUCCESS';
 
 //--------------Like-----------------
 export const TOGGLE_LIKE_SUCCESS = 'TOGGLE_LIKE_SUCCESS'; 
@@ -47,7 +54,7 @@ export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const FOLLOW_USER_FAIL = 'FOLLOW_USER_FAIL';
 
 
-//--------------User-----------------
+//--------------Sarch-----------------
 export const SEARCH_USERS_START = 'SEARCH_USERS_START';
 export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
 export const SEARCH_USERS_FAIL = 'SEARCH_USERS_FAIL';

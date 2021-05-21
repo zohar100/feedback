@@ -3,11 +3,12 @@
   height: fit-content;
   background-color: #353941;
   margin: auto;
-  margin-top: 20px;
   color: white;
   box-sizing: border-box;
   box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.582);
   z-index: 3;
+  padding: 15px 15px 0px 15px;
+  margin-top: 10px;
 }
 
 .PostBody {
@@ -112,10 +113,6 @@
 
 .PostAction button:hover {
   background-color: #26282b;
-}
-
-.PostAction button svg {
-  margin-bottom: -5px;
 }
 
 .PostOptions {

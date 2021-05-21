@@ -24,7 +24,7 @@ const useWebSockets = ({token, enabled, addMessage, onConnected}) => {
       return;
     }
 
-    const socket = io('http://localhost:5000', {
+    const socket = io('http://localhost:8080', {
         query: {
           token: token,
         },

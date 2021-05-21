@@ -69,29 +69,6 @@ const authLogout = (state, action) => {
     })
 }
 
-//--------------Add post to favorite-----------------
-const addToFavoriteSuccess = (state, action) => {
-    let user = updateObject(state.user, {
-        favorites: state.user.favorites.concat(action.post)
-    });
-    state.user.favorites.map(post => {
-        if(post._id === action.post._id) {
-            return user = updateObject(state.user, {
-                favorites: state.user.favorites.filter(post => post._id !== action.post._id)
-            })
-        } return null;
-    })
-    return updateObject (state, {
-        user: user,
-        error: null
-    })
-}
-
-const addToFavoriteFail = (state, action) => {
-    return updateObject(state, {
-        error: action.error
-    })
-}
 
 //--------------Edit user-----------------
 const editUserStart = (state, action) => {
@@ -123,16 +100,42 @@ const editUserFail = (state, action) => {
     })
 }
 
+//--------------Add post to favorite-----------------
+const addToFavoriteSuccess = (state, action) => {
+    let user = updateObject(state.user, {
+        favorites: state.user.favorites.concat(action.post)
+    });
+    state.user.favorites.map(post => {
+        if(post._id === action.post._id) {
+            return user = updateObject(state.user, {
+                favorites: state.user.favorites.filter(post => post._id !== action.post._id)
+            })
+        } return null;
+    })
+    return updateObject (state, {
+        user: user,
+        error: null
+    })
+}
+
+const addToFavoriteFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error
+    })
+}
 
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
+        //--------------Authenticate-----------------
         case actionTypes.AUTH_START: return authStart(state, action);
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+        //--------------Add To Favorites-----------------
         case actionTypes.ADD_TO_FAVORITE_SUCCESS: return addToFavoriteSuccess(state, action);
         case actionTypes.ADD_TO_FAVORITE_FAIL: return addToFavoriteFail(state, action);
+        //--------------Edit User-----------------
         case actionTypes.EDIT_USER_START: return editUserStart(state, action);
         case actionTypes.EDIT_USER_SUCCESS: return editUserSuccess(state, action);
         case actionTypes.EDIT_USER_FAIL: return editUserFail(state, action);

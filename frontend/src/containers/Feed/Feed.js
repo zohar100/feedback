@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import classes from './posts.module.css';
+import classes from './Feed.module.css';
 import useForm from '../../utilities/useForm';
 import PostForm from '../../components/Posts/PostForm/PostForm';
 import Posts from '../../components/Posts/Posts';
@@ -11,11 +11,12 @@ const Feed = () => {
     const dispatch = useDispatch();
     const {user, token} = useSelector(state => state.auth);
     const {posts, loading} = useSelector(state => state.post);
+    const {comments} = useSelector(state => state.comment)
 
     const { fetchPosts, deletePost,
             addPost, toggleLike,
-            addToFavorite, addComment,
-            deleteComment } = actions;
+            addToFavorite, fetchComments,
+            clearComments, addComment, deleteComment } = actions;
 
     const addPostHandler = () => {
         const post = {
@@ -40,10 +41,10 @@ const Feed = () => {
     const [showCommentModal, setShowCommentModal] = useState(null);
 
     useEffect(() => {
-        if(token !== null){
+        if(token !== null && user.id !== null){
             dispatch(fetchPosts(token));
         }
-    }, [fetchPosts, token, dispatch])
+    }, [token, user.id, dispatch, fetchPosts])
 
     const showModalHandler = (postId) => {
         setShowModal(prevState => {
@@ -55,12 +56,16 @@ const Feed = () => {
     }
 
     const showCommentsHandler = (postId) => {
+
         setShowComments(prevState => {
             if(prevState === postId) {
                 return null;
+            }else{
+                dispatch(clearComments())
+                dispatch(fetchComments(postId, token))
+                return postId;
             }
-            return postId;
-        })
+        });
     }
 
     const likeClickHandler = (postId) => {
@@ -84,8 +89,8 @@ const Feed = () => {
         });
     }
 
-    const deleteCommentHandler = (commentId, postId) => {
-        dispatch(deleteComment(postId, commentId, token));
+    const deleteCommentHandler = (postId, commentId) => {
+    dispatch(deleteComment(postId, commentId, token));
     }
 
         return(
@@ -97,6 +102,7 @@ const Feed = () => {
                     submitHandler={handlePostSubmit}
                     currentUser={user}/> 
                 <Posts
+                    comments={comments}
                     posts={posts}
                     loading={loading}
                     currentUser={user}
@@ -112,7 +118,8 @@ const Feed = () => {
                     showCommentModalHandler={showCommentModalHandler}
                     bodyValue={commentFormValue.body || ""}
                     inputValueChanged={setCommentInputValue}
-                    commentHandleSubmit={handleCommentSubmit}/>
+                    commentHandleSubmit={handleCommentSubmit}
+                    />
             </div>
         )
 }

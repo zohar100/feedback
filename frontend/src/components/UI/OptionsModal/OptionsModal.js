@@ -9,7 +9,7 @@ const animationTiming = {
     exit: 300
   }
 
-const OptionsModal = ({show, click, optionList}) => {
+const OptionsModal = ({show, clicked, optionList}) => {
     return(
     <CSSTransition 
     mountOnEnter
@@ -22,10 +22,10 @@ const OptionsModal = ({show, click, optionList}) => {
       exit: '',
       exitActive: classes.OptionsModalClosed 
     }}>
-        <div className={classes.OptionsModal}>
-            <Options
-            options={optionList}/>
-        </div>
+      <div className={classes.OptionsModal}>
+          <Options
+          options={optionList}/>
+      </div>
     </CSSTransition>
     )
 }

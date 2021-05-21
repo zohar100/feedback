@@ -8,3 +8,15 @@
   height: 50px;
   border-radius: 50%;
 }
+
+.ImageBig {
+  margin: auto;
+}
+
+.ImageBig svg {
+  background: white;
+  width: 140px;
+  height: 155px;
+  margin: auto 10px;
+  border-radius: 10px;
+}

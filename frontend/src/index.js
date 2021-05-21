@@ -8,14 +8,17 @@ import './index.css';
 import App from './App';
 
 import postReducer from './store/reducers/post';
+import commentReducer from './store/reducers/comment';
 import authReducer from './store/reducers/auth';
 import userReducer from './store/reducers/user';
 import chatReducer from './store/reducers/chat';
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   post: postReducer,
+  comment: commentReducer,
   auth: authReducer,
   user: userReducer,
   chat: chatReducer

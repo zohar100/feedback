@@ -2,14 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classes from './Comment.module.css';
-import MoreOptions from '../../UI/MoreOptions/MoreOptions';
-import Option from '../../UI/MoreOptions/OptionsModal/Option/Option';
+import OptionsModal from '../../UI/OptionsModal/OptionsModal';
+// import MoreOptions from '../../UI/MoreOptions/MoreOptions';
+// import Option from '../../UI/MoreOptions/OptionsModal/Option/Option';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const comment = (props) => {
+    const commentOptionList = [
+        {
+            text: 'Delete',
+            show: props.showDeleteButton,
+            click: props.deleteComment,
+            svgComponent: DeleteOutlineIcon
+        },
+        {
+            text: 'Report',
+            // click: props.deletePost,
+            svgComponent: ErrorOutlineIcon
+        }
+    ]
     return(
         <div className={classes.Comment}>
             <div className={classes.CommentImage}>
@@ -18,7 +33,7 @@ const comment = (props) => {
             <div className={classes.CommentBody}>
                 <div className={classes.CommentName}>
                 <h3>{props.username}</h3>
-                    <MoreOptions
+                    {/* <MoreOptions
                         showModal={props.showModal}
                         clicked={props.modalClicked}>
                         { props.showDeleteButton ?  
@@ -28,7 +43,11 @@ const comment = (props) => {
                             <Option>
                                 <ErrorOutlineIcon /> Report
                             </Option>
-                    </MoreOptions>
+                    </MoreOptions> */}
+                    <MoreVertIcon onClick={props.modalClicked}/>
+                    <OptionsModal
+                    show={props.showModal}
+                    optionList={commentOptionList}/>
                 </div>
                 <p>{props.body}</p>
             </div>

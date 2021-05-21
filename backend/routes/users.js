@@ -31,7 +31,7 @@ router.delete('/users/:id', isLoggedIn, users.deleteUser);
 router.post('/users/:userId/follow', isLoggedIn, users.followUser);
 
 //user's favorites
-router.get('/users/:userId/favorites', isLoggedIn, users.usersFavorites);
+// router.get('/users/:userId/favorites', isLoggedIn, users.usersFavorites);
 
 //Toggle post to spacific users favorite
 router.post('/users/:userId/favorite', isLoggedIn, users.toggleFavorite);

@@ -3,23 +3,24 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 import classes from './Comments.module.css';
 import Comment from './Comment/Comment';
+import Spinner from '../UI/Spinner/Spinner';
 import CommentForm from './CommentForm/CommentForm';
 
 const Comments = ({ deleteCommentHandler, showCommentModal,
-                    showCommentModalHandler, post, userId,
+                    showCommentModalHandler, post, comments, loading, userId,
                     showComments, bodyValue, inputValueChanged,
                     handleSubmit}) => {
 
-        let comments = <p>No comments to this post</p>
-        if(post.comments){
-            if(post.comments.length > 0){
-                comments = post.comments.map(comment => (
+        let commentsOrSpinner = <Spinner spinnerType="Primary-Spinner"/>;
+        if(!loading) {
+            if(comments.length >= 1){
+                commentsOrSpinner = comments.map(comment => (
                     <Comment
                         key={comment._id}
                         username={comment.author.username}
                         body={comment.body}
                         showDeleteButton={comment.author._id === userId}
-                        deleteComment={() => deleteCommentHandler(comment._id, post._id)}
+                        deleteComment={() => deleteCommentHandler(post._id, comment._id)}
                         showModal={showCommentModal === comment._id}
                         modalClicked={() => showCommentModalHandler(comment._id)}
                         />
@@ -46,7 +47,7 @@ const Comments = ({ deleteCommentHandler, showCommentModal,
             }}>
                 <div className={classes.CommentDiv}>
                     <div className={classes.Comments}>
-                        {comments}
+                        {commentsOrSpinner}
                     </div>
                     <CommentForm 
                         postId={post._id}

@@ -12,17 +12,23 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import HomeIcon from '@material-ui/icons/Home';
 import StarIcon from '@material-ui/icons/Star';
 import SearchIcon from '@material-ui/icons/Search';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PersonIcon from '@material-ui/icons/Person';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const toolbar = ({showUserModal, logout, clicked, clickToShowModal, username}) => {
     const optionList = [
         {
-            text: 'Profile'
+            text: 'Profile',
+            svgComponent: PersonIcon
         },
         {
-            text: 'Setting'
+            text: 'Setting',
+            svgComponent: SettingsIcon
         },
         {
             text: 'Logout',
+            svgComponent: ExitToAppIcon,
             click: logout
         }
     ]
@@ -43,11 +49,13 @@ const toolbar = ({showUserModal, logout, clicked, clickToShowModal, username}) =
                 </ul>
             </div>
             <div className={classes.UserInfo}>
-                <Button clicked={clickToShowModal}>
-                <AccountCircleIcon/>
-                <span> {username} </span>
-                    <ExpandMoreIcon/>
-                </Button>
+                <div className={classes.UserButton}>
+                    <Button clicked={clickToShowModal}>
+                        <AccountCircleIcon/>
+                        <span> {username} </span>
+                        <ExpandMoreIcon/>
+                    </Button>
+                </div>
                 <OptionsModal 
                 show={showUserModal} 
                 optionList={optionList}/>

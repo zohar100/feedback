@@ -1,13 +1,13 @@
 import React from 'react';
 
-import classes from './Chats.module.css';
 import ChatUser from './ChatUser/ChatUser';
+import ChatToolbar from './ChatToolbar/ChatToolbar'
+import classes from './Chats.module.css';
 
 const Chats = ({chats, user, chatClicked}) => {
-
     return(
         <div className={classes.SideBar}>
-          <h3>Chat</h3>
+          <ChatToolbar/>
           {chats.map(chat => (
                 <ChatUser 
                 key={chat._id}

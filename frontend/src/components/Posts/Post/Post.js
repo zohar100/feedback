@@ -49,7 +49,8 @@ const post = (props) => {
                         </div>
                         <OptionsModal
                         show={props.showModal}
-                        optionList={postOptionList}/>
+                        optionList={postOptionList}
+                        />
                     </div>
                 </div>
                 <div className={classes.PostBody}>
@@ -69,9 +70,14 @@ const post = (props) => {
                         </span>
                 </div>
                 <div className={classes.PostAction}>
-                    <Button clicked={props.likeClick} active={props.likeActive}><ThumbUpAltIcon /> Like</Button>
-                    <Button clicked={props.commentClick}><ChatBubbleOutlineIcon /> Comments</Button>
-                    <Button clicked={props.addToFavorite} active={props.favoriteActive}><StarBorderIcon/> Favorites</Button>
+                    <Button 
+                    clicked={props.likeClick} 
+                    active={props.likeActive}><ThumbUpAltIcon/>Like</Button>
+                    <Button 
+                    clicked={props.commentClick}><ChatBubbleOutlineIcon />Comments</Button>
+                    <Button 
+                    clicked={props.addToFavorite} 
+                    active={props.favoriteActive}><StarBorderIcon/>Favorites</Button>
                 </div>
             </div>
     )
