@@ -11,12 +11,16 @@ const Feed = () => {
     const dispatch = useDispatch();
     const {user, token} = useSelector(state => state.auth);
     const {posts, loading} = useSelector(state => state.post);
-    const {comments} = useSelector(state => state.comment)
+
 
     const { fetchPosts, deletePost,
             addPost, toggleLike,
-            addToFavorite, fetchComments,
-            clearComments, addComment, deleteComment } = actions;
+            addToFavorite,
+            addComment, deleteComment } = actions;
+
+    const [showModal, setShowModal] = useState(null);
+    const [showComments, setShowComments] = useState(null);
+    const [showCommentModal, setShowCommentModal] = useState(null);
 
     const addPostHandler = () => {
         const post = {
@@ -26,20 +30,16 @@ const Feed = () => {
          }
          dispatch(addPost(post, token))
     }
-    const addCommentHandler = (postId) => {
+    const addCommentHandler = () => {
         const comment = {
             body: commentFormValue.body
         }
-        dispatch(addComment(comment, postId, token));
+        dispatch(addComment(comment, showComments, token));
     }
 
     const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
     const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
     
-    const [showModal, setShowModal] = useState(null);
-    const [showComments, setShowComments] = useState(null);
-    const [showCommentModal, setShowCommentModal] = useState(null);
-
     useEffect(() => {
         if(token !== null && user.id !== null){
             dispatch(fetchPosts(token));
@@ -61,8 +61,6 @@ const Feed = () => {
             if(prevState === postId) {
                 return null;
             }else{
-                dispatch(clearComments())
-                dispatch(fetchComments(postId, token))
                 return postId;
             }
         });
@@ -102,7 +100,6 @@ const Feed = () => {
                     submitHandler={handlePostSubmit}
                     currentUser={user}/> 
                 <Posts
-                    comments={comments}
                     posts={posts}
                     loading={loading}
                     currentUser={user}
@@ -116,8 +113,8 @@ const Feed = () => {
                     deleteCommentHandler={deleteCommentHandler}
                     showCommentModal={showCommentModal}
                     showCommentModalHandler={showCommentModalHandler}
-                    bodyValue={commentFormValue.body || ""}
-                    inputValueChanged={setCommentInputValue}
+                    commentBodyValue={commentFormValue.body || ""}
+                    commentInputValueChanged={setCommentInputValue}
                     commentHandleSubmit={handleCommentSubmit}
                     />
             </div>

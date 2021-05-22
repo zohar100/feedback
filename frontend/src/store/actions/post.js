@@ -112,3 +112,69 @@ export const toggleLike = (postId, userId, token) => {
             .catch(err => dispatch(toggleLikeFail(err)));
     }
 } 
+
+
+
+//--------------Add comment-----------------
+
+export const addCommentStart = () => {
+    return {
+        type: actionTypes.ADD_COMMENT_START
+    }
+}
+
+export const addCommentSuccess = (comment, postId) => {
+    return {
+        type: actionTypes.ADD_COMMENT_SUCCESS,
+        comment: comment,
+        postId: postId
+    }
+}
+
+export const addCommentFail = (err) => {
+    return {
+        type: actionTypes.ADD_COMMENT_FAIL,
+        error: err
+    }
+}
+
+export const addComment = (comment, postId, token) => {
+    return dispatch => {
+        axios.post('comments/' + postId, comment, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(addCommentSuccess(response.data, postId))
+            })
+            .catch(err => {
+                dispatch(addCommentFail(err.message))
+            })
+    }
+}
+
+//--------------Delete comment-----------------
+
+export const deleteCommentSuccess = (postId, commentId) => {
+    return {
+        type: actionTypes.DELETE_COMMENT_SUCCESS,
+        commentId: commentId,
+        postId: postId
+    }
+}
+
+export const deleteCommentFail = (err) => {
+    return {
+        type: actionTypes.DELETE_COMMENT_FAIL,
+        error: err
+    }
+}
+
+export const deleteComment = (postId, commentId, token) => {
+    return dispatch => {
+        axios.delete('comments/' + postId + '/' + commentId, {headers: { "x-auth-token": token }})
+            .then(response => {
+                dispatch(deleteCommentSuccess(postId, commentId))
+            })
+            .catch(err => {
+                dispatch(deleteCommentFail(err.message))
+            })
+    }
+}

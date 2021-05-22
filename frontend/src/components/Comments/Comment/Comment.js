@@ -33,17 +33,6 @@ const comment = (props) => {
             <div className={classes.CommentBody}>
                 <div className={classes.CommentName}>
                 <h3>{props.username}</h3>
-                    {/* <MoreOptions
-                        showModal={props.showModal}
-                        clicked={props.modalClicked}>
-                        { props.showDeleteButton ?  
-                            <Option clicked={props.deleteComment}>
-                                <DeleteOutlineIcon /> Delete
-                            </Option> : null}
-                            <Option>
-                                <ErrorOutlineIcon /> Report
-                            </Option>
-                    </MoreOptions> */}
                     <MoreVertIcon onClick={props.modalClicked}/>
                     <OptionsModal
                     show={props.showModal}

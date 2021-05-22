@@ -43,17 +43,13 @@ module.exports.deleteComment = catchAsync(async (req, res) => {
     const comment = await Comment.findById(req.params.commentId);
     const post = await Post.findById(req.params.postId)
     //find if the author of the comment is the current user
-    console.log('got point 1');
-    console.log(req.params.commentId, req.params.postId);
     if(comment.author.equals(req.user)){
         //remove spacific comment from the post array
         const newComments = await post.comments.filter(newComment => !newComment.equals(req.params.commentId))
         post.comments = newComments
         await post.save();
-        console.log('got point 2');
         //delete the comment from the database
         await Comment.findByIdAndRemove(req.params.commentId)
-        console.log('got point 3');
         res.json('Comment removed successfully!')
     }
     else{

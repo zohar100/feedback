@@ -3,14 +3,9 @@ export {
     deletePost,
     addPost,
     toggleLike,
-} from './post';
-
-export {
-    fetchComments,
     addComment,
     deleteComment,
-    clearComments
-} from './comment';
+} from './post';
 
 export {
     authRegister,

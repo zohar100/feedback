@@ -6,15 +6,15 @@ import Comment from './Comment/Comment';
 import Spinner from '../UI/Spinner/Spinner';
 import CommentForm from './CommentForm/CommentForm';
 
-const Comments = ({ deleteCommentHandler, showCommentModal,
-                    showCommentModalHandler, post, comments, loading, userId,
+const Comments = ({deleteCommentHandler, showCommentModal,
+                    showCommentModalHandler, post, userId,
                     showComments, bodyValue, inputValueChanged,
                     handleSubmit}) => {
 
-        let commentsOrSpinner = <Spinner spinnerType="Primary-Spinner"/>;
-        if(!loading) {
-            if(comments.length >= 1){
-                commentsOrSpinner = comments.map(comment => (
+        let commentsOrSpan = <Spinner spinnerType="Primary-Spinner"/>;
+        if(post.comments){
+            if(post.comments.length > 0){
+                commentsOrSpan = post.comments.map(comment => (
                     <Comment
                         key={comment._id}
                         username={comment.author.username}
@@ -47,12 +47,11 @@ const Comments = ({ deleteCommentHandler, showCommentModal,
             }}>
                 <div className={classes.CommentDiv}>
                     <div className={classes.Comments}>
-                        {commentsOrSpinner}
+                        {commentsOrSpan}
                     </div>
-                    <CommentForm 
-                        postId={post._id}
+                    <CommentForm
                         bodyValue={bodyValue}
-                        inputValueChanged={inputValueChanged}
+                        inputChanged={inputValueChanged}
                         handleSubmit={handleSubmit}/>
                 </div>
             </CSSTransition>

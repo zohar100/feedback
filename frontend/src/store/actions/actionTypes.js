@@ -14,18 +14,12 @@ export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAIL = 'ADD_POST_FAIL';
 
 //--------------Comment-----------------
-export const FETCH_COMMENTS_START = 'FETCH_COMMENTS_START';
-export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
-export const FETCH_COMMENTS_FAIL = 'FETCH_COMMENTS_FAIL';
-
 export const ADD_COMMENT_START = 'ADD_COMMENT_START';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAIL = 'ADD_COMMENT_FAIL';
 
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
 export const DELETE_COMMENT_FAIL = 'DELETE_COMMENT_SUCCESS';
-
-export const CLEAR_COMMENTS = 'CLEAR_COMMENTS'
 
 //--------------Auth-----------------
 export const AUTH_START = 'AUTH_START';

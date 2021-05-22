@@ -6,7 +6,7 @@ import Post from './Post/Post';
 import Comments from '../Comments/Comments';
 import Hoc from '../../hoc/Hoc/Hoc'
 
-const Posts = ({ posts, comments, loading, currentUser,
+const Posts = ({ posts, loading, currentUser,
                 showModal, showModalHandler, 
                 deletePostHandler, showCommentsHandler,
                 likeClickHandler, addToFavoriteHandler,
@@ -44,7 +44,6 @@ const Posts = ({ posts, comments, loading, currentUser,
                 <Comments
                     key={post._id + 'comments'}
                     showComments={showComments === post._id ? true : false}
-                    comments={comments}
                     post={post}
                     deleteCommentHandler={deleteCommentHandler}
                     showCommentModal={showCommentModal}
@@ -52,7 +51,7 @@ const Posts = ({ posts, comments, loading, currentUser,
                     userId={currentUser.id}
                     bodyValue={commentBodyValue}
                     inputValueChanged={commentInputValueChanged}
-                    handleSubmit={() => commentHandleSubmit(post._id)}
+                    handleSubmit={commentHandleSubmit}
                 />
             </Hoc>
         ))
