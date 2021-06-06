@@ -5,8 +5,7 @@ import Hoc from '../../hoc/Hoc/Hoc';
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/toolbar/toolbar';
 import SideDrawer from '../../components/Navigation/sideDrawer/SideDrawer';
-import ChatsList from '../../components/Chats/Chats';
-import Chat from '../Chat/Chat';
+import ChatsList from '../../components/ChatsList/ChatsList';
 import * as actions from '../../store/actions/index';
 
 const Layout = props => {
@@ -14,12 +13,11 @@ const Layout = props => {
     const token = useSelector(state => state.auth.token);
     const user = useSelector(state => state.auth.user);
     const chats = useSelector(state => state.chat.chats);
-    const chat = useSelector(state => state.chat.chat);
     
     const [showUserModal, setShowUserModal] = useState(false);
     const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-    const {fetchChats, fetchChat, authLogout} = actions;
+    const {fetchChats, authLogout} = actions;
 
     useEffect(() => {
     if(token && user.id){
@@ -43,17 +41,13 @@ const Layout = props => {
         dispatch(authLogout())
     }
 
-    const onClickedChat = (chatId) => {
-        dispatch(fetchChat(chatId, token));
-        console.log(chat);
-    }
-
         let layout = (
             <Hoc>
                 <Toolbar 
                 clicked={sideDrawerOpenHandler} 
                 username={user.username}
                 showUserModal={showUserModal}
+                userOptionClicked={showUserModalHandler}
                 clickToShowModal={showUserModalHandler}
                 logout={logoutHandler}/>
                 <SideDrawer 
@@ -73,9 +67,7 @@ const Layout = props => {
                 <div className={classes.RightBar}>
                     <ChatsList 
                     chats={chats}
-                    user={user}
-                    chatClicked={onClickedChat}/>
-                    <Chat/>
+                    user={user}/>
                 </div>
                 <div className={classes.Main}>
                     {props.children}

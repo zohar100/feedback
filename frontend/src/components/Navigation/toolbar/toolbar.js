@@ -16,7 +16,9 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const toolbar = ({showUserModal, logout, clicked, clickToShowModal, username}) => {
+const toolbar = ({showUserModal, logout, clicked, 
+                    clickToShowModal, username, 
+                    userOptionClicked}) => {
     const optionList = [
         {
             text: 'Profile',
@@ -57,7 +59,8 @@ const toolbar = ({showUserModal, logout, clicked, clickToShowModal, username}) =
                     </Button>
                 </div>
                 <OptionsModal 
-                show={showUserModal} 
+                show={showUserModal}
+                clicked={userOptionClicked}
                 optionList={optionList}/>
             </div>
             <DrawerToggle clicked={clicked}/>

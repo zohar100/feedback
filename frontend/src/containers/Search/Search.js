@@ -19,13 +19,13 @@ const Search = props => {
 
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-           dispatch(searchUsers(token, searchFormValue.text, searchRef.current.value));
-            return () => {
-                clearTimeout(timer);
-            } 
-        }, 500)
-    },[searchFormValue, searchRef, token, searchUsers, dispatch])
+            const timer = setTimeout(() => {
+               dispatch(searchUsers(token, searchFormValue.text ));
+                return () => {
+                    clearTimeout(timer);
+                } 
+            }, 1000)
+    },[searchFormValue, token, searchUsers, dispatch])
 
         return (
             <div className={classes.Friends}>

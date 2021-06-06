@@ -2,9 +2,9 @@ import React from 'react';
 
 import ChatUser from './ChatUser/ChatUser';
 import ChatToolbar from './ChatToolbar/ChatToolbar'
-import classes from './Chats.module.css';
+import classes from './ChatsList.module.css';
 
-const Chats = ({chats, user, chatClicked}) => {
+const ChatsList = ({chats, user, mobile}) => {
     return(
         <div className={classes.SideBar}>
           <ChatToolbar/>
@@ -13,11 +13,11 @@ const Chats = ({chats, user, chatClicked}) => {
                 key={chat._id}
                 username={chat.users[0]._id === user.id ? chat.users[1].username : chat.users[0].username}
                 imageUrl={chat.users[0]._id === user.id ? chat.users[1].profileImage.url : chat.users[0].profileImage.url}
-                clicked={() => chatClicked(chat._id)}
+                chatId={chat._id}
                 />
           ))}
         </div>
     )
 }
 
-export default Chats;
+export default ChatsList;

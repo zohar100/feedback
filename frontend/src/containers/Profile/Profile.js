@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
  
 import classes from './Profile.module.css';
 import useForm from '../../utilities/useForm';
@@ -13,14 +14,23 @@ import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import * as actions from '../../store/actions/index';
 
 
-const Profile = props => {
+const Profile = () => {
+    const dispatch = useDispatch();
+    const params = useParams();
+    const {user, loading, token} = useSelector(state => state.auth);
+    const posts = useSelector(state => state.post.posts);
+    const fetchedUser = useSelector(state => state.user.fetchedUser)
+
+    const {deletePost, addPost, fetchUser, followUser, 
+        toggleLike, addToFavorite, addComment, deleteComment} = actions;
+
     const addPostHandler = () => {
         const post = {
-             author: props.user.id,
+             author: fetchedUser.id,
              body: postFormValue.body,
              image: postFormValue.image
          }
-         props.onAddPost(post, props.token)
+         dispatch(addPost(post, token))
     }
     const [postFormValue, setPostInputValue, handlePostSubmit] = useForm(null, null, addPostHandler);
 
@@ -28,9 +38,9 @@ const Profile = props => {
         const comment = {
             body: commentFormValue.body
         }
-        props.onAddComment(comment, postId, props.token)
+        dispatch(addComment(comment, postId, token));
     }
-     const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
+    const [commentFormValue, setCommentInputValue, handleCommentSubmit] = useForm(null, null, addCommentHandler);
     
     const [showModal, setShowModal] = useState(null);
     const [showComments, setShowComments] = useState(null);
@@ -42,9 +52,9 @@ const Profile = props => {
     })
 
     const loadData = () => {
-        if(props.match.params.id){
-            if(!props.user.id || (props.user.id !== props.match.params.id)){
-                props.onFetchUser(props.match.params.id, props.token)
+        if(params.id){
+            if(fetchedUser.id == null || (fetchedUser.id !== params.id)){
+                dispatch(fetchUser(params.id, token))
             }
         }
     }
@@ -68,15 +78,15 @@ const Profile = props => {
     }
 
     const likeClickHandler = (postId) => {
-        props.onLikePost(postId, props.user.id, props.token)
+        dispatch(toggleLike(postId, fetchedUser.id, token));
     }
 
     const deletePostHandler = (postId) => {
-        props.onDeletePost(postId, props.token);
+        dispatch(deletePost(postId, token));
     }
 
     const addToFavoriteHandler = (postId) => {
-        props.onAddToFavorite(postId, props.token)
+        dispatch(addToFavorite(postId, token))
     }
 
     const showCommentModalHandler = (commentId) => {
@@ -89,33 +99,33 @@ const Profile = props => {
     }
 
     const deleteCommentHandler = (commentId, postId) => {
-        props.onDeleteComment(postId, commentId, props.token)
+        dispatch(deleteComment(postId, commentId, token));
     }
 
     const followUserHandler = (userId) => {
-        props.onFollowUser(userId, props.token);
+        dispatch(followUser(userId, token));
     }
 
     const editUserButtonClicked = () => {
         setShowEditUserModal(true);
     }
 
-        let followOrUnfollow = props.user.followers.find(user => 
-            user._id === props.currentUser.id
+        let followOrUnfollow = fetchedUser.followers.find(user => 
+            user._id === user.id
         );
         let profile = (
             <div className={classes.Profile}>
             <div className={classes.ProfileImage} style={{backgroundImage: `url(${profilBackground})`}}>
                 <div >
                     <ProfileImage 
-                    imageUrl={props.user.profileImage.url}/>
+                    imageUrl={fetchedUser.profileImage.url}/>
                 </div>
                 <h2>
-                    {props.user.username}
+                    {fetchedUser.username}
                 </h2>
             </div>
             <div className={classes.ProfileControl}>
-                {props.user.id === props.currentUser.id ? 
+                {fetchedUser.id === user.id ? 
                 <>
                 <Button btnType='Secondary' clicked={() => editUserButtonClicked()}>Edit Profile</Button> 
                 <EditUser 
@@ -123,37 +133,39 @@ const Profile = props => {
                 clickedModal={() => setShowEditUserModal(false)}/>
                 </>
                 : null}
-                {props.user.id !== props.currentUser.id ? 
-                <Button btnType='Secondary' clicked={() => followUserHandler(props.user.id)}>{followOrUnfollow ? 'Unfollow' : 'Follow'}</Button> : null}
-                {props.user.id !== props.currentUser.id ? 
+                {fetchedUser.id !== user.id ? 
+                <Button btnType='Secondary' clicked={() => followUserHandler(fetchedUser.id)}>
+                    {followOrUnfollow ? 'Unfollow' : 'Follow'}
+                </Button> : null}
+                {fetchedUser.id !== user.id ? 
                 <Button btnType='Secondary'>Message</Button>: null}
             </div>
             <div className={classes.ProfileInfo}>
                 <div className={classes.UserFolowing}>
-                    <h2>{props.user.following.length}</h2>
+                    <h2>{fetchedUser.following.length}</h2>
                     <h3>Following</h3>
                     </div>
                 <div className={classes.UserFolowers}>
-                    <h2>{props.user.followers.length}</h2>
+                    <h2>{fetchedUser.followers.length}</h2>
                     <h3>Followers</h3>
                 </div>
                 <div className={classes.UserPosts}>
-                    <h2>{props.user.posts.length}</h2>
+                    <h2>{fetchedUser.posts.length}</h2>
                     <h3>Posts</h3>
                 </div>
             </div>
             <div className={classes.ProfilePosts}>
-                {props.user.id === props.currentUser.id ?                 
+                {fetchedUser.id === user.id ?                 
                 <PostForm 
                     bodyValue={postFormValue.body || ""}
                     imageValue={postFormValue.image || ""}
                     inputValueChanged={setPostInputValue}
                     submitHandler={handlePostSubmit}
-                    currentUser={props.user}/>  : null}
+                    currentUser={fetchedUser}/>  : null}
                 <Posts
-                    posts={props.posts.filter(post => post.author._id === props.user.id)}
-                    loading={props.loading}
-                    currentUser={props.currentUser}
+                    posts={posts.filter(post => post.author._id === fetchedUser.id)}
+                    loading={loading}
+                    currentUser={user}
                     showModal={showModal}
                     showModalHandler={showModalHandler}
                     deletePostHandler={deletePostHandler}
@@ -170,34 +182,11 @@ const Profile = props => {
             </div>
         </div>
             );
-            if(props.loading){
+            if(loading){
                 profile = <Spinner spinnerType="Primary-Spinner"/>
             }
 
         return profile;
 }
 
-const mapStateToProps = state  => {
-    return {
-        currentUser: state.auth.user,
-        posts: state.post.posts,
-        loading: state.auth.loading,
-        token: state.auth.token,
-        user: state.user.fetchedUser
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onDeletePost: (postId, token) => dispatch(actions.deletePost(postId, token)),
-        onAddPost: (post, token) => dispatch(actions.addPost(post, token)),
-        onFetchUser: (userId, token) => dispatch(actions.fetchUser(userId, token)),
-        onFollowUser: (userId, token) => dispatch(actions.followUser(userId, token)),
-        onLikePost: (postId, userId, token) => dispatch(actions.toggleLike(postId, userId, token)),
-        onAddToFavorite: (postId, token) => dispatch(actions.addToFavorite(postId, token)),
-        onAddComment: (comment, postId, token) => dispatch(actions.addComment(comment, postId, token)),
-        onDeleteComment: (postId, commentId, token) => dispatch(actions.deleteComment(postId, commentId, token))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile;

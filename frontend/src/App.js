@@ -7,34 +7,69 @@ import Feed from './containers/Feed/Feed';
 import Post from './containers/Post/Post';
 import Auth from './containers/Auth/Auth';
 import Profile from './containers/Profile/Profile';
+import Chats from './containers/Chats/Chats';
+import Chat from './containers/Chat/Chat';
 import Search from './containers/Search/Search';
 import Favorites from './containers/Favorites/Favorites';
 import * as actions from './store/actions/index';
 
 
 const App = props => {
+  // const dispatch = useDispatch();
+  // const isAuthenticated = useSelector(state => state.auth.token !== null)
 
   const { onTryAutoSignin} = props;
 
   useEffect(() => {
     onTryAutoSignin();
  }, [onTryAutoSignin]);
+
+const checkMobile = () => {
+  const w = window,
+  d = document,
+  e = d.documentElement,
+  g = d.getElementsByTagName('body')[0],
+  windowWidth = w.innerWidth || e.clientWidth || g.clientWidth; //window width
+
+  return windowWidth > 768
+ }
   
  let routes = (
    <Switch>
-      <Route path='/auth' render={() => <Auth/>}/>
+      <Route path='/auth'>
+        <Auth/>
+      </Route>
       <Redirect to="/auth"/>
    </Switch>
   )
  if(props.isAuthenticated) {
    routes = (
     <Switch>
-      <Route path='/profile/:id' exact component={Profile}/>
-      <Route path='/favorites' exact component={Favorites}/>
-      <Route path='/favorites/:id' exact component={Post}/>
-      <Route path='/search' component={Search}/>
-      <Route path='/auth' render={() => <Auth/>}/>
-      <Route path='/' component={Feed}/> 
+      <Route path='/' exact> 
+        <Feed/>
+      </Route> 
+      <Route path='/profile/:id'> 
+        <Profile/>
+      </Route>
+      <Route path='/chats' exact>
+        {checkMobile() ? <Redirect to='/'/> : <Chats/>}
+        {/* <Chats/> */}
+      </Route>
+      <Route path='/chats/:id'> 
+        <Chat/>
+      </Route>
+      <Route path='/favorites' exact>
+        <Favorites/>
+      </Route>
+      <Route path='/favorites/:id'>
+        <Post/>
+      </Route>
+      <Route path='/search'>
+        <Search/>
+      </Route>
+      <Route path='/auth'> 
+        <Auth/>
+      </Route>
       <Redirect to="/auth"/>
     </Switch>
    )

@@ -1,3 +1,11 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #353941 inset !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
 .Input {
   width: 100%;
   padding: 10px;
@@ -25,6 +33,11 @@
 
 .InputElement:focus {
   outline: none;
+}
+
+.InputElement {
+  background-color: transparent;
+  color: white;
 }
 
 .DivInput {

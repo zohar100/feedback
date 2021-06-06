@@ -1,5 +1,6 @@
 export {
     fetchPosts,
+    fetchPost,
     deletePost,
     addPost,
     toggleLike,

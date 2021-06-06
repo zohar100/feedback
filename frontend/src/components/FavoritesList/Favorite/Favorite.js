@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import ProfileImage from '../../ProfileImage/ProfileImage';
 import Button from '../../UI/Button/Button';
 import classes from './Favorite.module.css';
 
-const Favorite = ({text, username, postImageUrl, userImageUrl }) => {
+const Favorite = ({text, username, postImageUrl, userImageUrl, postId }) => {
 
     return(
         <div className={classes.Favorite}>
@@ -21,7 +22,11 @@ const Favorite = ({text, username, postImageUrl, userImageUrl }) => {
                     <span>{username}</span>
                 </div>
                 <Button>Remove</Button>
-                <Button>Go To Post</Button>
+                <Button>
+                    <Link to={'/favorites/' + postId}>
+                        Go To Post
+                    </Link>
+                </Button>
             </div>
         </div>
     )

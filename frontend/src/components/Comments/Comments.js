@@ -25,6 +25,8 @@ const Comments = ({deleteCommentHandler, showCommentModal,
                         modalClicked={() => showCommentModalHandler(comment._id)}
                         />
                 ))
+            }else {
+                commentsOrSpan = <span>No comments here</span>
             }
         }
 

@@ -3,12 +3,13 @@ import { updateObject } from '../utility';
 
 const initialState = {
     posts: [],
+    post: null,
     loading: false,
     error: null,
     message: null
 }
 
-//--------------Fetching posts-----------------
+//--------------Fetching Posts-----------------
 const fetchPostsStart = (state, action) => {
     return updateObject(state, {
         loading: true, 
@@ -31,7 +32,31 @@ const fetchPostsFail = (state, action) => {
     });
 }
 
-//--------------Add post-----------------
+//--------------Fetching Post-----------------
+const fetchPostStart = (state, action) => {
+    return updateObject(state, {
+        loading: true, 
+        error: null,
+    });
+}
+
+const fetchPostSuccess = (state, action) => {
+    return updateObject(state, {
+        post: action.post,
+        error: null,
+        loading: false
+    })
+}
+
+const fetchPostFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false
+    });
+}
+
+
+//--------------Add Post-----------------
 const addPostSuccess = (state, action) => {
     return updateObject (state, {
         posts: state.posts.concat(action.post),
@@ -48,7 +73,7 @@ const addPostFail = (state, action) => {
     })
 }
 
-//--------------Delete post-----------------
+//--------------Delete Post-----------------
 const deletePostSuccess = (state, action) => {
     const newPosts = state.posts.filter(post => post._id !== action.postId)
     return updateObject(state, {
@@ -66,10 +91,10 @@ const deletePostFail = (state, action) => {
 //--------------Likes-----------------
 const toggleLikeSuccess = (state, action) => {
     const foundPost = state.posts.filter(post => post._id === action.postId)
-    const postLike = foundPost[0].likes.find(like => like === action.userId)
+    const postsLike = foundPost[0].likes.find(like => like === action.userId)
     const posts =  state.posts.map(post =>{ 
-        if(post._id === action.postId) {
-            if(!postLike){
+        if(post._id === action.postId && state.post === null) {
+            if(!postsLike){
                 return updateObject(post, {likes: post.likes.concat(action.userId)})
             }else{
                 return updateObject(post, {likes: post.likes.filter(like => like !== action.userId)})
@@ -78,10 +103,10 @@ const toggleLikeSuccess = (state, action) => {
             return post;
         }
     })
- return updateObject(state, {
-     error: null,
-     posts: posts
- })
+    return updateObject(state, {
+        error: null,
+        posts: posts
+    })
 }
 
 const toggleLikeFail = (state, action) => {
@@ -154,11 +179,15 @@ const deleteCommentFail = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        //--------------Fetching posts-----------------
+        //--------------Fetching Posts-----------------
         case actionTypes.FETCH_POSTS_START: return fetchPostsStart(state, action);
         case actionTypes.FETCH_POSTS_SUCCESS: return fetchPostsSuccess(state, action);
         case actionTypes.FETCH_POSTS_FAIL: return fetchPostsFail(state, action);
-        //--------------Delete post-----------------
+        //--------------Fetching Post-----------------
+        case actionTypes.FETCH_POST_START: return fetchPostStart(state, action);
+        case actionTypes.FETCH_POST_SUCCESS: return fetchPostSuccess(state, action);
+        case actionTypes.FETCH_POST_FAIL: return fetchPostFail(state, action);
+        //--------------Delete Post-----------------
         case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
         case actionTypes.DELETE_POST_FAIL: return deletePostFail(state, action);
         //--------------Add post-----------------

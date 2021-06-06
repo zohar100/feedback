@@ -14,7 +14,7 @@ const Friends = ({friends}) => (
                 userId={friend._id}
             />
     ))
-    : <di></di>
+    : <div></div>
 );
 
 export default Friends;

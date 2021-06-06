@@ -38,10 +38,16 @@ module.exports.newPost = catchAsync(async (req, res) => {
 
 //-----------Get Spacific Post-----------//
 module.exports.showPost = catchAsync(async (req, res) => {
-    const post = await Post.findById(req.params.id)
+    const post = await Post.findById(req.params.id).populate('author').populate({
+      path: 'comments',
+      populate: {
+          path:'author'
+      }
+    });
     res.json(post)
 });
 
+//-----------Edit Post-----------//
 module.exports.editPost = catchAsync(async (req, res) => {
     const post = await Post.findById(req.params.id)
     post.body = req.body.body

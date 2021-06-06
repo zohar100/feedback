@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios';
 
 
-//--------------Fetching posts-----------------
+//--------------Fetching Posts-----------------
 export const fetchPostsStart = () => {
     return {
         type: actionTypes.FETCH_POSTS_START,
@@ -26,7 +26,7 @@ export const fetchPostsFail = (err) => {
 export const fetchPosts = (token) => {
     return dispatch => {
         dispatch(fetchPostsStart())
-            axios.get('/posts', {headers: { "x-auth-token": token }})
+            axios.get('/posts', {headers: {"x-auth-token": token }})
             .then(response => {
                     dispatch(fetchPostsSuccess(response.data));
             })
@@ -34,7 +34,39 @@ export const fetchPosts = (token) => {
     }
 }
 
-//--------------Delete post-----------------
+//--------------Fetching Post-----------------
+export const fetchPostStart = () => {
+    return {
+        type: actionTypes.FETCH_POST_START,
+    }
+}
+
+export const fetchPostSuccess = (post) => {
+    return {
+        type: actionTypes.FETCH_POST_SUCCESS,
+        post: post
+    }
+}
+
+export const fetchPostFail = (err) => {
+    return {
+        type: actionTypes.FETCH_POST_FAIL,
+        error: err
+    }
+}
+
+export const fetchPost = (token, postId) => {
+    return dispatch => {
+        dispatch(fetchPostStart())
+            axios.get('/posts/' + postId, {headers: { "x-auth-token": token }})
+            .then(response => {
+                    dispatch(fetchPostSuccess(response.data));
+            })
+            .catch(error => dispatch(fetchPostFail(error)));
+    }
+}
+
+//--------------Delete Post-----------------
 export const deletePostSuccess = (postId) => {
     return{
         type: actionTypes.DELETE_POST_SUCCESS,
@@ -59,7 +91,7 @@ export const deletePost = (postId, token) => {
     }
 } 
 
-//--------------Add post-----------------
+//--------------Add Post-----------------
 
 export const addPostSuccess = (post) => {
     return {
@@ -90,11 +122,12 @@ export const addPost = (post, token) => {
 
 
 //--------------Likes-----------------
-export const toggleLikeSuccess = (postId, userId) => {
+export const toggleLikeSuccess = (postId, userId, post) => {
     return {
         type: actionTypes.TOGGLE_LIKE_SUCCESS,
         postId: postId,
-        userId: userId
+        userId: userId,
+        post: post
     }
 }
 
@@ -105,7 +138,7 @@ export const toggleLikeFail = (err) => {
     }
 } 
 
-export const toggleLike = (postId, userId, token) => {
+export const toggleLike = (token, postId, userId) => {
     return dispatch => {
         axios.post('posts/' + postId + '/like', null, {headers: { "x-auth-token": token }})
             .then(response => dispatch(toggleLikeSuccess(postId, userId)))
@@ -115,7 +148,7 @@ export const toggleLike = (postId, userId, token) => {
 
 
 
-//--------------Add comment-----------------
+//--------------Add Comment-----------------
 
 export const addCommentStart = () => {
     return {
@@ -150,7 +183,7 @@ export const addComment = (comment, postId, token) => {
     }
 }
 
-//--------------Delete comment-----------------
+//--------------Delete Comment-----------------
 
 export const deleteCommentSuccess = (postId, commentId) => {
     return {

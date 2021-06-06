@@ -14,17 +14,21 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
-const post = (props) => {
+const Post = ({showDeleteButton, deletePost, userId,
+            profileImage, modalClicked, showModal, createdAt, image, 
+            username, addToFavorite, commentsCount, commentClick, 
+            likesCount, likeClick, likeActive, body, postOptionClicked,
+            favoriteActive, post}) => {
     const postOptionList = [
         {
             text: 'Delete',
-            show: props.showDeleteButton,
-            click: props.deletePost,
+            show: showDeleteButton,
+            click: deletePost,
             svgComponent: DeleteOutlineIcon
         },
         {
             text: 'Report',
-            // click: props.deletePost,
+            // click: deletePost,
             svgComponent: ErrorOutlineIcon
         }
     ]
@@ -33,57 +37,58 @@ const post = (props) => {
             <div className={classes.Post}>
                 <div className={classes.UserInfo}>
                     <div className={classes.profileImage}>
-                        <Link to={'/profile/' + props.userId}>
-                            <ProfileImage imageUrl={props.profileImage.url || ''}/>
+                        <Link to={'/profile/' + userId}>
+                            <ProfileImage imageUrl={profileImage.url || ''}/>
                         </Link>
                     </div>
                     <div className={classes.BasicInfo}>
-                        <Link to={'/profile/' + props.userId}>
-                            <p className={classes.Username}>{props.username}</p>
+                        <Link to={'/profile/' + userId}>
+                            <p className={classes.Username}>{username}</p>
                         </Link>
-                        <small>{props.createdAt}</small>
+                        <small>{createdAt}</small>
                     </div>
                     <div className={classes.PostOptions}>
                         <div className={classes.OptionsIcon}>
-                            <MoreVertIcon onClick={props.modalClicked}/>    
+                            <MoreVertIcon onClick={modalClicked}/>    
                         </div>
                         <OptionsModal
-                        show={props.showModal}
+                        show={showModal}
                         optionList={postOptionList}
+                        clicked={postOptionClicked}
                         />
                     </div>
                 </div>
                 <div className={classes.PostBody}>
                     <p>
-                        {props.body}
+                        {body}
                     </p>
                     <div className={classes.PostImage}>
-                        {props.image ? <img src={props.image} alt={props.image}/> : null}
+                        {image ? <img src={image} alt={image}/> : null}
                     </div>
                 </div>
                 <div className={classes.PostInfo}>
                         <span>
-                            {props.commentsCount} Comments
+                            {commentsCount} Comments
                         </span>
                         <span>
-                            {props.likesCount} Likes
+                            {likesCount} Likes
                         </span>
                 </div>
                 <div className={classes.PostAction}>
                     <Button 
-                    clicked={props.likeClick} 
-                    active={props.likeActive}><ThumbUpAltIcon/>Like</Button>
+                    clicked={likeClick} 
+                    active={likeActive}><ThumbUpAltIcon/>Like</Button>
                     <Button 
-                    clicked={props.commentClick}><ChatBubbleOutlineIcon />Comments</Button>
+                    clicked={commentClick}><ChatBubbleOutlineIcon />Comments</Button>
                     <Button 
-                    clicked={props.addToFavorite} 
-                    active={props.favoriteActive}><StarBorderIcon/>Favorites</Button>
+                    clicked={addToFavorite} 
+                    active={favoriteActive}><StarBorderIcon/>Favorites</Button>
                 </div>
             </div>
     )
 }
 
-post.propTypes = {
+Post.propTypes = {
     userId: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
@@ -102,4 +107,4 @@ post.propTypes = {
     favoriteActive: PropTypes.string,
 }
 
-export default post;
+export default Post;

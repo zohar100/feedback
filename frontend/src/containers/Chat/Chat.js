@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import classes from './Chat.module.css';
 import ChatInfo from '../../components/ChatInfo/ChatInfo'; 
 import Messages from '../../components/Messages/Messages';
 import ChatForm from '../../components/ChatForm/ChatForm';
-import Modal from '../../components/UI/Modal/Modal';
 import useForm from '../../utilities/useForm';
 import useWebSockets from '../../utilities/useWebSockets';
 import * as actions from '../../store/actions/index';
 
 
-const Chat = (props) => {
+const Chat = () => {
     const dispatch = useDispatch();
+    const params = useParams();
     const {token, user} = useSelector(state => state.auth);
     const chat = useSelector(state => state.chat.chat)
-    const [showChat, setShowChat] = useState(false);
-
-    const {deleteChat, addMessage} = actions;
+    const { addMessage, fetchChat} = actions;
 
     const { join, send } = useWebSockets({
         token: token,
@@ -32,19 +31,22 @@ const Chat = (props) => {
     const [formValue, setInputValue, handleSubmit] = useForm(null, null, submitHandler);
 
     useEffect(() => {
-        if(chat.id !== null) setShowChat(true);
-    }, [chat])
+        loadData();
+    })
+
+    const loadData = () => {
+        if(params.id){
+            if(!chat.id || (chat.id !== params.id)){
+                dispatch(fetchChat(params.id, token));
+            }
+        }
+    }
 
     useEffect(() => {
         if(chat.id !== null) {
             join(chat.id);
         }
     }, [chat, join])
-
-    const modalClickedHandler = () => {
-        setShowChat(false)
-        dispatch(deleteChat())
-    }
 
     let username;
     let profileImage;
@@ -54,8 +56,7 @@ const Chat = (props) => {
     }
 
    return(
-       
-       <Modal show={showChat} modalClosed={() => modalClickedHandler()}>
+       <>
             <ChatInfo
             username={username}
             profileImage={profileImage}/>
@@ -69,7 +70,7 @@ const Chat = (props) => {
             formChange={setInputValue}
             handleSubmit={handleSubmit}
             />
-       </Modal>
+        </>
    )
 };
 

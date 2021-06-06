@@ -61,7 +61,7 @@ export const followUserFail = (err) => {
 
 export const followUser = (userId, token) => {
     return dispatch => {
-        axios.post('/users/follow/' + userId, null, {headers: { "x-auth-token": token }})
+        axios.post('/users/'+ userId + '/follow', null, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(followUserSuccess(response.data.currentUser))
                 console.log(response);
@@ -92,17 +92,30 @@ export const searchUsersFail = (err) => {
     }
 }
 
-export const searchUsers = (token, searchValue, searchRef) => {
+// export const searchUsers = (token, searchValue, searchRef) => {
+//     return dispatch => {
+//         if(searchValue=== searchRef){
+//             dispatch(searchUsersStart())
+//             const query = 
+//             searchValue ? searchValue.length === 0 ? 
+//             '' : `?username=${searchValue}` : '';
+//             axios.get('/users' + query, {headers: { "x-auth-token": token }})
+//             .then((response)=> {
+//                 dispatch(searchUsersSuccess(response.data))
+//             }).catch(err=> dispatch(searchUsersFail(err)))
+//           }  
+//     }
+// }
+
+export const searchUsers = (token, searchValue) => {
     return dispatch => {
-        if(searchValue=== searchRef){
-            dispatch(searchUsersStart())
-            const query = 
-            searchValue ? searchValue.length === 0 ? 
-            '' : `?username=${searchValue}` : '';
-            axios.get('/users' + query, {headers: { "x-auth-token": token }})
+        dispatch(searchUsersStart())
+        const query = 
+        searchValue ? searchValue.length === 0 ? 
+        '' : `?username=${searchValue}` : '';
+        axios.get('/users' + query, {headers: { "x-auth-token": token }})
             .then((response)=> {
                 dispatch(searchUsersSuccess(response.data))
             }).catch(err=> dispatch(searchUsersFail(err)))
-          }  
     }
 }

@@ -34,6 +34,7 @@ const Posts = ({ posts, loading, currentUser,
                     deletePost={() => deletePostHandler(post._id)}
                     showDeleteButton={post.author._id === currentUser.id}
                     commentClick={() => showCommentsHandler(post._id)}
+                    postOptionClicked={() => showModalHandler(post._id)}
                     commentsCount={post.comments.length}
                     likesCount={post.likes.length}
                     likeClick={() => likeClickHandler(post._id)}

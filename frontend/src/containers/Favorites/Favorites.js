@@ -15,6 +15,7 @@ const Favorites = props => {
             <Favorite
             text={post.body}
             username={post.author.username}
+            postId={post._id}
             postImageUrl={post.image}
             userImageUrl={post.author.profileImage.url}/>
         ))

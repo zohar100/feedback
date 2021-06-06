@@ -56,7 +56,6 @@ const Feed = () => {
     }
 
     const showCommentsHandler = (postId) => {
-
         setShowComments(prevState => {
             if(prevState === postId) {
                 return null;
@@ -67,7 +66,7 @@ const Feed = () => {
     }
 
     const likeClickHandler = (postId) => {
-        dispatch(toggleLike(postId, user.id, token));
+        dispatch(toggleLike(token, postId, user.id));
     }
 
     const deletePostHandler = (postId) => {
