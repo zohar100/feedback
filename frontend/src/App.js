@@ -13,11 +13,7 @@ import Search from './containers/Search/Search';
 import Favorites from './containers/Favorites/Favorites';
 import * as actions from './store/actions/index';
 
-
 const App = props => {
-  // const dispatch = useDispatch();
-  // const isAuthenticated = useSelector(state => state.auth.token !== null)
-
   const { onTryAutoSignin} = props;
 
   useEffect(() => {

@@ -11,10 +11,8 @@ const button = ({active, children, btnType, svgComponent, clicked}) => {
         <button 
         className={[buttonClasses.join(' '), classes[btnType]].join(' ')}
         onClick={clicked}>
-            <div>
             {svgComponent ? svgComponent : null}
-            <span>{children}</span>
-            </div>
+            {children}
         </button>
     )
 }

@@ -5,14 +5,13 @@ import { useParams } from 'react-router-dom';
 import classes from './Profile.module.css';
 import useForm from '../../utilities/useForm';
 import Posts from '../../components/Posts/Posts'
-import profilBackground from '../../assets/images/profileBackground.jpg'
-import Button from '../../components/UI/Button/Button';
+import profilBackground from '../../assets/images/profileBackground.jpg';
 import PostForm from '../../components/Posts/PostForm/PostForm';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import EditUser from './EditUser/EditUser';
-import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import * as actions from '../../store/actions/index';
-
+import ProfileImageSection from '../../components/Profile/ProfileImageSection/ProfileImageSection';
+import ProfileControllers from '../../components/Profile/ProfileControllers/ProfileControllers';
+import ProfileStats from '../../components/Profile/ProfileStats/ProfileStats';
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -115,45 +114,22 @@ const Profile = () => {
         );
         let profile = (
             <div className={classes.Profile}>
-            <div className={classes.ProfileImage} style={{backgroundImage: `url(${profilBackground})`}}>
-                <div >
-                    <ProfileImage 
-                    imageUrl={fetchedUser.profileImage.url}/>
-                </div>
-                <h2>
-                    {fetchedUser.username}
-                </h2>
-            </div>
-            <div className={classes.ProfileControl}>
-                {fetchedUser.id === user.id ? 
-                <>
-                <Button btnType='Secondary' clicked={() => editUserButtonClicked()}>Edit Profile</Button> 
-                <EditUser 
-                showModal={showEditUserModal}
-                clickedModal={() => setShowEditUserModal(false)}/>
-                </>
-                : null}
-                {fetchedUser.id !== user.id ? 
-                <Button btnType='Secondary' clicked={() => followUserHandler(fetchedUser.id)}>
-                    {followOrUnfollow ? 'Unfollow' : 'Follow'}
-                </Button> : null}
-                {fetchedUser.id !== user.id ? 
-                <Button btnType='Secondary'>Message</Button>: null}
-            </div>
-            <div className={classes.ProfileInfo}>
-                <div className={classes.UserFolowing}>
-                    <h2>{fetchedUser.following.length}</h2>
-                    <h3>Following</h3>
-                    </div>
-                <div className={classes.UserFolowers}>
-                    <h2>{fetchedUser.followers.length}</h2>
-                    <h3>Followers</h3>
-                </div>
-                <div className={classes.UserPosts}>
-                    <h2>{fetchedUser.posts.length}</h2>
-                    <h3>Posts</h3>
-                </div>
-            </div>
+            <ProfileImageSection
+            profilBackground={profilBackground}
+            profileImageUrl={fetchedUser.profileImage.url}
+            username={fetchedUser.username}/>
+            <ProfileControllers
+            userId={fetchedUser.id}
+            currentUserId={user.id}
+            editUserButtonClicked={editUserButtonClicked}
+            showEditUserModal={showEditUserModal}
+            setShowEditUserModal={setShowEditUserModal}
+            followUserHandler={followUserHandler}
+            followOrUnfollow={followOrUnfollow}/>
+            <ProfileStats
+            userFolowing={fetchedUser.following.length}
+            userFolowers={fetchedUser.followers.length}
+            userPosts={fetchedUser.posts.length}/>
             <div className={classes.ProfilePosts}>
                 {fetchedUser.id === user.id ?                 
                 <PostForm 

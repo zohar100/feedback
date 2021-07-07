@@ -6,9 +6,14 @@
   padding: 10px 10px 10px 0px;
 }
 
+.FavoriteContainer span {
+  color: #fff;
+}
+
 .FavoriteUser {
   display: flex;
   flex-flow: row;
+  margin: 10px 0;
 }
 
 .FavoriteUser span {
@@ -16,4 +21,14 @@
   height: fit-content;
   margin: auto 10px;
   color: azure;
+}
+
+.FavoriteButtons {
+  display: flex;
+}
+
+.FavoriteButtons button {
+  height: 40px;
+  margin: 5px;
+  margin-left: 0;
 }

@@ -70,7 +70,7 @@
 .UserInfo .Username {
   margin: 0;
   z-index: 30;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 .UserInfo small {
@@ -115,9 +115,25 @@
   background-color: #26282b;
 }
 
+.PostAction button svg {
+  margin-right: 4px;
+}
+
 .PostOptions {
   margin-left: auto;
   margin-top: 8px;
+}
+
+.PostOptions .OptionsIcon {
+  cursor: pointer;
+  height: 32px;
+  padding: 2px;
+  border-radius: 30px;
+  transition: 0.3s;
+}
+
+.PostOptions .OptionsIcon:hover {
+  background-color: #26282b;
 }
 
 .PostOptions .OptionsIcon svg {

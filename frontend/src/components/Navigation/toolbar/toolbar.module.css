@@ -13,10 +13,6 @@
   z-index: 100;
 }
 
-.Toolbar img {
-  width: 40px;
-}
-
 .UserInfo {
   display: none;
   width: 130px;
@@ -24,16 +20,25 @@
 
 .UserInfo .UserButton {
   width: 150px;
+  height: 100%;
 }
 
 .UserInfo .UserButton button {
-  width: fit-content;
-  margin: 13px 0px 13px 6px;
+  width: 100%;
 }
 
 .UserInfo .UserButton svg {
   font-size: 30px;
-  margin-bottom: -8px;
+}
+
+.UserInfo .UserButton span {
+  margin: 0 4px;
+}
+
+.Navigation {
+  margin: auto;
+  display: flex;
+  height: 100%;
 }
 
 .Navigation ul {
@@ -41,10 +46,17 @@
   display: flex;
   margin: 0;
   height: 100%;
+  padding: 0;
+  list-style-type: none;
 }
 
-.Navigation {
-  margin: auto;
+.NotificationButton {
+  height: 100%;
+  width: 50px;
+}
+.NotificationButton button {
+  height: 100%;
+  width: 50px;
 }
 
 @media (min-width: 600px) {

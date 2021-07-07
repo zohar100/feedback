@@ -34,8 +34,6 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const EDIT_USER_START = 'EDIT_USER_START';
 export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const EDIT_USER_FAIL = 'EDIT_USER_FAIL';
-
-
 //--------------Like-----------------
 export const TOGGLE_LIKE_SUCCESS = 'TOGGLE_LIKE_SUCCESS'; 
 export const TOGGLE_LIKE_FAIL = 'TOGGLE_LIKE_FAIL'; 

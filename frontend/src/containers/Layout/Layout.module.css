@@ -15,7 +15,7 @@
   height: 100vh; */
   position: fixed;
   display: none;
-  z-index: 100;
+  z-index: 80;
 }
 
 /* .LeftBar {

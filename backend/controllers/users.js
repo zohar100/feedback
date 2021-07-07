@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { cloudinary } = require('../cloudinary');
 const User = require('../models/user.model');
 const Post = require('../models/post.model')
+const Notification = require('../models/notification.model');
+const { notificationsBuilder, types } = require('../utility/notificationsBuilder');
 const SerevrError = require('../utility/ServerError');
 const catchAsync = require('../utility/catchAsync');
 
@@ -75,6 +77,9 @@ module.exports.register = catchAsync(async (req, res, next) => {
         }).populate({
             path: 'following',
             model: 'User'
+        }).populate({
+            path: 'notifications',
+            model: 'Notification'
         })
 
         res.json({
@@ -87,7 +92,8 @@ module.exports.register = catchAsync(async (req, res, next) => {
                 posts: user.posts,
                 favorites: user.favorites,
                 following: user.following,
-                followers: user.followers
+                followers: user.followers,
+                notifications: user.notifications
             }
          });
 });
@@ -152,6 +158,9 @@ module.exports.login = catchAsync(async (req, res, next) => {
         }).populate({
             path: 'following',
             model: 'User'
+        }).populate({
+            path: 'notifications',
+            model: 'Notification'
         })
 
         res.json({
@@ -164,7 +173,8 @@ module.exports.login = catchAsync(async (req, res, next) => {
                 posts: newUser.posts,
                 favorites: newUser.favorites,
                 following: newUser.following,
-                followers: newUser.followers
+                followers: newUser.followers,
+                notifications: newUser.notifications
             }
          });
 });
@@ -209,7 +219,10 @@ module.exports.showUser = catchAsync(async (req, res) => {
         }).populate({
             path: 'following',
             model: 'User'
-        })
+        }).populate({
+            path: 'notifications',
+            model: 'Notification'
+        });
                 
         res.json({
             user: {
@@ -220,7 +233,8 @@ module.exports.showUser = catchAsync(async (req, res) => {
             posts: user.posts,
             favorites: user.favorites,
             following: user.following,
-            followers: user.followers
+            followers: user.followers,
+            notifications: user.notifications
         }
     });
 });
@@ -276,32 +290,40 @@ module.exports.deleteUser = catchAsync(async (req, res) => {
 
 //-----------Follow User / Unfollow User-----------//
 module.exports.followUser = catchAsync(async (req, res) => {
-        const userToFolow = await User.findById(req.params.userId);
+        const userToFollow = await User.findById(req.params.userId);
         const currentUser = await User.findById(req.user);
     
-        //check if the current user already follow this userToFolow
+        //check if the current user already follow this userToFollow
         const userFollow = await currentUser.following.find(user => user.equals(req.params.userId));
         
+        //create notification
+        if(!userToFollow._id.equals(currentUser._id)){
+            const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username))
+            await userToFollow.notifications.push(notification._id)
+        }
+
         //if the user already follow
         if(userFollow) {
             //pull out the userId from current user folowing
             currentUser.following.pull(req.params.userId)
             //pull out the userId from user folowers
-            userToFolow.followers.pull(req.user)
-            console.log(currentUser);
-            console.log(userToFolow);
+            userToFollow.followers.pull(req.user)
         }else {
+            //create notification
+            if(!userToFollow._id.equals(currentUser._id)){
+                const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username, currentUser._id))
+                userToFollow.notifications.push(notification._id)
+                notification.save()
+            }
             //push the userId to current user folowing
             currentUser.following.push(req.params.userId)
             //push the userId to user folowers
-            userToFolow.followers.push(req.user)
-            console.log(currentUser);
-            console.log(userToFolow);
+            userToFollow.followers.push(req.user)
         }
     
-        await userToFolow.save()
+        await userToFollow.save()
         await currentUser.save()
-        return res.json({user: userToFolow, currentUser: currentUser});
+        return res.json({user: userToFollow, currentUser: currentUser});
 });
 
 //-----------Add To User's Favorites / Remove From User's Favorites-----------//
@@ -379,8 +401,10 @@ module.exports.tokenValidation = catchAsync(async (req,res) => {
     }).populate({
         path: 'following',
         model: 'User'
+    }).populate({
+        path: 'notifications',
+        model: 'Notification'
     })
-
 
     return res.json({user: {
                 id: sendUser._id,
@@ -390,6 +414,7 @@ module.exports.tokenValidation = catchAsync(async (req,res) => {
                 posts: sendUser.posts,
                 favorites: sendUser.favorites,
                 following: sendUser.following,
-                followers: sendUser.followers
+                followers: sendUser.followers,
+                notifications: sendUser.notifications
                 }, token: token});
 });

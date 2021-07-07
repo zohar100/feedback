@@ -64,11 +64,9 @@ export const followUser = (userId, token) => {
         axios.post('/users/'+ userId + '/follow', null, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(followUserSuccess(response.data.currentUser))
-                console.log(response);
             })
             .catch(err => {
                 dispatch(followUserFail(err))
-                console.log(err)
             });
     }
 }

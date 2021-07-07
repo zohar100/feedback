@@ -13,7 +13,8 @@ const initialState = {
         email: null,
         favorites:[],
         followers: [],
-        following: []
+        following: [],
+        notifications: []
     },
     error: null,
     loading: false
@@ -34,7 +35,8 @@ const authSuccess = (state, action) => {
         profileImage: action.profileImage,
         favorites: action.favorites,
         followers: action.followers,
-        following: action.following
+        following: action.following,
+        notifications: action.notifications
     })
     return updateObject(state, {
         token: action.token,
@@ -58,9 +60,10 @@ const authLogout = (state, action) => {
         username: null,
         email: null,
         profileImage: null,
-        favorites: null,
-        followers: null,
-        following: null
+        favorites: [],
+        followers: [],
+        following: [],
+        notifications: []
     })
     return updateObject(state, {
         error: null,

@@ -141,8 +141,12 @@ export const toggleLikeFail = (err) => {
 export const toggleLike = (token, postId, userId) => {
     return dispatch => {
         axios.post('posts/' + postId + '/like', null, {headers: { "x-auth-token": token }})
-            .then(response => dispatch(toggleLikeSuccess(postId, userId)))
-            .catch(err => dispatch(toggleLikeFail(err)));
+            .then(response => {
+                dispatch(toggleLikeSuccess(postId, userId))
+            })
+            .catch(err => {
+                dispatch(toggleLikeFail(err))
+            });
     }
 } 
 

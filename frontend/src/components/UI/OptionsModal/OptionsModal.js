@@ -11,7 +11,11 @@ const animationTiming = {
     exit: 300
   }
 
-const OptionsModal = ({show, clicked, optionList}) => {
+const OptionsModal = ({show, clicked, optionList, children, secondarySize}) => {
+    const modalClasses = [classes.OptionsModal]
+    if(secondarySize){
+      modalClasses.push(classes.OptionsModalBig);
+    }
     return(
       <Hoc>
         <Backdrop clearColor show={show} clicked={clicked}/>
@@ -26,9 +30,9 @@ const OptionsModal = ({show, clicked, optionList}) => {
           exit: '',
           exitActive: classes.OptionsModalClosed 
         }}>
-            <div className={classes.OptionsModal}>
-                <Options
-                options={optionList}/>
+            <div className={modalClasses.join(' ')}>
+                {children ? children :<Options
+                options={optionList}/>}
             </div>
         </CSSTransition>
       </Hoc>

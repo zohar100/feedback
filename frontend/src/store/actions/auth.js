@@ -18,6 +18,7 @@ export const authSuccess = (user,token) => {
         followers: user.followers,
         following: user.following,
         favorites: user.favorites,
+        notifications: user.notifications,
         token: token
     }
 }
@@ -66,13 +67,11 @@ export const authLogin = (email,  password) => {
 
         axios.post('/login', userData)
             .then(response => {
-                console.log(response.data);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.user, response.data.token));
             })
             .catch(error => {
-                console.log(error.response);
                 dispatch(authFail(error.response.data.msg));
             });
     };
@@ -89,11 +88,9 @@ export const authCheckState = () => {
                     if(response.data !== false){
                         dispatch(authSuccess(response.data.user, response.data.token));
                     }else{
-                        console.log('logout');
                         dispatch(authLogout);
                     }
                 }).catch(error => {
-                    console.log("error!!");
                     dispatch(authLogout());
                 });
         }
@@ -151,7 +148,6 @@ export const editUserFail = (error) => {
 export const editUser = (userId, userData, token) => {
     return dispatch => {
         dispatch(editUserStart());
-        console.log(userData);
         axios.put('/users/' + userId, userData, {headers: { "x-auth-token": token }})
             .then(response => {
                 dispatch(editUserSuccess(response.data.user));

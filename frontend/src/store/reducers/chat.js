@@ -70,7 +70,6 @@ const deleteChat = (state, action) => {
 
 //--------------Add/Remove message-----------------
 const addMessage = (state, action) => {
-    console.log('Add Message REDUCER');
     const updatedChat = updateObject(state.chat, {
         messages: state.chat.messages.concat(action.message),
     });

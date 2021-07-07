@@ -5,10 +5,18 @@
   position: absolute;
   color: azure;
   padding: 7px 0px;
-  border: 1px solid #90b8f8;
+  /* border: 1px solid #90b8f8; */
+  box-shadow: 0px 10px 25px rgb(0 0 0 / 56%);
   border-radius: 5px;
   transition: all 0.3s ease-out;
   z-index: 101;
+  padding: 5px;
+}
+
+.OptionsModalBig {
+  width: 350px;
+  max-height: 70vh;
+  left: 10px;
 }
 
 .OptionsModalOpen {

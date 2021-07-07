@@ -91,10 +91,10 @@ const deletePostFail = (state, action) => {
 //--------------Likes-----------------
 const toggleLikeSuccess = (state, action) => {
     const foundPost = state.posts.filter(post => post._id === action.postId)
-    const postsLike = foundPost[0].likes.find(like => like === action.userId)
+    const postLike = foundPost[0].likes.find(like => like === action.userId)
     const posts =  state.posts.map(post =>{ 
-        if(post._id === action.postId && state.post === null) {
-            if(!postsLike){
+        if(post._id === action.postId) {
+            if(!postLike){
                 return updateObject(post, {likes: post.likes.concat(action.userId)})
             }else{
                 return updateObject(post, {likes: post.likes.filter(like => like !== action.userId)})

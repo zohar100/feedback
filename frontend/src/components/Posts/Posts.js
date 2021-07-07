@@ -12,7 +12,7 @@ const Posts = ({ posts, loading, currentUser,
                 likeClickHandler, addToFavoriteHandler,
                 showComments, deleteCommentHandler, showCommentModal,
                 showCommentModalHandler, commentBodyValue, commentInputValueChanged,
-                commentHandleSubmit
+                commentHandleSubmit, comments
                 }) => {
     let postsToShow = <Spinner spinnerType="Primary-Spinner"/>;
     if(!loading) {

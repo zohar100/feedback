@@ -1,15 +1,18 @@
 const Post = require("../models/post.model");
 const User = require("../models/user.model");
+const Notification = require('../models/notification.model');
+const { notificationsBuilder, types } = require('../utility/notificationsBuilder'); 
 const catchAsync = require('../utility/catchAsync');
 
 //-----------All Posts-----------//
 module.exports.index = catchAsync(async (req, res) => {
-  const posts = await Post.find({}).populate('author').populate({
-    path: 'comments',
+  const posts = await Post.find().populate('author')
+  .populate({
+    path: "comments", // populate comments
     populate: {
-        path:'author'
+       path: "author" // in comments, populate author
     }
-  });
+  })
     res.json(posts)
 });
 
@@ -24,7 +27,7 @@ module.exports.newPost = catchAsync(async (req, res) => {
     };
 
     if(post.body.length <= 0) {
-      res.status(401).json({msg: "You most type somthing!"})
+      res.status(401).json({msg: "You must type somthing!"})
     }
     else{
       const newPost = await new Post(post);
@@ -78,14 +81,23 @@ module.exports.deletePost = catchAsync(async (req, res) => {
 
 //-----------Like To Comment/ Remove Like to Post-----------//
 module.exports.likePost = catchAsync(async (req, res) => {
-    const post = await Post.findById(req.params.id)
-  
+    const post = await Post.findById(req.params.id).populate('author')
     const postLike = await post.likes.find(like => like.equals(req.user))
-      
+    
+    const user = await User.findById(req.user)
+    const notificationUser = await User.findById(post.author._id)
+
     if(postLike) {
       post.likes.pull(req.user)
     }else {
-      post.likes.push(req.user)
+      if(!notificationUser._id.equals(user._id)){
+        const notification = await new Notification(notificationsBuilder(types.POST_LIKE, user.username, post._id))
+        await notificationUser.notifications.push(notification._id)
+        await notification.save()
+        await notificationUser.save()
+
+      }
+      await post.likes.push(req.user)
     }
     await post.save();
     res.json(post);

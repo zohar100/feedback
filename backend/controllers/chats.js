@@ -1,6 +1,7 @@
 const Chat = require('../models/chat.model');
 const catchAsync = require('../utility/catchAsync');
 
+
 //-----------All Chats/ Chats With Spacific Users-----------//
 module.exports.index = catchAsync(async (req, res) => {
     // find Chat that the user.id inside the users object is equal to decoded.id 

@@ -13,6 +13,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Moment from 'react-moment';
 
 const Post = ({showDeleteButton, deletePost, userId,
             profileImage, modalClicked, showModal, createdAt, image, 
@@ -33,6 +34,15 @@ const Post = ({showDeleteButton, deletePost, userId,
         }
     ]
 
+    const calendarStrings = {
+        lastDay : '[Yesterday at] LT',
+        sameDay : '[Today at] LT',
+        nextDay : '[Tomorrow at] LT',
+        lastWeek : '[last] dddd [at] LT',
+        nextWeek : 'dddd [at] LT',
+        sameElse : 'L'
+    }; 
+
     return(
             <div className={classes.Post}>
                 <div className={classes.UserInfo}>
@@ -45,7 +55,11 @@ const Post = ({showDeleteButton, deletePost, userId,
                         <Link to={'/profile/' + userId}>
                             <p className={classes.Username}>{username}</p>
                         </Link>
-                        <small>{createdAt}</small>
+                        <small>                    
+                            <Moment
+                            calendar={calendarStrings}>{createdAt}
+                            </Moment>
+                        </small>
                     </div>
                     <div className={classes.PostOptions}>
                         <div className={classes.OptionsIcon}>

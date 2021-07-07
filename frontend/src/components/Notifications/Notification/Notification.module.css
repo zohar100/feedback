@@ -1,0 +1,31 @@
+.Notification {
+  margin: 2px;
+  border-radius: 5px;
+}
+
+.Notification {
+  width: -webkit-fill-available;
+  height: 100%;
+  padding: 8px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.Notification:hover {
+  background-color: #26282b;
+}
+
+.NotificationContent {
+  display: flex;
+  flex-flow: column;
+}
+
+.NotificationContent .NotificationText {
+  font-weight: 20pc;
+  font-size: 1.1em;
+}
+
+.NotificationContent .NotificationDate {
+  margin-top: 5px;
+  color: #90b8f8;
+}
