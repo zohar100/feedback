@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import classes from './ChatUser.module.css';
 import ProfileImage from '../../ProfileImage/ProfileImage';

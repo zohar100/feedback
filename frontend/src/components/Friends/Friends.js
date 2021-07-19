@@ -15,6 +15,7 @@ const Friends = ({friends, currentUserId, chatClicked,
                 chatClicked={() => chatClicked(friend._id)}
                 followClicked={() => followClicked(friend._id)}
                 userClicked={() => userClicked(friend._id)}
+                imageUrl={friend.profileImage.url}
             />
     ))
     : null

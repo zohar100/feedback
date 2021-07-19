@@ -44,7 +44,7 @@ const EditUser = (props) => {
         dispatch(editUser(user.id, formData, token));
     }
 
-    const [formValue, valid, touched, setInputValue, handleSubmit, formData] = useForm(checkValidity, formRules, submitHandler);
+    const [formValue, valid, touched, setInputValue, handleSubmit, formData, image] = useForm(checkValidity, formRules, submitHandler);
     
 
     return (
@@ -77,13 +77,11 @@ const EditUser = (props) => {
                 touched={touched.email || false}
                 changed={setInputValue}/>
                 <Input
-                label="Image"
-                elementType="input" 
-                elementConfig={{type: 'file', placeholder: 'Profile image', name: 'file'}}
-                value={formValue.image || ""}
-                invalid={!valid.image || false}
-                shouldValidate={formRules.image}
-                touched={touched.image || false}
+                label="Profile image"
+                elementType="file" 
+                elementConfig={{type: 'file', name: 'file', defaultValue: formValue.file}}
+                touched={touched.file || false}
+                imgPreview={image}
                 changed={setInputValue}/> 
                 <Input
                 label=" Old password"

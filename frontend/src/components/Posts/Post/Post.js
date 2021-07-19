@@ -118,7 +118,7 @@ Post.propTypes = {
     likeClick: PropTypes.func.isRequired,
     likeActive: PropTypes.string,
     addToFavorite: PropTypes.func.isRequired,
-    favoriteActive: PropTypes.string,
+    favoriteActive: PropTypes.object,
 }
 
 export default Post;

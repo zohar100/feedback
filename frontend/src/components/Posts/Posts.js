@@ -53,6 +53,7 @@ const Posts = ({ posts, loading, currentUser,
                     bodyValue={commentBodyValue}
                     inputValueChanged={commentInputValueChanged}
                     handleSubmit={commentHandleSubmit}
+                    imageUrl={currentUser.profileImage.url}
                 />
             </Hoc>
         ))

@@ -2,20 +2,35 @@
   position: fixed;
   z-index: 500;
   background-color: #26282b;
-  width: 70%;
+  width: 90%;
   min-height: 550px;
   height: fit-content;
+  max-height: 80%;
   border: 1px solid rgb(53, 53, 53);
   border-radius: 10px;
   box-shadow: 1px 1px 40px black;
-  left: 15%;
   color: white;
-  top: 15%;
+  top: 10%;
   bottom: 20%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+}
+
+.Modal::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.Modal::-webkit-scrollbar-track {
+  border: 1px solid transparent;
+}
+
+.Modal::-webkit-scrollbar-thumb {
+  background: #90b8f8;
+  border-radius: 10px;
 }
 
 .ModalOpen {

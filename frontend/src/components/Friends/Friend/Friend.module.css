@@ -22,6 +22,10 @@
   font-size: 70px;
 }
 
+.User .UserDetails {
+  margin-left: 2px;
+}
+
 .User .UserDetails h3 {
   width: fit-content;
   font: 0.8em;

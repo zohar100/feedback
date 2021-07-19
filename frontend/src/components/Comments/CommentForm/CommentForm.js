@@ -2,14 +2,13 @@ import React from 'react';
 
 import Input from '../../UI/Input/Input';
 import classes from './CommentForm.module.css';
+import ProfileImage from '../../ProfileImage/ProfileImage';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
-const CommentForm = ({bodyValue, handleSubmit, inputChanged}) => {
+const CommentForm = ({bodyValue, handleSubmit, inputChanged, imageUrl}) => {
 
     return (
         <form className={classes.CommentsInput} onSubmit={handleSubmit}>
-            <AccountCircleIcon/>
+            <ProfileImage imageUrl={imageUrl}/>
             <Input
                 elementType={'input'} 
                 elementConfig={{type: 'text', placeholder: 'Write comment...', name: 'body'}}

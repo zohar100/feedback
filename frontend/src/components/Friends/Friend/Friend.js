@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 
 import classes from './Friend.module.css';
 import Button from '../../UI/Button/Button';
+import ProfileImage from '../../ProfileImage/ProfileImage';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 
 const friend = ({username, followersLength, messageButton,
-                chatClicked, followClicked, userClicked}) => {
+                chatClicked, followClicked, userClicked, imageUrl}) => {
     return(
         <div className={classes.UserCard}>
             <div className={classes.User} onClick={userClicked}>
-                <AccountCircleIcon/>
+                <ProfileImage
+                imageUrl={imageUrl}/>
                 <div className={classes.UserDetails}>
                     <h3>{username}</h3>
                     <span>{followersLength} followers</span>

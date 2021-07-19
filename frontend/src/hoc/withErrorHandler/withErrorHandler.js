@@ -13,7 +13,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
             if(error){
                 setTimeout(()=> clearError(), 3000)
             }
-        }, [error])
+        }, [error, clearError])
 
         return (
             <Hoc>

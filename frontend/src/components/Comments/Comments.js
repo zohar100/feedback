@@ -9,7 +9,7 @@ import CommentForm from './CommentForm/CommentForm';
 const Comments = ({deleteCommentHandler, showCommentModal,
                     showCommentModalHandler, post, userId,
                     showComments, bodyValue, inputValueChanged,
-                    handleSubmit}) => {
+                    handleSubmit, imageUrl}) => {
 
         let commentsOrSpan = <Spinner spinnerType="Primary-Spinner"/>;
         if(post.comments){
@@ -22,7 +22,9 @@ const Comments = ({deleteCommentHandler, showCommentModal,
                         showDeleteButton={comment.author._id === userId}
                         deleteComment={() => deleteCommentHandler(post._id, comment._id)}
                         showModal={showCommentModal === comment._id}
+                        imageUrl={comment.author.profileImage.url}
                         modalClicked={() => showCommentModalHandler(comment._id)}
+                        modalClosed={() => showCommentModalHandler(null)}
                         />
                 ))
             }else {
@@ -54,7 +56,8 @@ const Comments = ({deleteCommentHandler, showCommentModal,
                     <CommentForm
                         bodyValue={bodyValue}
                         inputChanged={inputValueChanged}
-                        handleSubmit={handleSubmit}/>
+                        handleSubmit={handleSubmit}
+                        imageUrl={imageUrl}/>
                 </div>
             </CSSTransition>
         )
