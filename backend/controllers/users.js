@@ -298,7 +298,7 @@ module.exports.followUser = catchAsync(async (req, res) => {
         
         //create notification
         if(!userToFollow._id.equals(currentUser._id)){
-            const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username))
+            const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser, currentUser._id))
             await userToFollow.notifications.push(notification._id)
         }
 
@@ -311,7 +311,7 @@ module.exports.followUser = catchAsync(async (req, res) => {
         }else {
             //create notification
             if(!userToFollow._id.equals(currentUser._id)){
-                const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username, currentUser._id))
+                const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username, currentUser._id, currentUser.profileImage.url))
                 userToFollow.notifications.push(notification._id)
                 notification.save()
             }

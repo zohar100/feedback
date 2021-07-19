@@ -91,9 +91,9 @@ module.exports.likePost = catchAsync(async (req, res) => {
       post.likes.pull(req.user)
     }else {
       if(!notificationUser._id.equals(user._id)){
-        const notification = await new Notification(notificationsBuilder(types.POST_LIKE, user.username, post._id))
-        await notificationUser.notifications.push(notification._id)
+        const notification = await new Notification(notificationsBuilder(types.POST_LIKE, user.username, post._id, user.profileImage.url))
         await notification.save()
+        await notificationUser.notifications.push(notification._id)
         await notificationUser.save()
 
       }

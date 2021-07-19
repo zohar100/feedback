@@ -26,7 +26,7 @@ module.exports.showCommenet = catchAsync(async (req, res) => {
 module.exports.newComment = catchAsync(async (req, res) => {
     //find post to push the comment
     const post = await Post.findById(req.params.postId)
-    console.log(post);
+
     //create new comment and push to post
     const comment = {
         author: req.user,
@@ -37,12 +37,12 @@ module.exports.newComment = catchAsync(async (req, res) => {
     await post.comments.push(newComment._id)
     await newComment.save()
     await post.save()
-    console.log(post);
+
     //create notification
     const user = await User.findById(req.user)
     const notificationUser = await User.findById(post.author)
     if(!notificationUser._id.equals(req.user)){
-        const notification = await new Notification(notificationsBuilder(types.POST_COMMENT, user.username, post._id))
+        const notification = await new Notification(notificationsBuilder(types.POST_COMMENT, user.username, post._id, user.profileImage.url))
         await notificationUser.notifications.push(notification._id)
         await notification.save()
         await notificationUser.save()
