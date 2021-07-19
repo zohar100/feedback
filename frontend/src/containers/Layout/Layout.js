@@ -40,11 +40,12 @@ const Layout = props => {
             case 'CHAT_MESSAGE':
                 return history.push('/chats/' + navigateId)
             case 'POST_LIKE':
-                return history.push('/favorites/' + navigateId)
+                return history.push('/posts/' + navigateId)
             case 'POST_COMMENT':
-                return history.push('/favorites/' + navigateId)
+                return history.push('/posts/' + navigateId)
             case 'USER_FOLLOW':
                 return history.push('/profile/' + navigateId)
+            default: return null;
         }
     }   
 
@@ -60,13 +61,17 @@ const Layout = props => {
         history.push('/profile/' + user.id)
     }
 
+    const chatClicked = (id) => {
+        history.push('/chats/' + id)
+    }
+
     const logoutHandler = () => {
         dispatch(authLogout())
     }
-
-        let layout = (
-            <Hoc>
-                <Toolbar 
+    return (
+        token !== null ? 
+        <Hoc>
+            <Toolbar 
                 clicked={sideDrawerOpenHandler} 
                 username={user.username}
                 profileImageUrl={user.id ? user.profileImage.url : ''}
@@ -80,30 +85,23 @@ const Layout = props => {
                 notificationClicked={notificationClicked}
                 profileNavigation={profileHandler}
                 logout={logoutHandler}/>
-                <SideDrawer 
+            <SideDrawer 
                 open={showSideDrawer} 
                 username={user.username} 
                 closed={sideDrawerClosedHandler}
                 userId={user.id}/>
-            </Hoc>
-        );
-        if (!props.show) {
-            layout = null
-        }
-    return (
-        <Hoc>
-            {layout}
             <main className={classes.Layout}>
                 <div className={classes.RightBar}>
                     <ChatsList 
                     chats={chats}
-                    user={user}/>
+                    user={user}
+                    chatClicked={chatClicked}/>
                 </div>
                 <div className={classes.Main}>
                     {props.children}
                 </div>
             </main>
-        </Hoc>
+        </Hoc> : props.children
     )
 }
 

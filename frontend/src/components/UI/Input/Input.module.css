@@ -51,6 +51,34 @@ input:-webkit-autofill:active {
   margin-top: 4px;
 }
 
+.InputFile {
+  height: 250px;
+  max-width: 100%;
+  max-height: 300px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.InputFile p {
+  margin: 0;
+}
+
+.InputFile label {
+  font-size: larger;
+  font-weight: 500;
+  color: #5f85db;
+  cursor: pointer;
+}
+
+.InputElementFile {
+  display: none;
+}
+
 .Invalid {
   border: 1px solid rgb(252, 72, 72);
 }

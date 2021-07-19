@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 
 import classes from './EditUser.module.css';
-import useForm from '../../../utilities/useForm';
+import useForm from '../../../hooks/useForm';
 import checkValidity from '../../../utilities/checkFormValidity';
 import Modal from '../../../components/UI/Modal/Modal';
 import Input from '../../../components/UI/Input/Input';

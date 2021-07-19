@@ -12,7 +12,7 @@ const input = (props) => {
 
     if(props.invalid && props.shouldValidate && props.touched){
         inputClasses.push(classes.Invalid);
-    validationError = <p className={classes.ValidationError}>Please enter a valid value!</p>;
+        validationError = <p className={classes.ValidationError}>Please enter a valid value!</p>;
     }
 
     switch(props.elementType) {
@@ -29,6 +29,14 @@ const input = (props) => {
                             { ...props.elementConfig } 
                             value={props.value}
                             onChange={props.changed} />
+            break;
+        case('file'):
+            inputElement = <input 
+                            className={classes.InputElementFile} 
+                            { ...props.elementConfig } 
+                            value={props.value}
+                            onChange={props.changed} 
+                            id="fileUpload"/>
             break;
         case('select'):
         inputElement = (
@@ -64,14 +72,38 @@ const input = (props) => {
         break;
         default: icon = null;
     }
-    return(
+
+    let finalElement =(  
         <div className={classes.Input}>
-            <label className={classes.Label}>{props.label}</label>
-            <div className={[classes.DivInput, inputClasses.join(' ')].join(' ')}>
-            {icon} {inputElement}
-            </div>
-            {validationError}
-        </div>
+                    <label className={classes.Label}>{props.label}</label>
+                    <div className={[classes.DivInput, inputClasses.join(' ')].join(' ')}>
+                    {icon} {inputElement}
+                    </div>
+                    {validationError}
+        </div>)
+    if(props.elementType === 'file') {
+        finalElement = (
+            <div className={classes.InputFile} style={{
+                background: props.imgPreview ? `url("${props.imgPreview}") no-repeat center/cover` : "#353941"
+            }}>
+            {!props.imgPreview ? 
+            <>
+                <p>{props.label}</p>
+                <label className={classes.Label} htmlFor="fileUpload">Choose file</label>
+                <div className={classes.DivFile}>
+                    {inputElement}
+                </div>
+            </>
+            :
+            <button>delete</button> }
+                {validationError}
+            </div> 
+        )
+    }
+
+
+    return(
+        finalElement
     )
 }
 

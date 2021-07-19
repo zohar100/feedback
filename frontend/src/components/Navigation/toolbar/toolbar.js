@@ -57,7 +57,8 @@ const toolbar = ({showUserModal, logout, clicked, username, profileImageUrl,
                             key={n._id}
                             text={n.text}
                             createdAt={n.createdAt}
-                            clicked={() => notificationClicked(n.navigationId, n.kind)}/>
+                            clicked={() => notificationClicked(n.navigationId, n.kind)}
+                            imageUrl={n.imageUrl}/>
                         ))}
                     </OptionsModal>
             </div>

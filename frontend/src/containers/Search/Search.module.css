@@ -6,16 +6,8 @@
 }
 
 .FriendsList {
-  display: flex;
-  flex-wrap: wrap;
-  height: 85vh;
   overflow-y: scroll;
-}
-
-.FriendsList section {
-  flex: 0 0 40%;
-  margin: auto;
-  margin-top: 15px;
+  padding: 2px;
 }
 
 .FriendsList::-webkit-scrollbar {

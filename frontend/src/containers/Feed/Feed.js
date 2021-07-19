@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from '../../axios';
 
 import classes from './Feed.module.css';
-import useForm from '../../utilities/useForm';
+import useForm from '../../hooks/useForm';
 import PostForm from '../../components/Posts/PostForm/PostForm';
 import Posts from '../../components/Posts/Posts';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
 
 const Feed = () => {
@@ -120,4 +122,4 @@ const Feed = () => {
         )
 }
 
-export default Feed;
+export default withErrorHandler(Feed, axios);

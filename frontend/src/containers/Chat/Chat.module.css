@@ -1,9 +1,15 @@
-.Messages {
+.Chat {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+/* .Messages {
   height: 300px;
   max-height: 300px;
   padding: 5px;
   overflow-y: scroll;
-}
+} */
 
 .Messages::-webkit-scrollbar {
   width: 12px;

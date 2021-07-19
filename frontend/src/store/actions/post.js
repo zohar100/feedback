@@ -114,7 +114,7 @@ export const addPost = (post, token) => {
                 dispatch(addPostSuccess(response.data.post))
             })
             .catch(err => {
-                dispatch(addPostFail(err.response.data.msg))
+                dispatch(addPostFail(err))
             });
     }
 }

@@ -1,0 +1,12 @@
+.Messages {
+  width: 100%;
+  min-height: 65vh;
+  display: flex;
+  flex-flow: column;
+}
+
+@media (min-width: 600px) {
+  .Messages {
+    min-height: 73vh;
+  }
+}

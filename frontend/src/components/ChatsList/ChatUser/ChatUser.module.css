@@ -6,6 +6,7 @@
   transition: 0.3s linear;
   display: flex;
   color: white;
+  cursor: pointer;
 }
 
 .ChatUser svg {

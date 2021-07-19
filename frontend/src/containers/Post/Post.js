@@ -6,7 +6,7 @@ import Post from '../../components/Posts/Post/Post';
 import Comments from '../../components/Comments/Comments';
 import Hoc from '../../hoc/Hoc/Hoc';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import useForm from '../../utilities/useForm';
+import useForm from '../../hooks/useForm';
 import * as actions from '../../store/actions';
 
 const PostPage = () => {

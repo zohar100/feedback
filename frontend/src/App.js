@@ -57,7 +57,7 @@ const checkMobile = () => {
       <Route path='/favorites' exact>
         <Favorites/>
       </Route>
-      <Route path='/favorites/:id'>
+      <Route path='/posts/:id'>
         <Post/>
       </Route>
       <Route path='/search'>
@@ -72,7 +72,7 @@ const checkMobile = () => {
  }
     
     return(
-        <Layout show={props.isAuthenticated}>
+        <Layout>
             {routes}
         </Layout>
     )

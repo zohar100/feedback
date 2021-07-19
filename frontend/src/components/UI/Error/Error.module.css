@@ -1,0 +1,52 @@
+.Error {
+  background-color: rgb(241, 52, 52);
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid palevioletred;
+  color: white;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+}
+
+.ErrorOpen {
+  animation: errorOpen 0.3s ease-out forwards;
+}
+
+.ErrorClosed {
+  animation: errorClosed 0.3s ease-out forwards;
+}
+
+@keyframes errorOpen {
+  0% {
+    opacity: 0;
+    transform: translateX(-150);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes errorClosed {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-150);
+  }
+}
+
+@media (min-width: 600px) {
+  .Error {
+    width: 250px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 5px;
+  }
+}

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
  
 import classes from './Profile.module.css';
-import useForm from '../../utilities/useForm';
+import useForm from '../../hooks/useForm';
 import Posts from '../../components/Posts/Posts'
 import profilBackground from '../../assets/images/profileBackground.jpg';
 import PostForm from '../../components/Posts/PostForm/PostForm';

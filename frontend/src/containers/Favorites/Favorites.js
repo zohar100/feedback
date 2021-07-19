@@ -18,7 +18,7 @@ const Favorites = props => {
     }
 
     const navigateToPost = (postId) => {
-        history.push('/favorites/' + user.id)
+        history.push('/posts/' + user.id)
     }
 
         let posts = user.favorites.map(post => (

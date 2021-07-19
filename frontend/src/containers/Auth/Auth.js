@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import axios from '../../axios';
 
 import classes from './Auth.module.css';
 import Logo from '../../components/Logo/Logo';
@@ -10,7 +11,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import Hoc from '../../hoc/Hoc/Hoc';
 import * as actions from '../../store/actions/index';
 import checkValidity from '../../utilities/checkFormValidity';
-import useForm from '../../utilities/useForm';
+import useForm from '../../hooks/useForm';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const formRules = {
     username: {
@@ -29,7 +31,7 @@ const formRules = {
 const Auth = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.auth.token !== null)
-    const {loading, error} = useSelector(state => state.auth)
+    const loading = useSelector(state => state.auth.loading)
 
     const {authRegister, authLogin} = actions;
 
@@ -41,7 +43,7 @@ const Auth = () => {
         }
     }
 
-    const [formValue, valid, touched, setInputValue, handleSubmit, formData] = useForm(checkValidity, formRules, submitHandler);
+    const [formValue, valid, touched, setInputValue, handleSubmit, formData, image] = useForm(checkValidity, formRules, submitHandler);
     const [isSingup, setIsSignup] = useState(false);
 
     const switchAuthModeHandler = () => {
@@ -51,7 +53,7 @@ const Auth = () => {
             <Hoc>
             {  isSingup ? <> 
             <Input
-                label="username"
+                label="Username"
                 icon="Username"
                 elementConfig={{type: 'text', placeholder: 'Username', name: 'username'}}
                 value={formValue.username || ""}
@@ -60,15 +62,15 @@ const Auth = () => {
                 touched={touched.username || false}
                 changed={setInputValue}/> 
                 <Input
-                label="Image"
-                elementType="input" 
-                elementConfig={{type: 'file', placeholder: 'Profile image', name: 'file'}}
-                value={formValue.file || ""}
+                label="Profile image"
+                elementType="file" 
+                elementConfig={{type: 'file', name: 'file', defaultValue: formValue.file}}
                 touched={touched.file || false}
+                imgPreview={image}
                 changed={setInputValue}/> 
                 </>: null}
                 <Input
-                label="email"
+                label="Email"
                 icon="Email"
                 elementType="input" 
                 elementConfig={{type: 'text', placeholder: 'Email', name: 'email'}}
@@ -78,10 +80,10 @@ const Auth = () => {
                 touched={touched.email || false}
                 changed={setInputValue}/>
                 <Input
-                label="password"
+                label="Password"
                 icon="Password"
                 elementType="input" 
-                elementConfig={{type: 'password', placeholder: 'password', name: 'password'}}
+                elementConfig={{type: 'password', placeholder: 'Password', name: 'password'}}
                 value={formValue.password || ""}
                 invalid={!valid.password || false}
                 shouldValidate={formRules.password}
@@ -115,10 +117,6 @@ const Auth = () => {
                     </div>
             </Hoc>
         );
-        let err = null;
-        if(error){
-            err = <div className={classes.Error}> {error} </div> 
-        }
         if(loading){
             spinnerOrForm = (
             <div className={classes.SpinnerDiv}>
@@ -134,11 +132,10 @@ const Auth = () => {
                     <Logo/>
                 </div>
                 <div className={classes.Auth}>
-                        {err}
                         {spinnerOrForm}
                 </div>
             </div>
         )
 }
 
-export default Auth;
+export default withErrorHandler(Auth, axios);

@@ -1,31 +1,20 @@
-.Background {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  padding: 120px 0;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  background-color: #26282b;
-}
-
 .Auth {
   width: 100%;
-  min-width: 500px;
-  min-height: 200px;
   height: fit-content;
-  padding: 15px;
+  min-width: 400px;
+  min-height: 200px;
+  display: flex;
+  flex-flow: column;
+  align-self: center;
   margin: auto;
   background-color: #26282b;
-  border: 1px solid #ccc;
   box-sizing: border-box;
-  box-shadow: 5px 5px 25px rgba(204, 204, 204, 0.596);
+  box-shadow: 5px 5px 100px rgb(54, 53, 53);
   border-radius: 5px;
 }
 
 .FormDiv {
   color: white;
-  width: 300px;
   margin: auto;
   height: fit-content;
   display: flex;
@@ -44,9 +33,14 @@
   justify-content: space-between;
 }
 
+.SwitchAuth button {
+  height: 50px;
+}
+
 .SwitchButton {
   margin-left: 3px;
   color: cornflowerblue;
+  cursor: pointer;
 }
 
 .SpinnerDiv {
@@ -54,22 +48,10 @@
   height: auto;
 }
 
-.Error {
-  width: fit-content;
-  margin: auto;
-  margin-bottom: 15px;
-  min-width: 440px;
-  background-color: rgb(241, 52, 52);
-  text-align: center;
-  padding: 10px;
-  border: 1px solid rgba(204, 204, 204, 0.5);
-  border-radius: 9px;
-  color: white;
-}
-
 @media (min-width: 600px) {
   .Auth {
-    width: fit-content;
+    width: 600px;
+    padding: 30px 0;
   }
 
   .FormDiv {

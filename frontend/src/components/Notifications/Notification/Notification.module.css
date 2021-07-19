@@ -9,10 +9,21 @@
   padding: 8px;
   transition: 0.3s;
   cursor: pointer;
+  display: flex;
+  flex-flow: row;
 }
 
 .Notification:hover {
   background-color: #26282b;
+}
+
+.Image {
+  justify-content: center;
+  padding: 10px;
+}
+
+.Image svg {
+  font-size: 2.5rem;
 }
 
 .NotificationContent {

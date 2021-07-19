@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import classes from './Chat.module.css';
-import ChatInfo from '../../components/ChatInfo/ChatInfo'; 
-import Messages from '../../components/Messages/Messages';
-import ChatForm from '../../components/ChatForm/ChatForm';
-import useForm from '../../utilities/useForm';
-import useWebSockets from '../../utilities/useWebSockets';
+import ChatInfo from '../../components/Chat/ChatInfo/ChatInfo'; 
+import Messages from '../../components/Chat/Messages/Messages';
+import ChatForm from '../../components/Chat/ChatForm/ChatForm';
+import useForm from '../../hooks/useForm';
+import useWebSockets from '../../hooks/useWebSockets';
 import * as actions from '../../store/actions/index';
 
 
@@ -56,7 +56,7 @@ const Chat = () => {
     }
 
    return(
-       <>
+       <div className={classes.Chat}>
             <ChatInfo
             username={username}
             profileImage={profileImage}/>
@@ -70,7 +70,7 @@ const Chat = () => {
             formChange={setInputValue}
             handleSubmit={handleSubmit}
             />
-        </>
+        </div>
    )
 };
 
