@@ -1,4 +1,90 @@
-###FONTEND###
-pages:  home - contains friends and liked posts
-        chat - contains chat
-        profile - contains user information, images, posts and fiends list 
+## Street Shop
+
+> Social-mdia platform built with MERN stack.
+
+<img src="uploads/auth-page.png"/>
+<img src="uploads/feed-page.png"/>
+<img src="uploads/notifications.png"/>
+<img src="uploads/favorite-page.png"/>
+<img src="uploads/search-page.png"/>
+<img src="uploads/chat-page.png"/>
+<img src="uploads/profile-page.png"/>
+<img src="uploads/edit-profile.png"/>
+
+## Technologies & Tools
+
+### Front-end:
+
+- React
+- Redux
+- CSS
+- react-router-dom
+- socket.io-client
+
+### Backend:
+
+- Node/Express
+- MongoDB/Mongoose
+- jwt
+- multer
+- socket-io
+
+## Features
+
+ - register and login users. 
+ - Profile images can be uploaded using file system.
+ - search other users by username. 
+ - save any post to favorites.
+ - favorites posts page.
+ - delete posts and comments.
+ - admin panel is included.
+ - Explore page to view other posts by random users.
+ - notifications page.
+ - profile page.
+ - edit profile page user data.
+ - password is stored in database in encrypted format with salt.
+ - create and edit posts.
+ - like ,comment, share and edit posts.
+ - posts include text(caption) and image(s).
+ - comment on posts.
+ - reply comments.
+ - like commets.
+ - clear notification option.
+ - profile page shows user details and posts with following and followers menu.
+
+
+## Usage
+
+### Env Variables
+
+Create a .env file in the backend folder and add the following
+
+```
+MONGODB_URI = your mongodb uri
+JWT_SECRET = 'abc123'
+CLOUDINARY_CLOUD_NAME = your cloudinary cloud name
+CLOUDINARY_KEY = your cloudinary key
+CLOUDINARY_SECRET_API = your cloudinary secret api key
+```
+
+### Install Dependencies (frontend & backend)
+
+```
+cd frontend
+npm install
+cd ../backend
+npm install
+```
+
+### Run
+
+#### backend
+```
+# Run on port :8080
+node server.js
+```
+#### frontend
+```
+# Run on port :3000
+npm start
+```
