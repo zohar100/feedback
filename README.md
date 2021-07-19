@@ -1,6 +1,6 @@
 ## Street Shop
 
-> Social-mdia platform built with MERN stack.
+> Social-mdia platform built with MERN stack.(app is not ready yet, live is coming soon)
 
 <img src="uploads/auth-page.png"/>
 <img src="uploads/feed-page.png"/>
@@ -29,6 +29,7 @@
 - multer
 - socket-io
 
+
 ## Features
 
  - register and login users. 
@@ -36,21 +37,17 @@
  - search other users by username. 
  - save any post to favorites.
  - favorites posts page.
- - delete posts and comments.
- - admin panel is included.
- - Explore page to view other posts by random users.
- - notifications page.
+ - delete posts.
+ - comments on post.
+ - like to post.
+ - notifications.
  - profile page.
  - edit profile page user data.
  - password is stored in database in encrypted format with salt.
  - create and edit posts.
- - like ,comment, share and edit posts.
  - posts include text(caption) and image(s).
- - comment on posts.
- - reply comments.
- - like commets.
- - clear notification option.
  - profile page shows user details and posts with following and followers menu.
+ - chat built with socket.io
 
 
 ## Usage
