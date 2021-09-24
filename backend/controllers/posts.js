@@ -1,7 +1,7 @@
 const Post = require("../models/post.model");
 const User = require("../models/user.model");
-const Notification = require('../models/notification.model');
-const { notificationsBuilder, types } = require('../utility/notificationsBuilder'); 
+const notificationsController = require("./notifications");
+const { types } = require('../utility/notificationsBuilder'); 
 const catchAsync = require('../utility/catchAsync');
 
 //-----------All Posts-----------//
@@ -83,20 +83,12 @@ module.exports.deletePost = catchAsync(async (req, res) => {
 module.exports.likePost = catchAsync(async (req, res) => {
     const post = await Post.findById(req.params.id).populate('author')
     const postLike = await post.likes.find(like => like.equals(req.user))
-    
-    const user = await User.findById(req.user)
-    const notificationUser = await User.findById(post.author._id)
 
     if(postLike) {
       post.likes.pull(req.user)
     }else {
-      if(!notificationUser._id.equals(user._id)){
-        const notification = await new Notification(notificationsBuilder(types.POST_LIKE, user.username, post._id, user.profileImage.url))
-        await notification.save()
-        await notificationUser.notifications.push(notification._id)
-        await notificationUser.save()
+      notificationsController.newNotification(post.author._id, req.user, types.POST_LIKE, post._id);
 
-      }
       await post.likes.push(req.user)
     }
     await post.save();

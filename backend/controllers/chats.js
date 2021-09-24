@@ -25,3 +25,26 @@ module.exports.showChat = catchAsync(async (req, res) => {
             });
     res.json(chat);
 });
+
+//-----------Create Chat-----------//
+module.exports.newChat = catchAsync(async (req, res) => {
+    const newChat = {
+        users: [req.user, req.params.userId]
+    }
+    const chat = await new Chat(newChat)
+    console.log(chat);
+    await chat.save();
+    res.json(chat);
+});
+
+//-----------delete Chat-----------//
+module.exports.deleteChat = catchAsync(async (req, res) => {
+    const chat = await Chat.findById(req.params.chatId);
+    if(!chat.users.length === 0){
+        const newChat = await chat.users.filter(user => !user.equals(req.user));
+        await newChat.save();
+    }else {
+        await Chat.findByIdAndDelete(req.params.chatId);
+    }
+    res.json({message: 'success'});
+});

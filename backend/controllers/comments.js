@@ -1,8 +1,7 @@
 const Post = require("../models/post.model");
 const Comment = require("../models/comment.model");
-const User = require("../models/user.model");
-const Notification = require('../models/notification.model');
-const { notificationsBuilder, types } = require('../utility/notificationsBuilder'); 
+const notificationsController = require("./notifications");
+const { types } = require('../utility/notificationsBuilder'); 
 const catchAsync = require('../utility/catchAsync');
 
 //-----------All Comments-----------//
@@ -39,16 +38,8 @@ module.exports.newComment = catchAsync(async (req, res) => {
     await post.save()
 
     //create notification
-    const user = await User.findById(req.user)
-    const notificationUser = await User.findById(post.author)
-    if(!notificationUser._id.equals(req.user)){
-        const notification = await new Notification(notificationsBuilder(types.POST_COMMENT, user.username, post._id, user.profileImage.url))
-        await notificationUser.notifications.push(notification._id)
-        await notification.save()
-        await notificationUser.save()
+    notificationsController.newNotification(post.author, req.user, types.POST_COMMENT, post._id);
 
-    }
-    //create notification and send data
     Comment.populate(newComment, {
         path: "author"
     }).then(async (comment) => {

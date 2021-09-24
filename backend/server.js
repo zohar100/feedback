@@ -46,11 +46,13 @@ const commentRoutes = require('./routes/comment');
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/users');
 const chatRoutes = require('./routes/chats')
+const notificationRoutes = require('./routes/notification');
 
 app.use('/', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 app.use('/chats', chatRoutes);
+app.use('/notification', notificationRoutes);
 
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Something Went Wrong'} = err;

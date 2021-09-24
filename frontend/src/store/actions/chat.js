@@ -70,14 +70,32 @@ export const fetchChat = (chatId, token) => {
     }
 }
 
-export const deleteChat = (chatId, token) => {
-    return {
-        type: actionTypes.DELETE_CHAT,
+//--------------Add Chat-----------------
+
+export const addChatSuccess = (chat) => {
+    return{
+        type: actionTypes.REMOVE_MESSAGE,
+        chat: chat
     }
 }
 
+export const addChatFail = (msgId) => {
+    return{
+        type: actionTypes.ADD_CHAT_FAIL
+    }
+}
 
-//--------------Add/Remove message-----------------
+export const addChat = (chatId, token) => {
+    return dispatch => {
+        axios.post('/chats/' + chatId, {headers: { "x-auth-token": token }})
+        .then(response => {
+            dispatch(addChatSuccess(response.data));
+        }).catch((error) => {
+            dispatch(addChatFail(error));
+        });
+    }
+}
+//--------------Add/Remove Message-----------------
 export const addMessage = (msg) => {
     return{
         type: actionTypes.ADD_MESSAGE,

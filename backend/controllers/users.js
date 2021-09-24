@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { cloudinary } = require('../cloudinary');
 const User = require('../models/user.model');
 const Post = require('../models/post.model')
+const notificationsController = require("./notifications");
 const Notification = require('../models/notification.model');
 const { notificationsBuilder, types } = require('../utility/notificationsBuilder');
 const SerevrError = require('../utility/ServerError');
@@ -295,12 +296,6 @@ module.exports.followUser = catchAsync(async (req, res) => {
     
         //check if the current user already follow this userToFollow
         const userFollow = await currentUser.following.find(user => user.equals(req.params.userId));
-        
-        //create notification
-        if(!userToFollow._id.equals(currentUser._id)){
-            const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser, currentUser._id))
-            await userToFollow.notifications.push(notification._id)
-        }
 
         //if the user already follow
         if(userFollow) {
@@ -310,11 +305,7 @@ module.exports.followUser = catchAsync(async (req, res) => {
             userToFollow.followers.pull(req.user)
         }else {
             //create notification
-            if(!userToFollow._id.equals(currentUser._id)){
-                const notification = await new Notification(notificationsBuilder(types.USER_FOLLOW, currentUser.username, currentUser._id, currentUser.profileImage.url))
-                userToFollow.notifications.push(notification._id)
-                notification.save()
-            }
+            notificationsController.newNotification(req.params.userId, req.user, types.USER_FOLLOW, req.user);
             //push the userId to current user folowing
             currentUser.following.push(req.params.userId)
             //push the userId to user folowers

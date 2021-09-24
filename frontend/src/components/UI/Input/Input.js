@@ -1,6 +1,8 @@
 import React from 'react';
 
 import classes from './Input.module.css';
+import Button from '../Button/Button';
+
 import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
@@ -95,7 +97,7 @@ const input = (props) => {
                 </div>
             </>
             :
-            <button>delete</button> }
+            <Button clicked={props.deleteImageClicked}>delete</Button> }
                 {validationError}
             </div> 
         )

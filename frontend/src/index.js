@@ -11,6 +11,7 @@ import postReducer from './store/reducers/post';
 import authReducer from './store/reducers/auth';
 import userReducer from './store/reducers/user';
 import chatReducer from './store/reducers/chat';
+import notificationReducer from './store/reducers/notification';
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   post: postReducer,
   auth: authReducer,
   user: userReducer,
-  chat: chatReducer
+  chat: chatReducer,
+  notification: notificationReducer,
 });
 
 const store = createStore(rootReducer, composeEnhancers(

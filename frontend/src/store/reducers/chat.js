@@ -57,15 +57,17 @@ const fetchChatFail = (state, action) => {
     })
 }
 
-const deleteChat = (state, action) => {
-    const chat = updateObject(state.chat,{
-        id: null,
-        users: [],
-        messages: [],
+//--------------Add Chat-----------------
+export const addChatSuccess = (state, action) => {
+    updateObject(state, {
+        chats: state.chats.concat(action.chat)
     })
-    return updateObject(state, {
-        chat: chat
-    })
+}
+
+export const addChatFail = (msgId) => {
+    return{
+        type: actionTypes.ADD_CHAT_FAIL
+    }
 }
 
 //--------------Add/Remove message-----------------
@@ -89,7 +91,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_CHAT_START: return fetchChatStart(state, action);
         case actionTypes.FETCH_CHAT_SUCCESS: return fetchChatSuccess(state, action);
         case actionTypes.FETCH_CHAT_FAIL: return fetchChatFail(state, action);
-        case actionTypes.DELETE_CHAT: return deleteChat(state, action);
         //--------------Add/Remove message-----------------
         case actionTypes.ADD_MESSAGE: return addMessage(state, action);
     default: 

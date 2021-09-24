@@ -18,10 +18,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-const toolbar = ({showUserModal, logout, clicked, username, profileImageUrl,
+const toolbar = ({token, showUserModal, logout, clicked, username, profileImageUrl,
                     clickToShowModal, userOptionClicked, clickToShowNotifications,
                     showNotificationsModal, userNotificationsClicked, 
-                    profileNavigation, notifications, notificationClicked}) => {
+                    profileNavigation, notifications, notificationClicked, deleteNotification}) => {
     const optionList = [
         {
             text: 'Profile',
@@ -58,6 +58,7 @@ const toolbar = ({showUserModal, logout, clicked, username, profileImageUrl,
                             text={n.text}
                             createdAt={n.createdAt}
                             clicked={() => notificationClicked(n.navigationId, n.kind)}
+                            deleteNotification={() => deleteNotification(n._id, token)}
                             imageUrl={n.imageUrl}/>
                         ))}
                     </OptionsModal>

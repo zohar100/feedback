@@ -109,8 +109,8 @@ const Profile = () => {
         setShowEditUserModal(true);
     }
 
-        let followOrUnfollow = fetchedUser.followers.find(user => 
-            user._id === user.id
+        let followOrUnfollow = fetchedUser.followers.find(followUser => 
+            followUser._id === user.id
         );
         let profile = (
             <div className={classes.Profile}>

@@ -25,6 +25,13 @@ const useForm = (validate, rules, callback) => {
             setTouched({ ...touched, [event.target.name]: true });
         }
     }
+
+    const removeFile = event => {
+        event.preventDefault();
+        console.log(state['file']);
+        setState({ ...state, file: null});
+        setImage();
+    }
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -39,7 +46,7 @@ const useForm = (validate, rules, callback) => {
         callback();
     }
     if(validate !== null && rules !==null) { 
-    return [state, valid, touched, handleChange, handleSubmit, formData, image]
+    return [state, valid, touched, handleChange, handleSubmit, formData, image, removeFile]
     }else{
         return [state, handleChange, handleSubmit, formData]
     }

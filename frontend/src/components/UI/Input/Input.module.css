@@ -68,6 +68,10 @@ input:-webkit-autofill:active {
   margin: 0;
 }
 
+.InputElementFile {
+  display: none;
+}
+
 .InputFile label {
   font-size: larger;
   font-weight: 500;
@@ -75,8 +79,8 @@ input:-webkit-autofill:active {
   cursor: pointer;
 }
 
-.InputElementFile {
-  display: none;
+.InputFile button {
+  height: 50px;
 }
 
 .Invalid {

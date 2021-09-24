@@ -43,7 +43,7 @@ const Auth = () => {
         }
     }
 
-    const [formValue, valid, touched, setInputValue, handleSubmit, formData, image] = useForm(checkValidity, formRules, submitHandler);
+    const [formValue, valid, touched, setInputValue, handleSubmit, formData, image, removeFile] = useForm(checkValidity, formRules, submitHandler);
     const [isSingup, setIsSignup] = useState(false);
 
     const switchAuthModeHandler = () => {
@@ -66,6 +66,7 @@ const Auth = () => {
                 elementType="file" 
                 elementConfig={{type: 'file', name: 'file', defaultValue: formValue.file}}
                 touched={touched.file || false}
+                deleteImageClicked={removeFile}
                 imgPreview={image}
                 changed={setInputValue}/> 
                 </>: null}

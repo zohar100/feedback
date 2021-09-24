@@ -19,7 +19,7 @@ const Layout = props => {
     const [showNotificationsModal, setShowNotificationsModal] = useState(false);
     const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-    const {fetchChats, authLogout} = actions;
+    const {fetchChats, authLogout, deleteNotification} = actions;
 
     useEffect(() => {
     if(token && user.id){
@@ -65,6 +65,10 @@ const Layout = props => {
         history.push('/chats/' + id)
     }
 
+    const deleteNotificationHandler = (id, token) => {
+        dispatch(deleteNotification(id, token));
+    }
+
     const logoutHandler = () => {
         dispatch(authLogout())
     }
@@ -72,6 +76,7 @@ const Layout = props => {
         token !== null ? 
         <Hoc>
             <Toolbar 
+                token={token}
                 clicked={sideDrawerOpenHandler} 
                 username={user.username}
                 profileImageUrl={user.id ? user.profileImage.url : ''}
@@ -80,6 +85,7 @@ const Layout = props => {
                 clickToShowModal={showUserModalHandler}
                 showNotificationsModal={showNotificationsModal}
                 userNotificationsClicked={showNotificationsModalHandler}
+                deleteNotification={deleteNotificationHandler}
                 clickToShowNotifications={showNotificationsModalHandler}
                 notifications={user.notifications}
                 notificationClicked={notificationClicked}

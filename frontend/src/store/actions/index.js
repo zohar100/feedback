@@ -26,6 +26,11 @@ export {
 export {
     fetchChats,
     fetchChat,
-    deleteChat, 
+    addChat, 
     addMessage
 }from './chat';
+
+export {
+    deleteNotification,
+    fetchNotifications
+}from './notification'
