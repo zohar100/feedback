@@ -59,6 +59,10 @@ app.use((err, req, res, next) => {
   res.status(status).json({msg: message})
 })
 
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('../frontend/build'))
+}
+
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log("Connect succesfully on port: " + port);
