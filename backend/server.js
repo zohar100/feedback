@@ -48,16 +48,20 @@ const userRoutes = require('./routes/users');
 const chatRoutes = require('./routes/chats')
 const notificationRoutes = require('./routes/notification');
 
-app.use('/', userRoutes);
-app.use('/posts', postRoutes);
-app.use('/comments', commentRoutes);
-app.use('/chats', chatRoutes);
-app.use('/notification', notificationRoutes);
+app.use('/api', userRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api/notification', notificationRoutes);
 
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Something Went Wrong'} = err;
   res.status(status).json({msg: message})
 })
+
+// if(process.env.NODE_ENV === 'production'){
+
+// }
 
 const port = process.env.PORT || 8080;
 server.listen(port, () => {

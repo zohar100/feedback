@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://127.0.0.1:8080/'
+    baseURL: process.env.NODE_ENV === 'production'
+    ? '/api/'
+    : 'http://localhost:8080/api/'
 });
 
 // instance.interceptors.response.use(
