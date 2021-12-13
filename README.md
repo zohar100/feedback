@@ -1,7 +1,8 @@
 ## Street Shop
 
 > Social-mdia platform built with MERN stack.
-> Live: https://feedbackmernstack.herokuapp.com/
+
+Live: https://feedbackmernstack.herokuapp.com/
 
 <img src="uploads/auth-page.png"/>
 <img src="uploads/feed-page.png"/>
