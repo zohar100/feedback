@@ -26,15 +26,25 @@ module.exports.register = catchAsync(async (req, res, next) => {
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = await new User({
-            email: email,
-            profileImage: {
-                url: req.file.path,
-                filename: req.file.filename
-            },
-            password: passwordHash,
-            username: username
-        });
+        let newUser;
+        if(req.file) {
+            newUser = await new User({
+                email: email,
+                profileImage: {
+                    url: req.file.path,
+                    filename: req.file.filename
+                },
+                password: passwordHash,
+                username: username
+            });
+        }else {
+            newUser = await new User({
+                email: email,
+                password: passwordHash,
+                username: username
+            });
+        }
+
         const savedUser = await newUser.save();
         const token = jwt.sign({id: savedUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 

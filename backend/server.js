@@ -59,12 +59,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({msg: message})
 })
 
-//test
-
-// if(process.env.NODE_ENV === 'production'){
-
-// }
-
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
   console.log("Connect succesfully on port: " + port);
